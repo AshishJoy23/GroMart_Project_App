@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "682220607069",
+    "project_id": "gromart-grocery-app",
+    "storage_bucket": "gromart-grocery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682220607069:android:ba4ee3434bebd716db1fb4",
+        "android_client_info": {
+          "package_name": "com.example.gromart_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682220607069-ne3oa02mhf5r3bei0tuao2bilitr90ef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByVP4ILId_j5fKTHFCKk45eBMHtQIZL7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682220607069-ne3oa02mhf5r3bei0tuao2bilitr90ef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
