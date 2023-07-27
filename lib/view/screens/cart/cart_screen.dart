@@ -50,7 +50,7 @@ class CartScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            const CartModel().freeDeliveryStatus,
+                            'CartModel().freeDeliveryStatus',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           InkWell(

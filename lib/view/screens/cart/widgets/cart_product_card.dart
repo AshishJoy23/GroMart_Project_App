@@ -25,7 +25,7 @@ class CardProductCard extends StatelessWidget {
           child: Row(
             children: [
               Image.asset(
-                product.imageUrl,
+                product.imageUrls[0],
                 width: 100,
                 height: 80,
                 fit: BoxFit.cover,

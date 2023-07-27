@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -56,26 +58,94 @@ class HomeScreen extends StatelessWidget {
             const SectionTitleWidget(
               title: 'RECOMMENDED',
             ),
-            ProductCarouselWidget(
-              products: ProductModel.products,
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarouselWidget(
+                    products: state.products,
+                  );
+                } else {
+                  return const Text('Something went wrong!!!');
+                }
+              },
             ),
             const SectionTitleWidget(
               title: 'MOST POPULAR',
             ),
-            ProductCarouselWidget(
-              products: ProductModel.products,
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarouselWidget(
+                    products: state.products,
+                  );
+                } else {
+                  return const Text('Something went wrong!!!');
+                }
+              },
             ),
             const SectionTitleWidget(
               title: 'TOP RATED',
             ),
-            ProductCarouselWidget(
-              products: ProductModel.products,
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarouselWidget(
+                    products: state.products,
+                  );
+                } else {
+                  return const Text('Something went wrong!!!');
+                }
+              },
             ),
             const SectionTitleWidget(
               title: 'TODAY\'S SPECIAL',
             ),
-            ProductCarouselWidget(
-              products: ProductModel.products,
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarouselWidget(
+                    products: state.products,
+                  );
+                } else {
+                  return const Text('Something went wrong!!!');
+                }
+              },
             ),
           ],
         ),
@@ -84,5 +154,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-

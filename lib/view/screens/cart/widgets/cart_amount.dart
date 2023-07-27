@@ -26,7 +26,7 @@ class CartAmountWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
-                    '\$${const CartModel().subTotalString}',
+                    '\$.subTotalString}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
@@ -42,7 +42,7 @@ class CartAmountWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
-                    '\$${const CartModel().deliveryFeeString}',
+                    '\$CartModel().deliveryFeeString}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
@@ -80,7 +80,7 @@ class CartAmountWidget extends StatelessWidget {
                           .copyWith(color: Colors.white),
                     ),
                     Text(
-                      '\$${const CartModel().totalAmountString}',
+                      '\$.totalAmountString}',
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!

@@ -1,73 +1,111 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class ProductModel extends Equatable {
+  final int id;
   final String name;
   final String category;
-  final String imageUrl;
-  final double price;
+  final String description;
+  final List<dynamic> imageUrls;
+  final bool isRecommended;
+  final bool isPopular;
+  final bool isTopRated;
+  final bool isTodaySpecial;
+  double price;
+  int quantity;
 
-  const ProductModel({
+  ProductModel({
+    required this.id,
     required this.name,
     required this.category,
-    required this.imageUrl,
-    required this.price,
+    required this.description,
+    required this.imageUrls,
+    required this.isRecommended,
+    required this.isPopular,
+    required this.isTopRated,
+    required this.isTodaySpecial,
+    this.price = 0,
+    this.quantity = 0,
   });
 
   @override
   List<Object?> get props => [
+        id,
         name,
         category,
-        imageUrl,
+        description,
+        imageUrls,
+        isRecommended,
+        isPopular,
+        isTopRated,
+        isTodaySpecial,
         price,
+        quantity,
       ];
 
+  static ProductModel fromSnapshot(DocumentSnapshot snap) {
+    return ProductModel(
+      id: snap['id'],
+      name: snap['name'],
+      category: snap['category'],
+      description: snap['description'],
+      imageUrls: snap['imageUrls'],
+      isRecommended: snap['isRecommended'],
+      isPopular: snap['isPopular'],
+      isTopRated: snap['isTopRated'],
+      isTodaySpecial: snap['isTodaySpecial'],
+      price: snap['price'],
+      quantity: snap['quantity'],
+    );
+  }
+
   static List<ProductModel> products = [
-    const ProductModel(
+    ProductModel(
+      id: 1,
       name: 'Apple',
       category: 'Fruits',
-      imageUrl: "assets/images/product1.jpg",
+      description: "Apple is a fruit with different colors",
+      imageUrls: const ["assets/images/product1.jpg"],
+      isRecommended: true,
+      isPopular: true,
+      isTopRated: false,
+      isTodaySpecial: false,
       price: 1.99,
     ),
-    const ProductModel(
-      name: 'Banana',
+    ProductModel(
+      id: 1,
+      name: 'Apple',
       category: 'Fruits',
-      imageUrl: "assets/images/product2.jpg",
-      price: 0.99,
+      description: "Apple is a fruit with different colors",
+      imageUrls: const ["assets/images/product1.jpg"],
+      isRecommended: true,
+      isPopular: true,
+      isTopRated: false,
+      isTodaySpecial: false,
+      price: 1.99,
     ),
-    const ProductModel(
-      name: 'Milk',
-      category: 'Dairy',
-      imageUrl: "assets/images/product3.jpeg",
-      price: 2.49,
+    ProductModel(
+      id: 1,
+      name: 'Apple',
+      category: 'Fruits',
+      description: "Apple is a fruit with different colors",
+      imageUrls: const ["assets/images/product1.jpg"],
+      isRecommended: true,
+      isPopular: true,
+      isTopRated: false,
+      isTodaySpecial: false,
+      price: 1.99,
     ),
-    const ProductModel(
-      name: 'Bread',
-      category: 'Bakery',
-      imageUrl: "assets/images/product4.jpg",
-      price: 3.99,
-    ),
-    const ProductModel(
-      name: 'Coca-Cola',
-      category: 'Drinks',
-      imageUrl: "assets/images/product5.jpg",
-      price: 1.49,
-    ),
-    const ProductModel(
-      name: 'Pepsi',
-      category: 'Drinks',
-      imageUrl: "assets/images/product6.jpeg",
-      price: 1.29,
-    ),
-    const ProductModel(
-      name: 'Carrot',
-      category: 'Vegetables',
-      imageUrl: "assets/images/product7.jpg",
-      price: 0.89,
-    ),
-    const ProductModel(
-      name: 'Rice',
-      category: 'Grocery',
-      imageUrl: "assets/images/product8.jpg",
+    ProductModel(
+      id: 1,
+      name: 'Apple',
+      category: 'Fruits',
+      description: "Apple is a fruit with different colors",
+      imageUrls: const ["assets/images/product1.jpg"],
+      isRecommended: true,
+      isPopular: true,
+      isTopRated: false,
+      isTodaySpecial: false,
       price: 1.99,
     ),
   ];

@@ -32,8 +32,8 @@ class ProductCardWidget extends StatelessWidget {
           SizedBox(
             width: widthScrn,
             height: heightScrn,
-            child: Image.asset(
-              product.imageUrl,
+            child: Image.network(
+              product.imageUrls[0],
               fit: BoxFit.cover,
             ),
           ),
