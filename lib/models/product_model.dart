@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -57,6 +60,41 @@ class ProductModel extends Equatable {
       price: snap['price'],
       quantity: snap['quantity'],
     );
+  }
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id'],
+      name: json['name'],
+      category: json['category'],
+      description: json['description'],
+      imageUrls: json['imageUrls'],
+      isRecommended: json['isRecommended'],
+      isPopular: json['isPopular'],
+      isTopRated: json['isTopRated'],
+      isTodaySpecial: json['isTodaySpecial'],
+      price: json['price'],
+      quantity: json['quantity'],
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'category': category,
+        'description': description,
+        'imageUrls': imageUrls,
+        'isRecommended': isRecommended,
+        'isPopular': isPopular,
+        'isTopRated': isTopRated,
+        'isTodaySpecial': isTodaySpecial,
+        'price': price,
+        'quantity': quantity,
+      };
+
+  String toJson() {
+    log("<<<<<<<convert to json>>>>>>>");
+    return json.encode(toMap());
   }
 
   static List<ProductModel> products = [

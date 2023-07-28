@@ -38,11 +38,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           deliveryFee: 0,
           grandTotal: 0,
         );
+        log('<<<<load event>>>>');
+        log(newCart.toString());
         _cartRepository.updateCartProducts(cart.id, newCart);
-        _cartSubscription?.cancel();
-        _cartSubscription = _cartRepository
-            .getCartProducts(event.email)
-            .listen((cart) => add(UpdateCart(newCart)));
+        add(UpdateCart(newCart));
+        // _cartSubscription?.cancel();
+        // _cartSubscription = _cartRepository
+        //     .getCartProducts(event.email)
+        //     .listen((cart) => add(UpdateCart(newCart)));
       } else {
         add(UpdateCart(cart));
       }
@@ -51,6 +54,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   void _onUpdateCart(UpdateCart event, Emitter<CartState> emit) async {
     emit(CartLoading());
+    log('<<<<<<<<<<<<<<<<<<<update event>>>>>>>>>>>>>>>>>');
+    log(event.cart.id);
+    log(event.cart.productsMap.toString());
+    log(event.cart.subTotal.toString());
+    log(event.cart.grandTotal.toString());
+    log(event.cart.deliveryFee.toString());
     try {
       await Future<void>.delayed(const Duration(seconds: 1));
       emit(
@@ -64,8 +73,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _cartProductAdded(CartProductAdded event, Emitter<CartState> emit) {
-    emit(CartLoading());
+  void _cartProductAdded(CartProductAdded event, Emitter<CartState> emit) async{
+    //emit(CartLoading());
     final state = this.state;
     if (state is CartLoaded) {
       // ProductModel? productToUpdate;
@@ -80,21 +89,28 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       // } else {
       //   state.cart.productsMap[event.product] = 1;
       // }
+      log(state.cart.productsMap.toString());
       state.cart.productsMap.update(
         event.product,
         (quantity) => quantity + 1,
         ifAbsent: () => 1,
       );
+      log(state.cart.productsMap.keys.toString());
+      log(state.cart.productsMap[event.product].toString());
+      final CartModel newCart = CartModel(
+        id: state.cart.id,
+        productsMap: state.cart.productsMap,
+        userEmail: state.cart.userEmail,
+        subTotal: state.cart.subTotals,
+        deliveryFee: state.cart.deliveryFees(state.cart.subTotals),
+        grandTotal: state.cart.totalAmount(state.cart.subTotals,
+            state.cart.deliveryFees(state.cart.subTotals)),
+      );
       try {
         emit(
-          CartLoaded(
-              cart: CartModel(
-            id: state.cart.id,
-            productsMap: state.cart.productsMap,
-            userEmail: state.cart.userEmail,
-            subTotal: state.cart.subTotals
-          )),
+          CartLoaded(cart: newCart),
         );
+        await _cartRepository.updateCartProducts(state.cart.id, newCart);
       } catch (e) {
         emit(CartError());
         const Text('Something went wrong');

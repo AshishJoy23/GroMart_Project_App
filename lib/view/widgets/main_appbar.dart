@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/cart_model.dart';
 
 class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
@@ -15,56 +17,79 @@ class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
       elevation: 0,
       leading: IconButton(
-            icon: const Icon(Icons.menu,color: Colors.black,),
-            onPressed: () {
-              scaffoldKey!.currentState!.openDrawer();
-            },
-          ),
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          scaffoldKey!.currentState!.openDrawer();
+        },
+      ),
       centerTitle: true,
       title: Text(
         title,
         style: Theme.of(context).textTheme.headlineMedium,
       ),
       actions: [
-        GestureDetector(
-          onTap: () {
-            log('shopping cart clicked');
-            Navigator.pushNamed(context, '/cart');
-          },
-          child: Stack(
-            children: [
-              const Center(
-                child: CircleAvatar(
+        BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
                   backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.shopping_bag_outlined,
-                    color: Colors.black,
-                    size: 26,
-                  ),
+                  color: Colors.black,
                 ),
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: CircleAvatar(
-                  backgroundColor: Colors.redAccent,
-                  radius: 8,
-                  child: Text(
-                    CartModel.products.length.toString(),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+              );
+            }
+            if (state is CartLoaded) {
+              return GestureDetector(
+                onTap: () {
+                  log('shopping cart clicked');
+                  Navigator.pushNamed(context, '/cart');
+                },
+                child: Stack(
+                  children: [
+                    const Center(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.shopping_bag_outlined,
+                          color: Colors.black,
+                          size: 26,
                         ),
-                  ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.redAccent,
+                        radius: 8,
+                        child: Text(
+                          state.cart.productsMap.keys.length.toString(),
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+              );
+            } else {
+              return const Icon(
+                Icons.error,
+                color: Colors.red,
+              );
+            }
+          },
         ),
         const SizedBox(
           width: 10,

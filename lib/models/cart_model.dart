@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,12 +14,12 @@ class CartModel extends Equatable {
   final double deliveryFee;
   final double grandTotal;
   const CartModel({
-    this.id='0',
-    this.productsMap=const {},
-    this.userEmail='',
-    this.subTotal=0.0,
-    this.deliveryFee=0.0,
-    this.grandTotal=0.0,
+    this.id = '0',
+    this.productsMap = const {},
+    this.userEmail = '',
+    this.subTotal = 0.0,
+    this.deliveryFee = 0.0,
+    this.grandTotal = 0.0,
   });
 
   @override
@@ -47,19 +50,39 @@ class CartModel extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'productsMap': productsMap,
-        'userEmail': userEmail,
-        'subTotal': subTotal,
-        'deliveryFee': deliveryFee,
-        'grandTotal': grandTotal,
-      };
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> productsMapToJson = productsMap.map((key, value) {
+    // Convert each key-value pair to the desired types.
+    ProductModel product = key; // Assuming 'key' is the ProductModel instance
+    int quantity = value;
+    return MapEntry(product.toJson(), quantity);
+  });
+    return {
+      'id': id,
+      'productsMap': productsMapToJson,
+      'userEmail': userEmail,
+      'subTotal': subTotal,
+      'deliveryFee': deliveryFee,
+      'grandTotal': grandTotal,
+    };
+  }
 
-  factory CartModel.fromSnapshot(DocumentSnapshot snap) {
+  static CartModel fromSnapshot(DocumentSnapshot snap) {
+    Map<String, dynamic> productsMapJson = snap['productsMap'];
+    Map<ProductModel, int> productsMap = productsMapJson.map((key, value) {
+      // Convert each key-value pair to the desired types.
+      log('<<<<<<<new ns,j>>>>>>>');
+      log(value.toString());
+      log(key);
+      log('<<<<<<<new ns,j>>>>>>>');
+      ProductModel product = ProductModel.fromJson(json.decode(key));
+      int quantity = value;
+      log(quantity.toString());
+      return MapEntry(product, quantity);
+    });
     return CartModel(
       id: snap['id'],
-      productsMap: snap['productsMap'],
+      productsMap: productsMap,
       userEmail: snap['userEmail'],
       subTotal: snap['subTotal'],
       deliveryFee: snap['deliveryFee'],

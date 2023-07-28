@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 
 import '../../models/models.dart';
 
@@ -102,15 +104,38 @@ class ProductCardWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add_circle,
-                            size: 26,
-                            color: Colors.white,
-                          )),
-                    )
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        if (state is CartLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              backgroundColor: Colors.white,
+                              color: Colors.black,
+                            ),
+                          );
+                        }
+                        if (state is CartLoaded) {
+                          return Expanded(
+                            child: IconButton(
+                                onPressed: () {
+                                  BlocProvider.of<CartBloc>(context)
+                                      .add(CartProductAdded(product));
+                                },
+                                icon: const Icon(
+                                  Icons.add_circle,
+                                  size: 26,
+                                  color: Colors.white,
+                                )),
+                          );
+                        } else {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),

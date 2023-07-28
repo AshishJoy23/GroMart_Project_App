@@ -11,22 +11,35 @@ class CartRepository extends BaseCartRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Stream<CartModel?> getCartProducts(String email) {
-    Stream<List<CartModel?>> cartList = _firebaseFirestore
-        .collection('carts')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => CartModel.fromSnapshot(doc))
-          .toList();
+  Stream<CartModel?> getCartProducts(String email) async* {
+    log('<<<<<<<<<<<get cart>>>>>>>>>>>');
+    Stream<List<CartModel?>> cartList =
+        _firebaseFirestore.collection('carts').snapshots().map((snapshot) {
+          log(snapshot.toString());
+      return snapshot.docs.map((doc) {
+        log('<<<<<<<<doc>>>>>>>>');
+        log(doc.toString());
+        log(doc.id);
+        log(doc['id']);
+        log(doc['productsMap'].toString());
+        log(doc['userEmail'].toString());
+        return CartModel.fromSnapshot(doc);
+        }).toList();
     });
-    return cartList.map((list) {
-    return list.firstWhere((cartModel) => cartModel!.userEmail == email, orElse: () => null);
-  });
+    log('<<<<<<<<///////////>>>>>>>>');
+    log(cartList.toString());
+    List<CartModel?> cartListData = await cartList.first;
+    if (cartListData.isEmpty) {
+      yield null;
+    } else {
+      yield* cartList.map((list) {
+        return list.firstWhere((cartModel) => cartModel!.userEmail == email,);
+      });
+    }
   }
 
   @override
-  Future<void> updateCartProducts(String cartId,CartModel cart) async{
+  Future<void> updateCartProducts(String cartId, CartModel cart) async {
     // QuerySnapshot querySnapshot = await _firebaseFirestore
     //     .collection('carts')
     //     .where('userEmail', isEqualTo: email)
@@ -40,17 +53,16 @@ class CartRepository extends BaseCartRepository {
     //   log(documentSnapshot.toString());
     //   String documentId = documentSnapshot.id;
     //   log(documentId);
-      try {
-        await _firebaseFirestore.collection('carts').doc(cartId).set(
-              cart.toMap(),
-              SetOptions(merge: true),
-            );
-        log('cart updated successfully.');
-      } catch (error) {
-        log('Error updating cart: $error');
-      }
-      
+    try {
+      await _firebaseFirestore.collection('carts').doc(cartId).set(
+            cart.toMap(),
+            SetOptions(merge: true),
+          );
+      log('cart updated successfully.');
+    } catch (error) {
+      log('Error updating cart: $error');
+    }
+
     //}
   }
-  
 }
