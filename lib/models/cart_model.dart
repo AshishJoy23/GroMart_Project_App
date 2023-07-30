@@ -71,13 +71,8 @@ class CartModel extends Equatable {
     Map<String, dynamic> productsMapJson = snap['productsMap'];
     Map<ProductModel, int> productsMap = productsMapJson.map((key, value) {
       // Convert each key-value pair to the desired types.
-      log('<<<<<<<new ns,j>>>>>>>');
-      log(value.toString());
-      log(key);
-      log('<<<<<<<new ns,j>>>>>>>');
       ProductModel product = ProductModel.fromJson(json.decode(key));
       int quantity = value;
-      log(quantity.toString());
       return MapEntry(product, quantity);
     });
     return CartModel(
@@ -90,8 +85,6 @@ class CartModel extends Equatable {
     );
   }
 
-  // double get subTotals =>
-  //     products.fold(0, (total, product) => total + product.price);
   double get subTotals {
     return productsMap.entries.fold(0, (total, entry) {
       ProductModel product = entry.key;
@@ -103,10 +96,10 @@ class CartModel extends Equatable {
   String get subTotalString => subTotals.toStringAsFixed(2);
 
   double deliveryFees(subTotals) {
-    if (subTotals >= 30.0) {
+    if (subTotals >= 100.0 || subTotals == 0) {
       return 0.0;
     } else {
-      return 2.0;
+      return 20.0;
     }
   }
 
@@ -114,7 +107,7 @@ class CartModel extends Equatable {
 
   String freeDelivery(subTotals) {
     if (subTotals >= 30.0) {
-      return 'You have free delivery';
+      return 'You have FREE delivery';
     } else {
       double neededAmount = 30.0 - subTotals;
       return 'Add \$$neededAmount for FREE Delivery';
@@ -129,55 +122,4 @@ class CartModel extends Equatable {
 
   String get totalAmountString =>
       totalAmount(subTotals, deliveryFees(subTotals)).toStringAsFixed(2);
-
-  static List<ProductModel> products = [
-    ProductModel(
-      id: 1,
-      name: 'Apple',
-      category: 'Fruits',
-      description: "Apple is a fruit with different colors",
-      imageUrls: const ["assets/images/product1.jpg"],
-      isRecommended: true,
-      isPopular: true,
-      isTopRated: false,
-      isTodaySpecial: false,
-      price: 1.99,
-    ),
-    ProductModel(
-      id: 1,
-      name: 'Apple',
-      category: 'Fruits',
-      description: "Apple is a fruit with different colors",
-      imageUrls: const ["assets/images/product1.jpg"],
-      isRecommended: true,
-      isPopular: true,
-      isTopRated: false,
-      isTodaySpecial: false,
-      price: 1.99,
-    ),
-    ProductModel(
-      id: 1,
-      name: 'Apple',
-      category: 'Fruits',
-      description: "Apple is a fruit with different colors",
-      imageUrls: const ["assets/images/product1.jpg"],
-      isRecommended: true,
-      isPopular: true,
-      isTopRated: false,
-      isTodaySpecial: false,
-      price: 1.99,
-    ),
-    ProductModel(
-      id: 1,
-      name: 'Apple',
-      category: 'Fruits',
-      description: "Apple is a fruit with different colors",
-      imageUrls: const ["assets/images/product1.jpg"],
-      isRecommended: true,
-      isPopular: true,
-      isTopRated: false,
-      isTodaySpecial: false,
-      price: 1.99,
-    ),
-  ];
 }

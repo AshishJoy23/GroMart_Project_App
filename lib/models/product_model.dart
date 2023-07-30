@@ -93,7 +93,6 @@ class ProductModel extends Equatable {
       };
 
   String toJson() {
-    log("<<<<<<<convert to json>>>>>>>");
     return json.encode(toMap());
   }
 

@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../../models/models.dart';
 
 class CartAmountWidget extends StatelessWidget {
+  final double subTotal;
+  final double deliveryFee;
+  final double totalAmount;
   const CartAmountWidget({
     super.key,
+    required this.subTotal,
+    required this.deliveryFee,
+    required this.totalAmount,
   });
 
   @override
@@ -26,7 +32,7 @@ class CartAmountWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
-                    '\$.subTotalString}',
+                    '₹ $subTotal',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
@@ -42,7 +48,7 @@ class CartAmountWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
-                    '\$CartModel().deliveryFeeString}',
+                    '₹ $deliveryFee',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
@@ -55,8 +61,8 @@ class CartAmountWidget extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 60,
-              decoration: BoxDecoration(
-                  color: const Color(0xff388E3C).withAlpha(100)),
+              decoration:
+                  BoxDecoration(color: const Color(0xff388E3C).withAlpha(100)),
             ),
             Container(
               margin: const EdgeInsets.all(5.0),
@@ -66,11 +72,9 @@ class CartAmountWidget extends StatelessWidget {
                 color: Color(0xff388E3C),
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'TOTAL',
@@ -80,7 +84,7 @@ class CartAmountWidget extends StatelessWidget {
                           .copyWith(color: Colors.white),
                     ),
                     Text(
-                      '\$.totalAmountString}',
+                      '₹ $totalAmount',
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!

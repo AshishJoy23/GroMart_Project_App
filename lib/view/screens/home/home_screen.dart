@@ -40,114 +40,64 @@ class HomeScreen extends StatelessWidget {
           scaffoldKey: scaffoldKey,
         ),
         drawer: const CustomDrawerWidget(),
-        body: ListView(
-          children: [
-            SearchBarWidget(),
-            CarouselSlider(
-              options: CarouselOptions(
-                aspectRatio: 1.58,
-                viewportFraction: 0.93,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-                autoPlay: true,
-              ),
-              items: CategoryModel.categories
-                  .map((category) => CarouselCardWidget(category: category))
-                  .toList(),
-            ),
-            const SectionTitleWidget(
-              title: 'RECOMMENDED',
-            ),
-            BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      backgroundColor: Colors.white,
-                      color: Colors.black,
+        body: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            if (state is ProductLoading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  backgroundColor: Colors.white,
+                  color: Colors.black,
+                ),
+              );
+            }
+            if (state is ProductLoaded) {
+              return ListView(
+                children: [
+                  SearchBarWidget(),
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      aspectRatio: 1.58,
+                      viewportFraction: 0.93,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      autoPlay: true,
                     ),
-                  );
-                }
-                if (state is ProductLoaded) {
-                  return ProductCarouselWidget(
+                    items: CategoryModel.categories
+                        .map((category) =>
+                            CarouselCardWidget(category: category))
+                        .toList(),
+                  ),
+                  const SectionTitleWidget(
+                    title: 'RECOMMENDED',
+                  ),
+                  ProductCarouselWidget(
                     products: state.products,
-                  );
-                } else {
-                  return const Text('Something went wrong!!!');
-                }
-              },
-            ),
-            const SectionTitleWidget(
-              title: 'MOST POPULAR',
-            ),
-            BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      backgroundColor: Colors.white,
-                      color: Colors.black,
-                    ),
-                  );
-                }
-                if (state is ProductLoaded) {
-                  return ProductCarouselWidget(
+                  ),
+                  const SectionTitleWidget(
+                    title: 'MOST POPULAR',
+                  ),
+                  ProductCarouselWidget(
                     products: state.products,
-                  );
-                } else {
-                  return const Text('Something went wrong!!!');
-                }
-              },
-            ),
-            const SectionTitleWidget(
-              title: 'TOP RATED',
-            ),
-            BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      backgroundColor: Colors.white,
-                      color: Colors.black,
-                    ),
-                  );
-                }
-                if (state is ProductLoaded) {
-                  return ProductCarouselWidget(
+                  ),
+                  const SectionTitleWidget(
+                    title: 'TOP RATED',
+                  ),
+                  ProductCarouselWidget(
                     products: state.products,
-                  );
-                } else {
-                  return const Text('Something went wrong!!!');
-                }
-              },
-            ),
-            const SectionTitleWidget(
-              title: 'TODAY\'S SPECIAL',
-            ),
-            BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      backgroundColor: Colors.white,
-                      color: Colors.black,
-                    ),
-                  );
-                }
-                if (state is ProductLoaded) {
-                  return ProductCarouselWidget(
+                  ),
+                  const SectionTitleWidget(
+                    title: 'TODAY\'S SPECIAL',
+                  ),
+                  ProductCarouselWidget(
                     products: state.products,
-                  );
-                } else {
-                  return const Text('Something went wrong!!!');
-                }
-              },
-            ),
-          ],
+                  ),
+                ],
+              );
+            } else {
+              return const Text('Something went wrong!!!');
+            }
+          },
         ),
         bottomNavigationBar: const MainBottomNavBar(),
       ),

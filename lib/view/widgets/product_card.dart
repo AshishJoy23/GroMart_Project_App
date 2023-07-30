@@ -107,11 +107,14 @@ class ProductCardWidget extends StatelessWidget {
                     BlocBuilder<CartBloc, CartState>(
                       builder: (context, state) {
                         if (state is CartLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              backgroundColor: Colors.white,
-                              color: Colors.black,
+                          return Center(
+                            child: Transform.scale(
+                              scale: 0.6,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 3,
+                                backgroundColor: Colors.white,
+                                color: Colors.black,
+                              ),
                             ),
                           );
                         }
