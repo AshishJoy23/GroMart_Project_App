@@ -16,6 +16,8 @@ class AppRouter {
         return SplashScreen.route();
       case CartScreen.routeName:
         return CartScreen.route();
+      case AddressScreen.routeName:
+        return AddressScreen.route();
       case WishlistScreen.routeName:
         return WishlistScreen.route();
       case NotificationScreen.routeName:

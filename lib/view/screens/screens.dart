@@ -27,3 +27,6 @@ export 'auth/widgets/switch_account.dart';
 export 'auth/widgets/forgot_password.dart';
 export 'auth/widgets/auth_button.dart';
 export 'product/widgets/expansion_tile.dart';
+export 'address/address_screen.dart';
+export 'address/widgets/checkout_navbutton.dart';
+export 'address/widgets/checkout_navcard.dart';
