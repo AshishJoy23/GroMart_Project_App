@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class MainButtonWidget extends StatelessWidget {
   final String buttonText;
   final double heightFactor;
+  final VoidCallback onPressed;
   const MainButtonWidget({
     super.key,
     required this.buttonText,
     this.heightFactor = 0.07,
+    required this.onPressed,
   });
 
   @override
@@ -27,9 +29,7 @@ class MainButtonWidget extends StatelessWidget {
                     Color(0xff388E3C),
                   ),
                 ),
-                onPressed: () {
-                  log('choose from camera');
-                },
+                onPressed: onPressed,
                 child: Text(
                   buttonText,
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -44,3 +44,4 @@ class MainButtonWidget extends StatelessWidget {
     );
   }
 }
+

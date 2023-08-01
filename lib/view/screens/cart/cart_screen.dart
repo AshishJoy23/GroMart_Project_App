@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/main.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -133,8 +134,10 @@ class CartScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: const BottomAppBar(
-          child: MainButtonWidget(buttonText: 'GO TO CHECKOUT'),
+        bottomNavigationBar: BottomAppBar(
+          child: MainButtonWidget(buttonText: 'GO TO CHECKOUT',onPressed: () {
+            Navigator.pushNamed(context, '/address');
+          },),
         ),
       ),
     );

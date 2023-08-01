@@ -5,16 +5,18 @@ import 'package:gromart_project/view/screens/screens.dart';
 import '../../widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   static const String routeName = '/profile';
 
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(name: routeName),
-      builder: (_) => const ProfileScreen(),
+      builder: (_) => ProfileScreen(),
     );
   }
+
+  final TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,22 +55,27 @@ class ProfileScreen extends StatelessWidget {
               height: 10,
             ),
             const SectionTitleWidget(title: 'PERSONAL DETAILS'),
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: controller,
               hintText: 'Enter your Name..',
               labelText: 'Abcdefg Hijkl',
               iconData: Icons.person,
             ),
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: controller,
               hintText: 'Enter your Email..',
               labelText: 'Abcdefg Hijkl',
               iconData: Icons.email,
             ),
-            const CustomTextFormField(
+            CustomTextFormField(
+              controller: controller,
               hintText: 'Enter your Phone..',
               labelText: 'Abcdefg Hijkl',
               iconData: Icons.phone,
             ),
-            MainButtonWidget(buttonText: 'Save Changes',),
+            MainButtonWidget(buttonText: 'Save Changes',onPressed: () {
+              
+            },),
           ],
         ),
         bottomNavigationBar: const MainBottomNavBar(),

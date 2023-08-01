@@ -100,7 +100,7 @@ class CartProductCard extends StatelessWidget {
                                   SnackBar(
                                     behavior: SnackBarBehavior.floating,
                                     margin: const EdgeInsets.all(5),
-                                    backgroundColor: const Color(0xffC8E6C9),
+                                    backgroundColor: const Color(0xff4CAF50),
                                     content: Text(
                                       'Minimum quantity of 1 is allowed.',
                                       style: Theme.of(context)
@@ -112,9 +112,11 @@ class CartProductCard extends StatelessWidget {
                                     duration: const Duration(seconds: 2),
                                   ),
                                 ),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.remove_circle_outline,
-                          color: Colors.black,
+                          color: (quantity > 1)
+                          ? Colors.black
+                          : Colors.black.withOpacity(0.6),
                           size: 28,
                         ),
                       ),
@@ -138,7 +140,7 @@ class CartProductCard extends StatelessWidget {
                                   SnackBar(
                                     behavior: SnackBarBehavior.floating,
                                     margin: const EdgeInsets.all(5),
-                                    backgroundColor: const Color(0xffC8E6C9),
+                                    backgroundColor: const Color(0xff4CAF50),
                                     content: Text(
                                       'Maximum quantity of 10 is allowed.',
                                       style: Theme.of(context)
@@ -150,9 +152,11 @@ class CartProductCard extends StatelessWidget {
                                     duration: const Duration(seconds: 2),
                                   ),
                                 ),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.add_circle_outline,
-                          color: Colors.black,
+                          color: (quantity < 10)
+                          ? Colors.black
+                          : Colors.black.withOpacity(0.6),
                           size: 28,
                         ),
                       ),

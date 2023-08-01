@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -37,7 +39,9 @@ class AddressScreen extends StatelessWidget {
           isLeading: false,
           actionList: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/add_address');
+              },
               icon: const Icon(
                 Icons.add_circle_outline,
                 color: Colors.black,
@@ -60,7 +64,7 @@ class AddressScreen extends StatelessWidget {
               Column(
                 children: [
                   ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 5,
                     itemBuilder: (context, index) {
@@ -71,7 +75,7 @@ class AddressScreen extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(20)),
                           child: Container(
-                            height: height * 0.142,
+                            height: height * 0.17,
                             width: width / 1,
                             decoration: const BoxDecoration(
                               color: Color(0xffC8E6C9),
@@ -82,9 +86,55 @@ class AddressScreen extends StatelessWidget {
                               padding: EdgeInsets.all(
                                 width * 0.02,
                               ),
-                              child: RadioListTile(value: 1, groupValue: 1, onChanged: (value) {
-                                
-                              },)
+                              child: RadioListTile(
+                                value: index,
+                                groupValue: 2,
+                                onChanged: (value) {},
+                                title: Text('Name'),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'House No',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w500),
+                                    ),
+                                    Text(
+                                      'Street and City',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                    Text(
+                                      'State and Pin',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'Phone Number',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -93,26 +143,13 @@ class AddressScreen extends StatelessWidget {
                   )
                 ],
               ),
-              RadioMenuButton(
-                                value: 1,
-                                groupValue: 0,
-                                onChanged: (value) {},
-                                child: Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('11111111111111111111111111111'),
-                                      Text('1'),
-                                      Text('1'),
-                                      Text('1'),
-                                      Text('1'),
-                                    ],
-                                  ),
-                                ),
-                                trailingIcon: Icon(Icons.abc),
-                              ),
             ],
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: MainButtonWidget(
+            buttonText: 'PAY NOW',
+            onPressed: () {},
           ),
         ),
       ),
