@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gromart_project/view/screens/screens.dart';
+import 'package:gromart_project/view/widgets/widgets.dart';
 
 class CheckoutNavCardWidget extends StatelessWidget {
+  final bool payment;
   const CheckoutNavCardWidget({
     super.key,
+    this.payment=false,
   });
 
   @override
@@ -32,25 +34,25 @@ class CheckoutNavCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
-                    children: const [
-                      Spacer(),
-                      CheckoutNavButtonWidget(
+                    children: [
+                      const Spacer(),
+                      const CheckoutNavButtonWidget(
                         colorValue: 0xff388E3C,
                         number: '1',
                         title: 'CART',
                       ),
                       CheckoutNavButtonWidget(
-                        colorValue: 0xff757575,
+                        colorValue: (payment) ? 0xff388E3C : 0xff757575,
                         number: '2',
                         title: 'ADDRESS',
                       ),
-                      CheckoutNavButtonWidget(
+                      const CheckoutNavButtonWidget(
                         colorValue: 0xff757575,
                         number: '3',
                         title: 'PAYMENT',
                         isPayment: true,
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ],

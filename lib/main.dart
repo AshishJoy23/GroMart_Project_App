@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/repositories/address/address_repository.dart';
 import 'package:gromart_project/repositories/cart/cart_repository.dart';
 import 'package:gromart_project/repositories/category/category_repository.dart';
 import 'package:gromart_project/repositories/product/product_repository.dart';
@@ -18,7 +19,7 @@ Future<void> main() async {
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
-final userEmail = FirebaseAuth.instance.currentUser!.email;
+//final userEmail = FirebaseAuth.instance.currentUser!.email;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -40,7 +41,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => CartBloc(
             cartRepository: CartRepository(),
-          )..add(LoadCart(email: userEmail!)),
+          )..add(LoadCart()),
+        ),
+        BlocProvider(
+          create: (_) => AddressBloc(
+            addressRepository: AddressRepository(),
+          )..add(const AddressLoaded()),
+        ),
+        BlocProvider(
+          create: (_) => PaymentBloc()..add(PaymentMethodLoaded()),
         ),
       ],
       child: MaterialApp(
@@ -50,7 +59,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme(),
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute: AddressScreen.routeName,
+        initialRoute: SplashScreen.routeName,
       ),
     );
   }

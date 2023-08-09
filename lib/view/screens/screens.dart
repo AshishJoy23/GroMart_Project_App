@@ -29,5 +29,13 @@ export 'auth/widgets/auth_button.dart';
 export 'product/widgets/expansion_tile.dart';
 export 'address/address_screen.dart';
 export 'address/add_address.dart';
-export 'address/widgets/checkout_navbutton.dart';
-export 'address/widgets/checkout_navcard.dart';
+export 'address/widgets/address_card.dart';
+export 'address/widgets/address_details.dart';
+export 'address/widgets/radio_menu_button.dart';
+export 'address/edit_address.dart';
+export 'payment/payment_screen.dart';
+export 'payment/widgets/google_pay.dart';
+export 'payment/widgets/apple_pay.dart';
+export 'payment/widgets/payment_configurations.dart';
+export 'order/order_confirm.dart';
+

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/models/models.dart';
@@ -24,15 +25,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void _onLoadCart(LoadCart event, Emitter<CartState> emit) {
+    final userEmail = FirebaseAuth.instance.currentUser!.email;
     _cartSubscription?.cancel();
     _cartSubscription =
-        _cartRepository.getCartProducts(event.email).listen((cart) {
+        _cartRepository.getCartProducts(userEmail!).listen((cart) {
       if (cart == null) {
         final cart = FirebaseFirestore.instance.collection('carts').doc();
         final CartModel newCart = CartModel(
           id: cart.id,
           productsMap: const {},
-          userEmail: event.email,
+          userEmail: userEmail,
           subTotal: 0,
           deliveryFee: 0,
           grandTotal: 0,
@@ -54,9 +56,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           cart: event.cart,
         ),
       );
-    } catch (_) {
+    } catch (e) {
       emit(CartError());
       const Text('Something went wrong');
+      log('Error: $e');
     }
   }
 

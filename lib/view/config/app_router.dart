@@ -18,8 +18,12 @@ class AppRouter {
         return CartScreen.route();
       case AddressScreen.routeName:
         return AddressScreen.route();
+      case PaymentScreen.routeName:
+        return PaymentScreen.route();
       case AddAddressScreen.routeName:
         return AddAddressScreen.route();
+        case EditAddressScreen.routeName:
+        return EditAddressScreen.route(address: settings.arguments as AddressModel);
       case WishlistScreen.routeName:
         return WishlistScreen.route();
       case NotificationScreen.routeName:
@@ -32,6 +36,8 @@ class AppRouter {
         return ResetPasswordPage.route();
       case GetStartedPage.routeName:
         return GetStartedPage.route();
+      // case OrderConfirmation.routeName:
+      //   return OrderConfirmation.route();
       case ProductScreen.routeName:
         return ProductScreen.route(product: settings.arguments as ProductModel);
       case EachCategoryScreen.routeName:

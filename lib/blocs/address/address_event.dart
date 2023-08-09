@@ -42,11 +42,29 @@ class AddressEdited extends AddressEvent {
 }
 
 class AddressDeleted extends AddressEvent {
-  final AddressModel address;
+  final String addressId;
 
-  const AddressDeleted(this.address);
+  const AddressDeleted(this.addressId);
 
   @override
-  List<Object> get props => [address];
+  List<Object> get props => [addressId];
+}
+
+class AddressTypeButtonClicked extends AddressEvent {
+  final String addressType;
+
+  const AddressTypeButtonClicked(this.addressType);
+
+  @override
+  List<Object> get props => [addressType];
+}
+
+class AddressCardSelected extends AddressEvent {
+  final int index;
+
+  const AddressCardSelected(this.index);
+
+  @override
+  List<Object> get props => [index];
 }
 

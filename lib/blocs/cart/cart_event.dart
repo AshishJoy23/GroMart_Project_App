@@ -8,13 +8,13 @@ abstract class CartEvent extends Equatable {
 }
 
 class LoadCart extends CartEvent { 
-  final String email;
+  //final String email;
 
-  const LoadCart({required this.email});
+  const LoadCart();
 
   
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [];
 }
 
 class UpdateCart extends CartEvent {

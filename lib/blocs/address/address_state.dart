@@ -11,17 +11,20 @@ class AddressLoading extends AddressState {}
 
 class AddressLoadedSuccess extends AddressState {
   final List<AddressModel> addresses;
-  final String type;
+  final String addressType;
+  final int selectedIndex;
 
   const AddressLoadedSuccess({
     this.addresses = const <AddressModel>[],
-    this.type = 'Home',
+    this.addressType = '',
+    this.selectedIndex = 0,
   });
 
   @override
   List<Object> get props => [
         addresses,
-        type,
+        addressType,
+        selectedIndex,
       ];
 }
 
