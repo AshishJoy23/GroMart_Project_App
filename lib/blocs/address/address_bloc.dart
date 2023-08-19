@@ -46,6 +46,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       emit(
         AddressLoadedSuccess(
           addresses: event.addresses,
+          address:
+              event.addresses.isEmpty ? null : event.addresses[selectedIndex],
           addressType: addressType,
           selectedIndex: selectedIndex,
         ),
@@ -72,6 +74,17 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         type: event.address.type,
       );
       await _addressRepository.updateAddress(address.id, newAddress);
+      final state = this.state;
+      if (state is AddressLoadedSuccess) {
+        selectedIndex =
+            state.addresses.indexWhere((address) => address == newAddress);
+        emit(AddressLoadedSuccess(
+          addresses: state.addresses,
+          address: newAddress,
+          addressType: addressType,
+          selectedIndex: selectedIndex,
+        ));
+      }
     } catch (e) {
       emit(AddressLoadedError());
       const Text('Something went wrong');
@@ -119,6 +132,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         addressType = event.addressType;
         emit(AddressLoadedSuccess(
           addresses: state.addresses,
+          address: state.address,
           addressType: addressType,
           selectedIndex: selectedIndex,
         ));
@@ -138,6 +152,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         selectedIndex = event.index;
         emit(AddressLoadedSuccess(
           addresses: state.addresses,
+          address: state.addresses[selectedIndex],
           addressType: addressType,
           selectedIndex: selectedIndex,
         ));

@@ -136,7 +136,7 @@ class CartScreen extends StatelessWidget {
         ),
         bottomNavigationBar: BottomAppBar(
           child: MainButtonWidget(buttonText: 'GO TO CHECKOUT',onPressed: () {
-            Navigator.pushNamed(context, '/address');
+            Navigator.pushNamed(context, '/checkout');
           },),
         ),
       ),

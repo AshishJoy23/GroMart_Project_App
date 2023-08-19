@@ -108,14 +108,7 @@ class AddressScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: MainButtonWidget(
-            buttonText: 'PAY NOW',
-            onPressed: () {
-              Navigator.pushNamed(context, '/payment');
-            },
-          ),
-        ),
+        
       ),
     );
   }

@@ -33,9 +33,8 @@ export 'address/widgets/address_card.dart';
 export 'address/widgets/address_details.dart';
 export 'address/widgets/radio_menu_button.dart';
 export 'address/edit_address.dart';
-export 'payment/payment_screen.dart';
-export 'payment/widgets/google_pay.dart';
-export 'payment/widgets/apple_pay.dart';
-export 'payment/widgets/payment_configurations.dart';
 export 'order/order_confirm.dart';
+export 'checkout/checkout_screen.dart';
+export 'checkout/widgets/checkout_address.dart';
+export 'checkout/widgets/checkout_payment.dart';
 

@@ -1,21 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
 
-class AddressCardWidget extends StatelessWidget {
-  const AddressCardWidget({
+class CheckoutAddressCard extends StatelessWidget {
+  final AddressModel address;
+  const CheckoutAddressCard({
     super.key,
     required this.address,
-    this.index = 0,
-    this.selectedIndex = 0,
   });
-
-  final AddressModel address;
-  final int selectedIndex;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +31,7 @@ class AddressCardWidget extends StatelessWidget {
             padding: EdgeInsets.all(
               width * 0.02,
             ),
-            child: RadioListTile(
-              activeColor: const Color(0xff388E3C),
-              value: index,
-              groupValue: selectedIndex,
-              onChanged: (value) {
-                BlocProvider.of<AddressBloc>(context)
-                    .add(AddressCardSelected(index));
-              },
+            child: ListTile(
               title: Row(
                 children: [
                   Expanded(child: Text(address.name)),
@@ -111,58 +97,34 @@ class AddressCardWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                   Column(
-                          children: [
-                            PopupMenuButton<String>(
-                              color: Colors.white70,
-                              iconSize: 28,
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: Colors.black,
-                                size: 28,
-                              ),
-                              padding: const EdgeInsets.all(1.0),
-                              itemBuilder: (BuildContext context) =>
-                                  <PopupMenuEntry<String>>[
-                                PopupMenuItem<String>(
-                                  value: "Edit",
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      await Navigator.pushNamed(
-                                        context,
-                                        '/edit_address',
-                                        arguments: address,
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Edit',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: height * 0.028,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          log('<<<<<ready to edit>>>>>');
+                        },
+                        child: Container(
+                          height: height * 0.028,
+                          width: width * 0.14,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Text(
+                            'Edit',
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: "Delete",
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      BlocProvider.of<AddressBloc>(context)
-                                          .add(AddressDeleted(address.id));
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Delete',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

@@ -13,7 +13,7 @@ class PaymentLoaded extends PaymentState {
   final PaymentMethod paymentMethod;
 
   const PaymentLoaded({
-    this.paymentMethod = PaymentMethod.google_pay,
+    this.paymentMethod = PaymentMethod.razor_pay,
   });
 
   @override

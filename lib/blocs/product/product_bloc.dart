@@ -41,4 +41,5 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       const Text('Something went wrong');
     }
   }
+
 }
