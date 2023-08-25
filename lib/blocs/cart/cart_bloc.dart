@@ -25,16 +25,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void _onLoadCart(LoadCart event, Emitter<CartState> emit) {
-    final userEmail = FirebaseAuth.instance.currentUser!.email;
     _cartSubscription?.cancel();
     _cartSubscription =
-        _cartRepository.getCartProducts(userEmail!).listen((cart) {
+        _cartRepository.getCartProducts(event.email).listen((cart) {
       if (cart == null) {
         final cart = FirebaseFirestore.instance.collection('carts').doc();
         final CartModel newCart = CartModel(
           id: cart.id,
           productsMap: const {},
-          userEmail: userEmail,
+          userEmail: event.email,
           subTotal: 0,
           deliveryFee: 0,
           grandTotal: 0,

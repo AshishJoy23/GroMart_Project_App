@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -19,6 +20,7 @@ class AddressCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? currentUser = FirebaseAuth.instance.currentUser!.email;
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
@@ -148,7 +150,7 @@ class AddressCardWidget extends StatelessWidget {
                                   child: TextButton(
                                     onPressed: () async {
                                       BlocProvider.of<AddressBloc>(context)
-                                          .add(AddressDeleted(address.id));
+                                          .add(AddressDeleted(email: currentUser!, addressId: address.id));
                                       Navigator.pop(context);
                                     },
                                     child: Text(

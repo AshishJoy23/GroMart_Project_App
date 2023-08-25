@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -20,6 +21,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? currentUser = FirebaseAuth.instance.currentUser!.email;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        BlocProvider.of<CartBloc>(context).add(LoadCart(email: currentUser!));
+        BlocProvider.of<AddressBloc>(context).add(AddressLoaded(email: currentUser));
+        BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
+      },
+    );
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Container(

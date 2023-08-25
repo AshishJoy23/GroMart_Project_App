@@ -1,14 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/repositories/cart/cart_repository.dart';
+import 'package:gromart_project/repositories/order/order_repository.dart';
+import 'package:intl/intl.dart';
 
 part 'checkout_event.dart';
 part 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
+  final OrderRepository _orderRepository;
+  final CartRepository _cartRepository;
   final CartBloc _cartBloc;
   final AddressBloc _addressBloc;
   final PaymentBloc _paymentBloc;
@@ -16,12 +24,16 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   StreamSubscription? _addressSubscription;
   StreamSubscription? _paymentSubscription;
   CheckoutBloc({
+    required CartRepository cartRepository,
+    required OrderRepository orderRepository,
     required CartBloc cartBloc,
     required AddressBloc addressBloc,
     required PaymentBloc paymentBloc,
   })  : _cartBloc = cartBloc,
         _addressBloc = addressBloc,
         _paymentBloc = paymentBloc,
+        _orderRepository = orderRepository,
+        _cartRepository = cartRepository,
         super(CheckoutLoading()) {
     on<CheckoutUpdated>(_onCheckoutUpdated);
     on<CheckoutConfirmed>(_onCheckoutConfirmed);
@@ -65,7 +77,64 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   }
 
   void _onCheckoutConfirmed(
-      CheckoutConfirmed event, Emitter<CheckoutState> emit) {}
+      CheckoutConfirmed event, Emitter<CheckoutState> emit) async{
+    final order = FirebaseFirestore.instance.collection('users').doc(event.email).collection('orders').doc();
+    try {
+      //await _addressRepository.updateAddress(address.id, newAddress);
+      final state = this.state;
+      if (state is CheckoutLoaded) {
+        log('<<<<<<<<before placing>>>>>>>>');
+        log(state.cart.productsMap.toString());
+        log(state.address.toString());
+        log(state.paymentMethod.toString());
+        log(state.cart.grandTotal.toString());
+        log('<<<<<<<end>>>>>>>');
+        final List<Map<String, dynamic>> orderDetailsMap = [];
+        state.cart.productsMap.forEach((key, value) {
+          Map<String, dynamic> eachOrder = {
+            'orderId': 'GM-${order.id}',
+            'productId': key.id,
+            'quantity': value,
+            'isConfirmed': false,
+            'confirmedAt': '',
+            'isProcessed': false,
+            'processedAt': '',
+            'isShipped': false,
+            'shippedAt': '',
+            'isDelivered': false,
+            'deliveredAt': '',
+          };
+          orderDetailsMap.add(eachOrder);
+        });
+        final String modeOfPayment = (state.paymentMethod == PaymentMethod.razor_pay) ? 'Razor Pay' : 'Cash on Delivery';
+        final OrderModel newOrder = OrderModel(
+          id: order.id,
+          orderDetailsMap: orderDetailsMap,
+          address: state.address,
+          paymentMethod: modeOfPayment,
+          placedAt: DateFormat('MMM d, yyyy').format(DateTime.now()),
+          isPlaced: true,
+          isConfirmed: false,
+          isCancelled: false,
+          grandTotal: state.cart.grandTotal,
+        );
+        await _orderRepository.placeOrder(event.email, order.id, newOrder);
+        final CartModel newCart = CartModel(
+          id: state.cart.id,
+          productsMap: const {},
+          userEmail: event.email,
+          subTotal: 0,
+          deliveryFee: 0,
+          grandTotal: 0,
+        );
+        await _cartRepository.updateCartProducts(state.cart.id, newCart);
+      }
+    } catch (e) {
+      emit(CheckoutError());
+      const Text('Something went wrong');
+      log('Error: $e');
+    }
+  }
 
   @override
   Future<void> close() {

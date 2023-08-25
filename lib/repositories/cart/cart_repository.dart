@@ -11,6 +11,7 @@ class CartRepository extends BaseCartRepository {
 
   @override
   Stream<CartModel?> getCartProducts(String email) async* {
+    _firebaseFirestore.collection('carts').doc(email).get();
     Stream<List<CartModel?>> cartList =
         _firebaseFirestore.collection('carts').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {

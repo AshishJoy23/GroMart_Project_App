@@ -53,19 +53,19 @@ class AddressModel extends Equatable {
     );
   }
 
-  // factory AddressModel.fromJson(Map<String, dynamic> json) {
-  //   return AddressModel(
-  //     id: json['id'],
-  //     name: json['name'],
-  //     phone: json['phone'],
-  //     house: json['house'],
-  //     street: json['street'],
-  //     city: json['city'],
-  //     state: json['state'],
-  //     pincode: json['pincode'],
-  //     type: json['type'],
-  //   );
-  // }
+  factory AddressModel.fromJson(Map<String, dynamic> json) {
+    return AddressModel(
+      id: json['id'],
+      name: json['name'],
+      phone: json['phone'],
+      house: json['house'],
+      street: json['street'],
+      city: json['city'],
+      state: json['state'],
+      pincode: json['pincode'],
+      type: json['type'],
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         'id': id,

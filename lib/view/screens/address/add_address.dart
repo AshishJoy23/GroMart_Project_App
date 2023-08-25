@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -28,6 +29,7 @@ class AddAddressScreen extends StatelessWidget {
   final cityController = TextEditingController();
   final stateController = TextEditingController();
   final pinController = TextEditingController();
+  final String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,8 @@ class AddAddressScreen extends StatelessWidget {
                   type: addressType,
                 );
                 BlocProvider.of<AddressBloc>(context)
-                    .add(AddressAdded(newAddress));
+                    .add(AddressAdded(email: currentUser!, address: newAddress));
+                BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
                 Navigator.pop(context);
               } else {
                 log('not valid');

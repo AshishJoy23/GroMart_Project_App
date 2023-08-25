@@ -37,4 +37,5 @@ export 'order/order_confirm.dart';
 export 'checkout/checkout_screen.dart';
 export 'checkout/widgets/checkout_address.dart';
 export 'checkout/widgets/checkout_payment.dart';
+export 'checkout/widgets/new_address_card.dart';
 

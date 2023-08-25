@@ -27,21 +27,23 @@ class CheckoutUpdated extends CheckoutEvent {
 }
 
 class CheckoutConfirmed extends CheckoutEvent {
-  final CartModel cart;
-  final AddressModel address;
-  final PaymentMethod paymentMethod;
-
+  final String email;
+  // final CartModel cart;
+  // final AddressModel address;
+  // final PaymentMethod paymentMethod;
 
   const CheckoutConfirmed({
-    required this.cart,
-    required this.address,
-    required this.paymentMethod,
+    required this.email,
+    // required this.cart,
+    // required this.address,
+    // required this.paymentMethod,
   });
 
   @override
   List<Object> get props => [
-        cart,
-        address,
-        paymentMethod,
+        email
+        // cart,
+        // address,
+        // paymentMethod,
       ];
 }

@@ -14,6 +14,7 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,4 +59,3 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 }
-

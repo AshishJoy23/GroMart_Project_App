@@ -10,9 +10,9 @@ class AddressRepository extends BaseAddressRepository {
       : _firebaseFirestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
   @override
-  Stream<List<AddressModel>> getAllAddresses() {
+  Stream<List<AddressModel>> getAllAddresses(String email) {
     return _firebaseFirestore
-        .collection('addresses')
+        .collection('users').doc(email).collection('addresses')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
@@ -22,9 +22,9 @@ class AddressRepository extends BaseAddressRepository {
   }
 
   @override
-  Future<void> updateAddress(String addressId, AddressModel address) async{
+  Future<void> updateAddress(String email,String addressId, AddressModel address) async{
     try {
-      await _firebaseFirestore.collection('addresses').doc(addressId).set(
+      await _firebaseFirestore.collection('users').doc(email).collection('addresses').doc(addressId).set(
             address.toMap(),
             SetOptions(merge: true),
           );
@@ -36,16 +36,12 @@ class AddressRepository extends BaseAddressRepository {
 
   
   @override
-  Future<void> deleteAddress(String addressId) async{
+  Future<void> deleteAddress(String email,String addressId) async{
     try {
-      await _firebaseFirestore.collection('addresses').doc(addressId).delete();
+      await _firebaseFirestore.collection('users').doc(email).collection('addresses').doc(addressId).delete();
       log('address deleted successfully.');
     } catch (error) {
       log('Error deleting address: $error');
     }
-  }
-  
-  
-  
-  
+  } 
 }

@@ -8,10 +8,11 @@ abstract class AddressEvent extends Equatable {
 }
 
 class AddressLoaded extends AddressEvent { 
-  const AddressLoaded();
+  final String email;
+  const AddressLoaded({required this.email});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [email];
 }
 
 class AddressUpdated extends AddressEvent {
@@ -24,30 +25,33 @@ class AddressUpdated extends AddressEvent {
 }
 
 class AddressAdded extends AddressEvent {
+  final String email;
   final AddressModel address;
 
-  const AddressAdded(this.address);
+  const AddressAdded({required this.email,required this.address});
 
   @override
-  List<Object> get props => [address];
+  List<Object> get props => [email,address];
 }
 
 class AddressEdited extends AddressEvent {
+  final String email;
   final AddressModel address;
 
-  const AddressEdited(this.address);
+  const AddressEdited({required this.email,required this.address});
 
   @override
-  List<Object> get props => [address];
+  List<Object> get props => [email,address];
 }
 
 class AddressDeleted extends AddressEvent {
+  final String email;
   final String addressId;
 
-  const AddressDeleted(this.addressId);
+  const AddressDeleted({required this.email,required this.addressId});
 
   @override
-  List<Object> get props => [addressId];
+  List<Object> get props => [email,addressId];
 }
 
 class AddressTypeButtonClicked extends AddressEvent {

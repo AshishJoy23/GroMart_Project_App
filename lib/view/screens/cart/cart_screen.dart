@@ -48,82 +48,103 @@ class CartScreen extends StatelessWidget {
             //   );
             // }
             if (state is CartLoaded) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 10.0,
-                ),
-                child: ListView(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  state.cart.freeDelivery(state.cart.subTotal),
-                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/',
-                                    );
-                                  },
-                                  child: Row(
+              return (state.cart.productsMap.isEmpty)
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/empty_cart.png",width: 300,),
+                          Text(
+                            'Your cart is empty!',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          )
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 10.0,
+                      ),
+                      child: ListView(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Add More Items',
+                                        state.cart
+                                            .freeDelivery(state.cart.subTotal),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium!
+                                            .bodyLarge!
                                             .copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
+                                                fontWeight: FontWeight.w600),
                                       ),
-                                      const Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 20,
-                                      )
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/',
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Add More Items',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium!
+                                                  .copyWith(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                            ),
+                                            const Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 20,
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 400,
-                              child: ListView.builder(
-                                itemCount: state.cart.productsMap.keys.length,
-                                itemBuilder: (context, index) {
-                                  return CartProductCard(
-                                    quantity: state.cart.productsMap.values
-                                        .elementAt(index),
-                                    product: state.cart.productsMap.keys
-                                        .elementAt(index),
-                                  );
-                                },
+                                  SizedBox(
+                                    height: 400,
+                                    child: ListView.builder(
+                                      itemCount:
+                                          state.cart.productsMap.keys.length,
+                                      itemBuilder: (context, index) {
+                                        return CartProductCard(
+                                          quantity: state
+                                              .cart.productsMap.values
+                                              .elementAt(index),
+                                          product: state.cart.productsMap.keys
+                                              .elementAt(index),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const Divider(
+                                    thickness: 2,
+                                  ),
+                                ],
                               ),
-                            ),
-                            const Divider(
-                              thickness: 2,
-                            ),
-                          ],
-                        ),
-                        CartAmountWidget(
-                          subTotal: state.cart.subTotal,
-                          deliveryFee: state.cart.deliveryFee,
-                          totalAmount: state.cart.grandTotal,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
+                              CartAmountWidget(
+                                subTotal: state.cart.subTotal,
+                                deliveryFee: state.cart.deliveryFee,
+                                totalAmount: state.cart.grandTotal,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
             } else {
               return const Center(
                 child: Icon(
@@ -134,10 +155,35 @@ class CartScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: MainButtonWidget(buttonText: 'GO TO CHECKOUT',onPressed: () {
-            Navigator.pushNamed(context, '/checkout');
-          },),
+        bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoaded) {
+              return (state.cart.productsMap.isEmpty)
+                  ? BottomAppBar(
+                      child: MainButtonWidget(
+                        buttonText: 'BACK TO SHOPPING',
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/');
+                        },
+                      ),
+                    )
+                  : BottomAppBar(
+                      child: MainButtonWidget(
+                        buttonText: 'GO TO CHECKOUT',
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/checkout');
+                        },
+                      ),
+                    );
+            } else {
+              return const Center(
+                child: Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+              );
+            }
+          },
         ),
       ),
     );

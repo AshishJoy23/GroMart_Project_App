@@ -6,6 +6,7 @@ import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/repositories/address/address_repository.dart';
 import 'package:gromart_project/repositories/cart/cart_repository.dart';
 import 'package:gromart_project/repositories/category/category_repository.dart';
+import 'package:gromart_project/repositories/order/order_repository.dart';
 import 'package:gromart_project/repositories/product/product_repository.dart';
 import 'package:gromart_project/view/config/app_router.dart';
 import 'package:gromart_project/view/config/theme.dart';
@@ -41,18 +42,20 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => CartBloc(
             cartRepository: CartRepository(),
-          )..add(LoadCart()),
+          ),
         ),
         BlocProvider(
           create: (_) => AddressBloc(
             addressRepository: AddressRepository(),
-          )..add(const AddressLoaded()),
+          ),
         ),
         BlocProvider(
           create: (_) => PaymentBloc()..add(PaymentMethodLoaded()),
         ),
         BlocProvider(
           create: (context) => CheckoutBloc(
+            orderRepository: OrderRepository(),
+            cartRepository: CartRepository(),
             cartBloc: BlocProvider.of<CartBloc>(context),
             addressBloc: BlocProvider.of<AddressBloc>(context),
             paymentBloc: BlocProvider.of<PaymentBloc>(context),
