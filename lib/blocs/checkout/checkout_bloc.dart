@@ -80,7 +80,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       CheckoutConfirmed event, Emitter<CheckoutState> emit) async{
     final order = FirebaseFirestore.instance.collection('users').doc(event.email).collection('orders').doc();
     try {
-      //await _addressRepository.updateAddress(address.id, newAddress);
       final state = this.state;
       if (state is CheckoutLoaded) {
         log('<<<<<<<<before placing>>>>>>>>');
@@ -92,7 +91,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         final List<Map<String, dynamic>> orderDetailsMap = [];
         state.cart.productsMap.forEach((key, value) {
           Map<String, dynamic> eachOrder = {
-            'orderId': 'GM-${order.id}',
+            'orderId': 'GM${order.id}',
             'productId': key.id,
             'quantity': value,
             'isConfirmed': false,
@@ -118,6 +117,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           isCancelled: false,
           grandTotal: state.cart.grandTotal,
         );
+        //add(OrdersUpdated());
         await _orderRepository.placeOrder(event.email, order.id, newOrder);
         final CartModel newCart = CartModel(
           id: state.cart.id,

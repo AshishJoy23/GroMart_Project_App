@@ -54,7 +54,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       maxWidth: 260,
     );
     await Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamed(context, '/');
+      Navigator.pushNamed(context, '/order-confirmation');
     });
     log('Payment successful');
   }
@@ -126,7 +126,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ? const SectionTitleWidget(
                     title: 'Delivery Address',
                   )
-                  : SectionTitleWidget(
+                  : SectionTitleWidget( 
                     title: 'Delivery Address',
                     button: true,
                     buttonText: 'Change',
@@ -178,7 +178,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         maxWidth: 260,
                       );
                       await Future.delayed(const Duration(seconds: 2), () {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamed(context, '/order-confirmation');
                       });
                     },
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/main.dart';
+import 'package:lottie/lottie.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -53,7 +54,7 @@ class CartScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset("assets/images/empty_cart.png",width: 300,),
+                          Lottie.asset('assets/animation/empty_cart.json'),
                           Text(
                             'Your cart is empty!',
                             style: Theme.of(context).textTheme.titleMedium,
