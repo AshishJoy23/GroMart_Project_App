@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     on<OrdersGetLoaded>(_onOrdersGetLoaded);
     on<OrdersUpdated>(_onOrdersUpdated);
     on<OrderCancelled>(_onOrderCancelled);
+    on<OrderConfirmed>(_onOrderConfirmed);
   }
 
   void _onOrdersGetLoaded(OrdersGetLoaded event, Emitter<OrdersState> emit) {
@@ -43,6 +45,17 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     }
   }
 
+  void _onOrderConfirmed(OrderConfirmed event, Emitter<OrdersState> emit) async{
+    log('<<<<<<<<<confirn=med  order>>>>>>>>>');
+    try {
+      emit(
+        const OrdersLoaded().copyWith(order: event.order)
+      );
+      await _orderRepository.placeOrder(event.email, event.order.id, event.order);
+    } catch (e) {
+      Text('Something went wrong: $e');
+    }
+  }
 
   void _onOrderCancelled(OrderCancelled event, Emitter<OrdersState> emit) {
   }

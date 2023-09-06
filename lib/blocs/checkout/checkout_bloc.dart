@@ -20,6 +20,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CartBloc _cartBloc;
   final AddressBloc _addressBloc;
   final PaymentBloc _paymentBloc;
+  final OrdersBloc _ordersBloc;
   StreamSubscription? _cartSubscription;
   StreamSubscription? _addressSubscription;
   StreamSubscription? _paymentSubscription;
@@ -29,9 +30,11 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     required CartBloc cartBloc,
     required AddressBloc addressBloc,
     required PaymentBloc paymentBloc,
+    required OrdersBloc ordersBloc,
   })  : _cartBloc = cartBloc,
         _addressBloc = addressBloc,
         _paymentBloc = paymentBloc,
+        _ordersBloc = ordersBloc,
         _orderRepository = orderRepository,
         _cartRepository = cartRepository,
         super(CheckoutLoading()) {
@@ -79,6 +82,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   void _onCheckoutConfirmed(
       CheckoutConfirmed event, Emitter<CheckoutState> emit) async{
     final order = FirebaseFirestore.instance.collection('users').doc(event.email).collection('orders').doc();
+    log('<<<<<<<<<<<<<checkout bloc>>>>>>>>>>>>>');
     try {
       final state = this.state;
       if (state is CheckoutLoaded) {
@@ -117,8 +121,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           isCancelled: false,
           grandTotal: state.cart.grandTotal,
         );
-        //add(OrdersUpdated());
-        await _orderRepository.placeOrder(event.email, order.id, newOrder);
+        _ordersBloc.add(OrderConfirmed(event.email, newOrder));
+        // await _orderRepository.placeOrder(event.email, order.id, newOrder);
         final CartModel newCart = CartModel(
           id: state.cart.id,
           productsMap: const {},

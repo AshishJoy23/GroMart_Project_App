@@ -87,7 +87,8 @@ class OrderModel extends Equatable {
 
   static OrderModel fromSnapshot(DocumentSnapshot snap) {
     AddressModel addressFromJson = AddressModel.fromJson(json.decode(snap['address']));
-    // Map<String, dynamic> orderDetailsMapJson = snap['orderDetailsMap'];
+    List<Map<String, dynamic>> orderDetailsMapFromJson = List<Map<String, dynamic>>.from(snap['orderDetailsMap']);
+  
     // Map<ProductModel, int> orderDetailsMap = orderDetailsMapJson.map((key, value) {
     //   // Convert each key-value pair to the desired types.
     //   ProductModel product = ProductModel.fromJson(json.decode(key));
@@ -96,7 +97,7 @@ class OrderModel extends Equatable {
     // });
     return OrderModel(
       id: snap['id'],
-      orderDetailsMap: snap['orderDetailsMap'],
+      orderDetailsMap: orderDetailsMapFromJson,
       address: addressFromJson,
       paymentMethod: snap['paymentMethod'],
       placedAt: snap['placedAt'],

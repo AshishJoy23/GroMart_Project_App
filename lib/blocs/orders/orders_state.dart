@@ -18,6 +18,16 @@ class OrdersLoaded extends OrdersState {
     this.order,
   });
 
+  OrdersLoaded copyWith({
+    List<OrderModel>? orders,
+    OrderModel? order,
+  }) {
+    return OrdersLoaded(
+      orders: orders ?? this.orders,
+      order: order ?? this.order,
+    );
+  }
+
   @override
   List<Object> get props => [orders,order!];
 }

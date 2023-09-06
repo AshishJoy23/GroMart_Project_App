@@ -27,6 +27,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider.of<CartBloc>(context).add(LoadCart(email: currentUser!));
         BlocProvider.of<AddressBloc>(context).add(AddressLoaded(email: currentUser));
         BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
+        BlocProvider.of<OrdersBloc>(context).add(OrdersGetLoaded(email: currentUser));
       },
     );
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

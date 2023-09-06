@@ -50,6 +50,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider(
+          create: (_) => OrdersBloc(
+            orderRepository: OrderRepository(),
+          ),
+        ),
+        BlocProvider(
           create: (_) => PaymentBloc()..add(PaymentMethodLoaded()),
         ),
         BlocProvider(
@@ -59,6 +64,7 @@ class MyApp extends StatelessWidget {
             cartBloc: BlocProvider.of<CartBloc>(context),
             addressBloc: BlocProvider.of<AddressBloc>(context),
             paymentBloc: BlocProvider.of<PaymentBloc>(context),
+            ordersBloc: BlocProvider.of<OrdersBloc>(context),
           )..add(const CheckoutUpdated()),
         ),
       ],
