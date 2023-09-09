@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -21,6 +22,7 @@ class ProductCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var heightScrn = MediaQuery.of(context).size.height / 5;
     var widthScrn = MediaQuery.of(context).size.width / widthFactor;
+    final String? userEmail = FirebaseAuth.instance.currentUser!.email;
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
@@ -123,7 +125,7 @@ class ProductCardWidget extends StatelessWidget {
                             child: IconButton(
                                 onPressed: () {
                                   BlocProvider.of<CartBloc>(context)
-                                      .add(CartProductAdded(product));
+                                      .add(CartProductAdded(userEmail!,product));
                                 },
                                 icon: const Icon(
                                   Icons.add_circle,

@@ -48,12 +48,31 @@ class CustomDrawerWidget extends StatelessWidget {
                 ],
               ),
             ),
-            const DrawerListTileWidget(title: 'Profile',iconData: Icons.account_box_outlined,),
-            const DrawerListTileWidget(title: 'My Cart',iconData: Icons.shopping_bag_outlined,),
-            const DrawerListTileWidget(title: 'My Wishlist',iconData: Icons.favorite_border,),
-            const DrawerListTileWidget(title: 'My Orders',iconData: Icons.track_changes,),
-            const DrawerListTileWidget(title: 'Notification',iconData: Icons.notifications_outlined,),
-            const DrawerListTileWidget(title: 'Settings',iconData: Icons.settings_outlined,),
+            const DrawerListTileWidget(
+              title: 'Profile',
+              iconData: Icons.account_box_outlined,
+            ),
+            const DrawerListTileWidget(
+              title: 'My Cart',
+              iconData: Icons.shopping_bag_outlined,
+            ),
+            const DrawerListTileWidget(
+              title: 'My Wishlist',
+              iconData: Icons.favorite_border,
+            ),
+            DrawerListTileWidget(
+              title: 'My Orders',
+              iconData: Icons.local_shipping_outlined,
+              onTap: () => Navigator.pushNamed(context, '/orders'),
+            ),
+            const DrawerListTileWidget(
+              title: 'Notification',
+              iconData: Icons.notifications_outlined,
+            ),
+            const DrawerListTileWidget(
+              title: 'Settings',
+              iconData: Icons.settings_outlined,
+            ),
             const SizedBox(
               height: 100,
             ),
@@ -73,7 +92,7 @@ class CustomDrawerWidget extends StatelessWidget {
                       width: 1.5,
                     ),
                     minimumSize: const Size.fromHeight(54)),
-                onPressed: () async{
+                onPressed: () async {
                   await FirebaseAuth.instance.signOut();
                 },
                 label: Text(
@@ -96,10 +115,12 @@ class CustomDrawerWidget extends StatelessWidget {
 class DrawerListTileWidget extends StatelessWidget {
   final String title;
   final IconData iconData;
+  final VoidCallback? onTap;
   const DrawerListTileWidget({
     super.key,
     required this.title,
     required this.iconData,
+    this.onTap,
   });
 
   @override
@@ -113,9 +134,7 @@ class DrawerListTileWidget extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      onTap: () {
-        // Handle drawer item tap for 'Home'
-      },
+      onTap: onTap,
     );
   }
 }

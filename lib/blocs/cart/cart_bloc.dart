@@ -29,7 +29,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     _cartSubscription =
         _cartRepository.getCartProducts(event.email).listen((cart) {
       if (cart == null) {
-        final cart = FirebaseFirestore.instance.collection('carts').doc();
+        final cart = FirebaseFirestore.instance.collection('users').doc(event.email).collection('cart').doc();
         final CartModel newCart = CartModel(
           id: cart.id,
           productsMap: const {},
@@ -38,7 +38,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           deliveryFee: 0,
           grandTotal: 0,
         );
-        _cartRepository.updateCartProducts(cart.id, newCart);
+        _cartRepository.updateCartProducts(event.email,cart.id, newCart);
         add(UpdateCart(newCart));
       } else {
         add(UpdateCart(cart));
@@ -85,7 +85,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(
           CartLoaded(cart: newCart),
         );
-        await _cartRepository.updateCartProducts(state.cart.id, newCart);
+        await _cartRepository.updateCartProducts(event.email,state.cart.id, newCart);
       } catch (e) {
         emit(CartError());
         const Text('Something went wrong');
@@ -114,7 +114,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(
           CartLoaded(cart: newCart),
         );
-        await _cartRepository.updateCartProducts(state.cart.id, newCart);
+        await _cartRepository.updateCartProducts(event.email,state.cart.id, newCart);
       } catch (e) {
         emit(CartError());
         const Text('Something went wrong');
@@ -145,7 +145,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(
           CartLoaded(cart: newCart),
         );
-       _cartRepository.deleteCartProducts(state.cart.id, newCart);
+       _cartRepository.deleteCartProducts(event.email,state.cart.id, newCart);
       } catch (e) {
         emit(CartError());
         const Text('Something went wrong');

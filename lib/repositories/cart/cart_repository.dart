@@ -11,9 +11,9 @@ class CartRepository extends BaseCartRepository {
 
   @override
   Stream<CartModel?> getCartProducts(String email) async* {
-    _firebaseFirestore.collection('carts').doc(email).get();
+    //_firebaseFirestore.collection('users').doc(email).collection('cart').doc().get();
     Stream<List<CartModel?>> cartList =
-        _firebaseFirestore.collection('carts').snapshots().map((snapshot) {
+        _firebaseFirestore.collection('users').doc(email).collection('cart').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return CartModel.fromSnapshot(doc);
       }).toList();
@@ -31,9 +31,9 @@ class CartRepository extends BaseCartRepository {
   }
 
   @override
-  Future<void> updateCartProducts(String cartId, CartModel cart) async {
+  Future<void> updateCartProducts(String email,String cartId, CartModel cart) async {
     try {
-      await _firebaseFirestore.collection('carts').doc(cartId).set(
+      await _firebaseFirestore.collection('users').doc(email).collection('cart').doc(cartId).set(
             cart.toMap(),
             SetOptions(merge: true),
           );
@@ -44,9 +44,9 @@ class CartRepository extends BaseCartRepository {
   }
 
   @override
-  Future<void> deleteCartProducts(String cartId, CartModel cart) async {
+  Future<void> deleteCartProducts(String email,String cartId, CartModel cart) async {
     try {
-      await _firebaseFirestore.collection('carts').doc(cartId).set(
+      await _firebaseFirestore.collection('users').doc(email).collection('cart').doc(cartId).set(
             cart.toMap(),
             SetOptions(merge: false),
           );

@@ -60,22 +60,46 @@ class OrderConfirmation extends StatelessWidget {
                     );
                   } else if (state is OrdersLoaded) {
                     log('<<<<<<<<<confirm screen>>>>>>>>>');
-                    log(state.order.toString());
-                    return Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          OrderAddressWidget(
-                            address: state.order!.address!,
-                          ),
-                          const SizedBox(height: 10),
-                          OrderDetailsWidget(
-                            order: state.order!,
-                          ),
-                        ],
-                      ),
-                    );
+
+                    final order = state.order; // Safely get the order
+
+                    if (order != null) {
+                      // Access the order properties only if it's not null
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            OrderAddressWidget(
+                              address: order.address!,
+                            ),
+                            const SizedBox(height: 10),
+                            OrderDetailsWidget(
+                              order: order,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      // Handle the case where order is null (if needed)
+                      return const Text('Order is null');
+                    }
+                    // log(state.order.toString());
+                    // return Padding(
+                    //   padding: const EdgeInsets.all(20.0),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       OrderAddressWidget(
+                    //         address: state.order!.address!,
+                    //       ),
+                    //       const SizedBox(height: 10),
+                    //       OrderDetailsWidget(
+                    //         order: state.order!,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // );
                   } else {
                     return const Icon(
                       Icons.error,
@@ -91,4 +115,3 @@ class OrderConfirmation extends StatelessWidget {
     );
   }
 }
-

@@ -27,28 +27,31 @@ class UpdateCart extends CartEvent {
 }
 
 class CartProductAdded extends CartEvent {
+  final String email;
   final ProductModel product;
 
-  const CartProductAdded(this.product);
+  const CartProductAdded(this.email,this.product);
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [email,product];
 }
 
 class CartProductRemoved extends CartEvent {
+  final String email;
   final ProductModel product;
 
-  const CartProductRemoved(this.product);
+  const CartProductRemoved(this.email,this.product);
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [email,product];
 }
 
 class CartProductDeleted extends CartEvent {
+  final String email;
   final ProductModel product;
 
-  const CartProductDeleted(this.product);
+  const CartProductDeleted(this.email,this.product);
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [email,product];
 }

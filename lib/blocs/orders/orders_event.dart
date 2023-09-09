@@ -17,7 +17,7 @@ class OrdersGetLoaded extends OrdersEvent {
 }
 
 class OrdersUpdated extends OrdersEvent {
-  final  List<OrderModel> orders;
+  final List<OrderModel> orders;
 
   const OrdersUpdated(this.orders);
 

@@ -20,6 +20,8 @@ class AppRouter {
         return AddressScreen.route();
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
+      case OrdersScreen.routeName:
+        return OrdersScreen.route();
       case AddAddressScreen.routeName:
         return AddAddressScreen.route();
         case EditAddressScreen.routeName:

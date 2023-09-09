@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -18,6 +19,7 @@ class CartProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? userEmail = FirebaseAuth.instance.currentUser!.email;
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
@@ -35,7 +37,7 @@ class CartProductCard extends StatelessWidget {
               ),
               onPressed: (context) {
                 BlocProvider.of<CartBloc>(context)
-                    .add(CartProductDeleted(product));
+                    .add(CartProductDeleted(userEmail!,product));
               },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
@@ -94,7 +96,7 @@ class CartProductCard extends StatelessWidget {
                         onPressed: (quantity > 1)
                             ? () {
                                 BlocProvider.of<CartBloc>(context)
-                                    .add(CartProductRemoved(product));
+                                    .add(CartProductRemoved(userEmail!,product));
                               }
                             : () => ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -134,7 +136,7 @@ class CartProductCard extends StatelessWidget {
                         onPressed: (quantity < 10)
                             ? () {
                                 BlocProvider.of<CartBloc>(context)
-                                    .add(CartProductAdded(product));
+                                    .add(CartProductAdded(userEmail!,product));
                               }
                             : () => ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

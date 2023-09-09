@@ -29,7 +29,27 @@ class OrdersLoaded extends OrdersState {
   }
 
   @override
-  List<Object> get props => [orders,order!];
+  List<Object> get props => [orders];
+}
+
+class OrderLoaded extends OrdersState {
+  final OrderModel? order;
+
+  const OrderLoaded({
+    this.order,
+  });
+
+  OrderLoaded copyWith({
+    List<OrderModel>? orders,
+    OrderModel? order,
+  }) {
+    return OrderLoaded(
+      order: order ?? this.order,
+    );
+  }
+
+  @override
+  List<Object> get props => [order!];
 }
 
 class OrdersError extends OrdersState {}

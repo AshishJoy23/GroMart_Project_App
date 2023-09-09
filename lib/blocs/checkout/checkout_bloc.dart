@@ -95,7 +95,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         final List<Map<String, dynamic>> orderDetailsMap = [];
         state.cart.productsMap.forEach((key, value) {
           Map<String, dynamic> eachOrder = {
-            'orderId': 'GM${order.id}',
+            'orderId': order.id,
             'productId': key.id,
             'quantity': value,
             'isConfirmed': false,
@@ -106,6 +106,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
             'shippedAt': '',
             'isDelivered': false,
             'deliveredAt': '',
+            'isCancelled': false,
+            'cancelledAt': '',
           };
           orderDetailsMap.add(eachOrder);
         });
@@ -131,7 +133,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           deliveryFee: 0,
           grandTotal: 0,
         );
-        await _cartRepository.updateCartProducts(state.cart.id, newCart);
+        await _cartRepository.updateCartProducts(event.email,state.cart.id, newCart);
       }
     } catch (e) {
       emit(CheckoutError());
