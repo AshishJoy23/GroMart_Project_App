@@ -59,82 +59,109 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   }
 
   void _onCheckoutUpdated(CheckoutUpdated event, Emitter<CheckoutState> emit) {
+    log('<<<<<<<<<<<checkout update event>>>>>>>>>>>');
     if (_cartBloc.state is CartLoaded &&
         _addressBloc.state is AddressLoadedSuccess &&
         _paymentBloc.state is PaymentLoaded) {
-      emit(CheckoutLoaded(
-        cart: (_cartBloc.state as CartLoaded).cart,
-        address: (_addressBloc.state as AddressLoadedSuccess).address,
-        paymentMethod: (_paymentBloc.state as PaymentLoaded).paymentMethod,
-      ));
-    }
-
-    if (state is CheckoutLoaded) {
-      final state = this.state as CheckoutLoaded;
-      emit(CheckoutLoaded(
-        cart: event.cart ?? state.cart,
-        address: event.address ?? state.address,
-        paymentMethod: event.paymentMethod ?? state.paymentMethod,
-      ));
+      if (state is CheckoutLoaded) {
+        final state = this.state as CheckoutLoaded;
+        emit(CheckoutLoaded(
+          cart: event.cart ?? state.cart,
+          address: event.address ?? state.address,
+          paymentMethod: event.paymentMethod ?? state.paymentMethod,
+          order: state.order,
+        ));
+      } else {
+        emit(CheckoutLoaded(
+          cart: (_cartBloc.state as CartLoaded).cart,
+          address: (_addressBloc.state as AddressLoadedSuccess).address,
+          paymentMethod: (_paymentBloc.state as PaymentLoaded).paymentMethod,
+        ));
+      }
     }
   }
 
   void _onCheckoutConfirmed(
-      CheckoutConfirmed event, Emitter<CheckoutState> emit) async{
-    final order = FirebaseFirestore.instance.collection('users').doc(event.email).collection('orders').doc();
+      CheckoutConfirmed event, Emitter<CheckoutState> emit) async {
+    log('<<<<<<<<<<<checkout confirm event>>>>>>>>>>>');
+    final order = FirebaseFirestore.instance
+        .collection('users')
+        .doc(event.email)
+        .collection('orders')
+        .doc();
+
     log('<<<<<<<<<<<<<checkout bloc>>>>>>>>>>>>>');
     try {
-      final state = this.state;
-      if (state is CheckoutLoaded) {
-        log('<<<<<<<<before placing>>>>>>>>');
-        log(state.cart.productsMap.toString());
-        log(state.address.toString());
-        log(state.paymentMethod.toString());
-        log(state.cart.grandTotal.toString());
-        log('<<<<<<<end>>>>>>>');
-        final List<Map<String, dynamic>> orderDetailsMap = [];
-        state.cart.productsMap.forEach((key, value) {
-          Map<String, dynamic> eachOrder = {
-            'orderId': order.id,
-            'productId': key.id,
-            'quantity': value,
-            'isConfirmed': false,
-            'confirmedAt': '',
-            'isProcessed': false,
-            'processedAt': '',
-            'isShipped': false,
-            'shippedAt': '',
-            'isDelivered': false,
-            'deliveredAt': '',
-            'isCancelled': false,
-            'cancelledAt': '',
-          };
-          orderDetailsMap.add(eachOrder);
-        });
-        final String modeOfPayment = (state.paymentMethod == PaymentMethod.razor_pay) ? 'Razor Pay' : 'Cash on Delivery';
-        final OrderModel newOrder = OrderModel(
-          id: order.id,
-          orderDetailsMap: orderDetailsMap,
-          address: state.address,
-          paymentMethod: modeOfPayment,
-          placedAt: DateFormat('MMM d, yyyy').format(DateTime.now()),
-          isPlaced: true,
-          isConfirmed: false,
-          isCancelled: false,
-          grandTotal: state.cart.grandTotal,
-        );
-        _ordersBloc.add(OrderConfirmed(event.email, newOrder));
-        // await _orderRepository.placeOrder(event.email, order.id, newOrder);
-        final CartModel newCart = CartModel(
-          id: state.cart.id,
-          productsMap: const {},
-          userEmail: event.email,
-          subTotal: 0,
-          deliveryFee: 0,
-          grandTotal: 0,
-        );
-        await _cartRepository.updateCartProducts(event.email,state.cart.id, newCart);
-      }
+      // final state = this.state;
+
+      // if (state is CheckoutLoaded) {
+      //   log('<<<<<<<<before placing>>>>>>>>');
+      //   log(state.cart.productsMap.toString());
+      //   log(state.address.toString());
+      //   log(state.paymentMethod.toString());
+      //   log(state.cart.grandTotal.toString());
+      //   log('<<<<<<<end>>>>>>>');
+      final List<Map<String, dynamic>> orderDetailsMap = [];
+      event.cart.productsMap.forEach((key, value) {
+        Map<String, dynamic> eachOrder = {
+          'orderId': order.id,
+          'productId': key.id,
+          'quantity': value,
+          'isConfirmed': false,
+          'confirmedAt': '',
+          'isProcessed': false,
+          'processedAt': '',
+          'isShipped': false,
+          'shippedAt': '',
+          'isDelivered': false,
+          'deliveredAt': '',
+          'isCancelled': false,
+          'cancelledAt': '',
+        };
+        orderDetailsMap.add(eachOrder);
+      });
+      final String modeOfPayment =
+          (event.paymentMethod == PaymentMethod.razor_pay)
+              ? 'Razor Pay'
+              : 'Cash on Delivery';
+      final OrderModel newOrder = OrderModel(
+        id: order.id,
+        orderDetailsMap: orderDetailsMap,
+        address: event.address,
+        paymentMethod: modeOfPayment,
+        placedAt: DateFormat('MMM d, yyyy').format(DateTime.now()),
+        isPlaced: true,
+        isConfirmed: false,
+        isCancelled: false,
+        grandTotal: event.cart.grandTotal,
+      );
+
+      log('<<<<<<<<<,new order>>>>>>>>>');
+      log(newOrder.toString());
+      log('8888888888888888888888888&&&&&&&&&&');
+      //_ordersBloc.add(OrderConfirmed(event.email, newOrder));
+      // await _orderRepository.placeOrder(event.email, order.id, newOrder);
+      final CartModel newCart = CartModel(
+        id: event.cart.id,
+        productsMap: const {},
+        userEmail: event.email,
+        subTotal: 0,
+        deliveryFee: 0,
+        grandTotal: 0,
+      );
+
+      // await _cartRepository.updateCartProducts(
+      //     event.email, state.cart.id, newCart);
+      // }else{
+      //   newOrder = null;
+      // }
+      //final currentState = state as CheckoutLoaded;
+      emit(CheckoutLoaded(
+        cart: event.cart,
+        address: event.address,
+        paymentMethod: event.paymentMethod,
+        order: newOrder,
+      ));
     } catch (e) {
       emit(CheckoutError());
       const Text('Something went wrong');

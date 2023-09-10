@@ -2,8 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
-import 'package:gromart_project/models/models.dart';
-import 'package:gromart_project/models/product_model.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 
@@ -48,9 +46,9 @@ class OrderConfirmation extends StatelessWidget {
           child: Column(
             children: [
               const OrderConfirmedBanner(),
-              BlocBuilder<OrdersBloc, OrdersState>(
+              BlocBuilder<CheckoutBloc, CheckoutState>(
                 builder: (context, state) {
-                  if (state is OrdersLoading) {
+                  if (state is CheckoutLoading) {
                     return const Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 3,
@@ -58,11 +56,15 @@ class OrderConfirmation extends StatelessWidget {
                         color: Colors.black,
                       ),
                     );
-                  } else if (state is OrdersLoaded) {
+                  } else if (state is CheckoutLoaded) {
                     log('<<<<<<<<<confirm screen>>>>>>>>>');
 
                     final order = state.order; // Safely get the order
-
+                    log(state.cart.toString());
+                    log(state.address.toString());
+                    log(state.paymentMethod.toString());
+                    log(state.order.toString());
+                    log('<<<<<<<<<c,,,,,,,,,,,,,,>>>>>>>>');
                     if (order != null) {
                       // Access the order properties only if it's not null
                       return Padding(

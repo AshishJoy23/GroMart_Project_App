@@ -13,11 +13,13 @@ class CheckoutLoaded extends CheckoutState {
   final CartModel cart;
   final AddressModel? address;
   final PaymentMethod paymentMethod;
+  final OrderModel? order;
 
   const CheckoutLoaded({
     required this.cart,
     required this.address,
     required this.paymentMethod,
+    this.order,
   });
 
   @override

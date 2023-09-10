@@ -40,7 +40,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     // Do something when payment succeeds
-    BlocProvider.of<CheckoutBloc>(context).add(CheckoutConfirmed(email: currentUser!));
+    // BlocProvider.of<CheckoutBloc>(context)
+    //     .add(CheckoutConfirmed(email: currentUser!));
     StatusAlert.show(
       context,
       duration: const Duration(seconds: 2),
@@ -122,26 +123,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               log('<<<<<<<<<<//////////>>>>>>>>>>');
               return ListView(
                 children: [
-                  (state.address == null) 
-                  ? const SectionTitleWidget(
-                    title: 'Delivery Address',
-                  )
-                  : SectionTitleWidget( 
-                    title: 'Delivery Address',
-                    button: true,
-                    buttonText: 'Change',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/address');
-                    },
-                  ),
+                  (state.address == null)
+                      ? const SectionTitleWidget(
+                          title: 'Delivery Address',
+                        )
+                      : SectionTitleWidget(
+                          title: 'Delivery Address',
+                          button: true,
+                          buttonText: 'Change',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/address');
+                          },
+                        ),
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  (state.address == null) 
-                  ? const NewAddressCard()
-                  : CheckoutAddressCard(
-                    address: state.address!,
-                  ),
+                  (state.address == null)
+                      ? const NewAddressCard()
+                      : CheckoutAddressCard(
+                          address: state.address!,
+                        ),
                   SizedBox(
                     height: height * 0.01,
                   ),
@@ -164,7 +165,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: MainButtonWidget(
                     buttonText: 'PAY WITH COD',
                     onPressed: () async {
-                      BlocProvider.of<CheckoutBloc>(context).add(CheckoutConfirmed(email: currentUser!));
+                      BlocProvider.of<CheckoutBloc>(context)
+                          .add(CheckoutConfirmed(
+                        email: currentUser!,
+                        cart: state.cart,
+                        address: state.address!,
+                        paymentMethod: state.paymentMethod,
+                      ));
                       StatusAlert.show(
                         context,
                         duration: const Duration(seconds: 2),
@@ -201,6 +208,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         }
                       };
                       _razorpay.open(options);
+                      BlocProvider.of<CheckoutBloc>(context)
+                          .add(CheckoutConfirmed(
+                        email: currentUser!,
+                        cart: state.cart,
+                        address: state.address!,
+                        paymentMethod: state.paymentMethod,
+                      ));
                     },
                   ),
                 );
