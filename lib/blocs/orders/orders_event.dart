@@ -25,15 +25,15 @@ class OrdersUpdated extends OrdersEvent {
   List<Object> get props => [orders];
 }
 
-class OrderConfirmed extends OrdersEvent {
-  final String email;
-  final OrderModel order;
+// class OrderConfirmed extends OrdersEvent {
+//   final String email;
+//   final OrderModel order;
 
-  const OrderConfirmed(this.email,this.order);
+//   const OrderConfirmed(this.email,this.order);
 
-  @override
-  List<Object> get props => [email,order];
-}
+//   @override
+//   List<Object> get props => [email,order];
+// }
 
 class OrderCancelled extends OrdersEvent {
   final  OrderModel order;

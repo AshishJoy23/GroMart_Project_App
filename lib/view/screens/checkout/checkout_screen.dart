@@ -168,9 +168,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       BlocProvider.of<CheckoutBloc>(context)
                           .add(CheckoutConfirmed(
                         email: currentUser!,
-                        cart: state.cart,
-                        address: state.address!,
-                        paymentMethod: state.paymentMethod,
                       ));
                       StatusAlert.show(
                         context,
@@ -211,9 +208,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       BlocProvider.of<CheckoutBloc>(context)
                           .add(CheckoutConfirmed(
                         email: currentUser!,
-                        cart: state.cart,
-                        address: state.address!,
-                        paymentMethod: state.paymentMethod,
                       ));
                     },
                   ),

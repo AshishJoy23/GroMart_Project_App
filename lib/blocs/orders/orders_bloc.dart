@@ -18,7 +18,6 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     on<OrdersGetLoaded>(_onOrdersGetLoaded);
     on<OrdersUpdated>(_onOrdersUpdated);
     on<OrderCancelled>(_onOrderCancelled);
-    on<OrderConfirmed>(_onOrderConfirmed);
   }
 
   void _onOrdersGetLoaded(OrdersGetLoaded event, Emitter<OrdersState> emit) {
@@ -63,67 +62,6 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       //     ),
       //   );
       // }
-    } catch (e) {
-      log('Something went wrong: $e');
-    }
-  }
-
-  void _onOrderConfirmed(
-      OrderConfirmed event, Emitter<OrdersState> emit) async {
-    log('<<<<<<<<<confirn=med  order>>>>>>>>>');
-    log(event.order.toString());
-    try {
-      // emit(
-      //   const OrdersLoaded().copyWith(order: event.order)
-      // );
-      log('<<<<<<before [plACING ORD]>>>>>>');
-      await _orderRepository.placeOrder(
-          event.email, event.order.id, event.order);
-      // log('<<<<<<<inside try>>>>>>>');
-      // emit(OrderLoaded(order: event.order));
-      // log('<<<<<<<inside if>>>>>>>');
-      if (state is OrdersLoaded) {
-      log('<<<<<<<inside if>>>>>>>');
-      final currentState = state as OrdersLoaded;
-      
-      // Create a copy of the current state with the new order added
-      final updatedOrders = List<OrderModel>.from(currentState.orders);
-      updatedOrders.add(event.order);
-      
-      // Emit the updated state with the new order
-      emit(
-        OrdersLoaded(
-          orders: updatedOrders,
-          order: event.order,
-        ),
-      );
-    }
-
-      //final state = this.state as OrdersLoaded;
-      // if (state is OrdersLoaded) {
-      //   final currentState = state as OrdersLoaded;
-      //   log(currentState.orders.length.toString());
-      //   log(currentState.order.toString());
-      //   final updatedState = currentState.copyWith(
-      //     order: event.order, // Update the order parameter
-      //   );
-      //   emit(updatedState);
-      //   log(updatedState.orders.length.toString());
-      //   log(updatedState.order.toString());
-      //   log('<<<<<<<inside if>>>>>>>');
-      // }
-      // // Create a copy of the current state with the new order added
-      // final updatedOrders = List<OrderModel>.from(currentState.orders);
-      // add(OrdersUpdated(updatedOrders, event.order));
-      // log('<<<<after event call //////>>>>');
-      // emit(
-      //   OrdersLoaded(
-      //     orders: updatedOrders,
-      //     order: event.order,
-      //   ),
-      // );
-      //const OrdersLoaded().copyWith(order: event.order);
-      //log(event.order.toString());
     } catch (e) {
       log('Something went wrong: $e');
     }

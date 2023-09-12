@@ -46,9 +46,9 @@ class OrderConfirmation extends StatelessWidget {
           child: Column(
             children: [
               const OrderConfirmedBanner(),
-              BlocBuilder<CheckoutBloc, CheckoutState>(
+              BlocBuilder<OrderConfirmBloc, OrderConfirmState>(
                 builder: (context, state) {
-                  if (state is CheckoutLoading) {
+                  if (state is OrderConfirmLoading) {
                     return const Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 3,
@@ -56,21 +56,11 @@ class OrderConfirmation extends StatelessWidget {
                         color: Colors.black,
                       ),
                     );
-                  } else if (state is CheckoutLoaded) {
-                    log('<<<<<<<<<confirm screen>>>>>>>>>');
-
-                    final order = state.order; // Safely get the order
-                    log(state.cart.toString());
-                    log(state.address.toString());
-                    log(state.paymentMethod.toString());
-                    log(state.order.toString());
-                    log('<<<<<<<<<c,,,,,,,,,,,,,,>>>>>>>>');
-                    if (order != null) {
-                      // Access the order properties only if it's not null
+                  } else if (state is OrderConfirmLoaded) {
+                    final order = state.order; 
                       return Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             OrderAddressWidget(
                               address: order.address!,
@@ -82,26 +72,6 @@ class OrderConfirmation extends StatelessWidget {
                           ],
                         ),
                       );
-                    } else {
-                      // Handle the case where order is null (if needed)
-                      return const Text('Order is null');
-                    }
-                    // log(state.order.toString());
-                    // return Padding(
-                    //   padding: const EdgeInsets.all(20.0),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       OrderAddressWidget(
-                    //         address: state.order!.address!,
-                    //       ),
-                    //       const SizedBox(height: 10),
-                    //       OrderDetailsWidget(
-                    //         order: state.order!,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
                   } else {
                     return const Icon(
                       Icons.error,

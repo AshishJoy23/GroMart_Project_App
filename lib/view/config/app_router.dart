@@ -24,8 +24,9 @@ class AppRouter {
         return OrdersScreen.route();
       case AddAddressScreen.routeName:
         return AddAddressScreen.route();
-        case EditAddressScreen.routeName:
-        return EditAddressScreen.route(address: settings.arguments as AddressModel);
+      case EditAddressScreen.routeName:
+        return EditAddressScreen.route(
+            address: settings.arguments as AddressModel);
       case WishlistScreen.routeName:
         return WishlistScreen.route();
       case NotificationScreen.routeName:
@@ -45,7 +46,10 @@ class AppRouter {
       case EachCategoryScreen.routeName:
         return EachCategoryScreen.route(
             category: settings.arguments as CategoryModel);
-
+      case OrderInfoScreen.routeName:
+        return OrderInfoScreen.route(
+            order: settings.arguments as OrderModel,
+            orderProductDetails: settings.arguments as Map<String, dynamic>);
       default:
         return _errorRoute();
     }

@@ -15,12 +15,10 @@ part 'checkout_event.dart';
 part 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
-  final OrderRepository _orderRepository;
-  final CartRepository _cartRepository;
   final CartBloc _cartBloc;
   final AddressBloc _addressBloc;
   final PaymentBloc _paymentBloc;
-  final OrdersBloc _ordersBloc;
+  final OrderConfirmBloc _orderConfirmBloc;
   StreamSubscription? _cartSubscription;
   StreamSubscription? _addressSubscription;
   StreamSubscription? _paymentSubscription;
@@ -30,13 +28,11 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     required CartBloc cartBloc,
     required AddressBloc addressBloc,
     required PaymentBloc paymentBloc,
-    required OrdersBloc ordersBloc,
+    required OrderConfirmBloc orderConfirmBloc,
   })  : _cartBloc = cartBloc,
         _addressBloc = addressBloc,
         _paymentBloc = paymentBloc,
-        _ordersBloc = ordersBloc,
-        _orderRepository = orderRepository,
-        _cartRepository = cartRepository,
+        _orderConfirmBloc = orderConfirmBloc,
         super(CheckoutLoading()) {
     on<CheckoutUpdated>(_onCheckoutUpdated);
     on<CheckoutConfirmed>(_onCheckoutConfirmed);
@@ -63,7 +59,13 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     if (_cartBloc.state is CartLoaded &&
         _addressBloc.state is AddressLoadedSuccess &&
         _paymentBloc.state is PaymentLoaded) {
-      if (state is CheckoutLoaded) {
+        emit(CheckoutLoaded(
+          cart: (_cartBloc.state as CartLoaded).cart,
+          address: (_addressBloc.state as AddressLoadedSuccess).address,
+          paymentMethod: (_paymentBloc.state as PaymentLoaded).paymentMethod,
+        ));
+    }
+    if (state is CheckoutLoaded) {
         final state = this.state as CheckoutLoaded;
         emit(CheckoutLoaded(
           cart: event.cart ?? state.cart,
@@ -71,14 +73,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           paymentMethod: event.paymentMethod ?? state.paymentMethod,
           order: state.order,
         ));
-      } else {
-        emit(CheckoutLoaded(
-          cart: (_cartBloc.state as CartLoaded).cart,
-          address: (_addressBloc.state as AddressLoadedSuccess).address,
-          paymentMethod: (_paymentBloc.state as PaymentLoaded).paymentMethod,
-        ));
       }
-    }
   }
 
   void _onCheckoutConfirmed(
@@ -92,17 +87,17 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     log('<<<<<<<<<<<<<checkout bloc>>>>>>>>>>>>>');
     try {
-      // final state = this.state;
+      final state = this.state;
 
-      // if (state is CheckoutLoaded) {
-      //   log('<<<<<<<<before placing>>>>>>>>');
-      //   log(state.cart.productsMap.toString());
-      //   log(state.address.toString());
-      //   log(state.paymentMethod.toString());
-      //   log(state.cart.grandTotal.toString());
-      //   log('<<<<<<<end>>>>>>>');
+      if (state is CheckoutLoaded) {
+        log('<<<<<<<<before placing>>>>>>>>');
+        log(state.cart.productsMap.toString());
+        log(state.address.toString());
+        log(state.paymentMethod.toString());
+        log(state.cart.grandTotal.toString());
+        log('<<<<<<<end>>>>>>>');
       final List<Map<String, dynamic>> orderDetailsMap = [];
-      event.cart.productsMap.forEach((key, value) {
+      state.cart.productsMap.forEach((key, value) {
         Map<String, dynamic> eachOrder = {
           'orderId': order.id,
           'productId': key.id,
@@ -121,47 +116,32 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         orderDetailsMap.add(eachOrder);
       });
       final String modeOfPayment =
-          (event.paymentMethod == PaymentMethod.razor_pay)
+          (state.paymentMethod == PaymentMethod.razor_pay)
               ? 'Razor Pay'
               : 'Cash on Delivery';
       final OrderModel newOrder = OrderModel(
         id: order.id,
         orderDetailsMap: orderDetailsMap,
-        address: event.address,
+        address: state.address,
         paymentMethod: modeOfPayment,
         placedAt: DateFormat('MMM d, yyyy').format(DateTime.now()),
         isPlaced: true,
         isConfirmed: false,
         isCancelled: false,
-        grandTotal: event.cart.grandTotal,
+        subTotal: state.cart.subTotal,
+        deliveryFee: state.cart.deliveryFee,
+        grandTotal: state.cart.grandTotal,
       );
-
-      log('<<<<<<<<<,new order>>>>>>>>>');
-      log(newOrder.toString());
-      log('8888888888888888888888888&&&&&&&&&&');
-      //_ordersBloc.add(OrderConfirmed(event.email, newOrder));
-      // await _orderRepository.placeOrder(event.email, order.id, newOrder);
       final CartModel newCart = CartModel(
-        id: event.cart.id,
+        id: state.cart.id,
         productsMap: const {},
         userEmail: event.email,
         subTotal: 0,
         deliveryFee: 0,
         grandTotal: 0,
       );
-
-      // await _cartRepository.updateCartProducts(
-      //     event.email, state.cart.id, newCart);
-      // }else{
-      //   newOrder = null;
-      // }
-      //final currentState = state as CheckoutLoaded;
-      emit(CheckoutLoaded(
-        cart: event.cart,
-        address: event.address,
-        paymentMethod: event.paymentMethod,
-        order: newOrder,
-      ));
+      _orderConfirmBloc.add(OrderConfirmed(email: event.email, order: newOrder, cart: newCart));
+      }
     } catch (e) {
       emit(CheckoutError());
       const Text('Something went wrong');

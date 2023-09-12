@@ -14,6 +14,8 @@ class OrderModel extends Equatable {
   final bool isPlaced;
   final bool isConfirmed;
   final bool isCancelled;
+  final double subTotal;
+  final double deliveryFee;
   final double grandTotal;
   const OrderModel({
     this.id = '0',
@@ -24,6 +26,8 @@ class OrderModel extends Equatable {
     this.isPlaced = false,
     this.isConfirmed = false,
     this.isCancelled = false,
+    required this.subTotal,
+    required this.deliveryFee,
     required this.grandTotal,
   });
 
@@ -37,6 +41,8 @@ class OrderModel extends Equatable {
         isPlaced,
         isConfirmed,
         isConfirmed,
+        subTotal,
+        deliveryFee,
         grandTotal,
       ];
 
@@ -49,6 +55,8 @@ class OrderModel extends Equatable {
   bool? isPlaced,
   bool? isConfirmed,
   bool? isCancelled,
+  double? subTotal,
+  double? deliveryFee,
   double? grandTotal,
   }) {
     return OrderModel(
@@ -60,6 +68,8 @@ class OrderModel extends Equatable {
       isPlaced: isPlaced ?? this.isPlaced,
       isConfirmed: isConfirmed ?? this.isConfirmed,
       isCancelled: isCancelled ?? this.isCancelled,
+      subTotal: subTotal ?? this.subTotal,
+      deliveryFee: deliveryFee ?? this.deliveryFee,
       grandTotal: grandTotal ?? this.grandTotal,
     );
   }
@@ -81,6 +91,8 @@ class OrderModel extends Equatable {
       'isPlaced': isPlaced,
       'isConfirmed': isConfirmed,
       'isCancelled': isCancelled,
+      'subTotal': subTotal,
+      'deliveryFee':deliveryFee,
       'grandTotal': grandTotal,
     };
   }
@@ -104,6 +116,8 @@ class OrderModel extends Equatable {
       isPlaced: snap['isPlaced'],
       isConfirmed: snap['isConfirmed'],
       isCancelled: snap['isCancelled'],
+      subTotal: snap['subTotal'],
+      deliveryFee: snap['deliveryFee'],
       grandTotal: snap['grandTotal'],
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/screens/screens.dart';
 import '../../widgets/widgets.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -20,6 +21,7 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -49,35 +51,29 @@ class OrdersScreen extends StatelessWidget {
             }
             if (state is OrdersLoaded) {
               log('<<<<<<<<<<orders screen>>>>>>>>>>');
+              List<Map<String, dynamic>> totalOrders = [];
               log(state.orders.toString());
-              return Column(
-                children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.orders.length,
-                    itemBuilder: (context, index) {
-                      OrderModel order = state.orders[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('ORDER ID : ${order.id}'),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: order.orderDetailsMap.length,
-                            itemBuilder: (context, index) {
-                              ProductModel product = (BlocProvider.of<ProductBloc>(context).state
-                    as ProductLoaded)
-                .products
-                .firstWhere((product) =>
-                    product.id == order.orderDetailsMap[index]['productId']);
-                              return Text(product.name);
-                            },
-                          ),
-                        ],
-                      );
-                    },
+              for (OrderModel order in state.orders) {
+                totalOrders.addAll(order.orderDetailsMap);
+              }
+              log(totalOrders.length.toString());
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.orders.length,
+                        itemBuilder: (context, index) {
+                          OrderModel order = state.orders[index];
+                          return OrderProductCardWidget(order: order,);
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             } else {
               return const Text('Something went wrong!!!');
@@ -88,3 +84,4 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 }
+
