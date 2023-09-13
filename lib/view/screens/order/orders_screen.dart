@@ -21,7 +21,6 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -68,7 +67,9 @@ class OrdersScreen extends StatelessWidget {
                         itemCount: state.orders.length,
                         itemBuilder: (context, index) {
                           OrderModel order = state.orders[index];
-                          return OrderProductCardWidget(order: order,);
+                          return OrderProductCardWidget(
+                            order: order,
+                          );
                         },
                       ),
                     ],
@@ -76,7 +77,10 @@ class OrdersScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return const Text('Something went wrong!!!');
+              return const Icon(
+                Icons.error,
+                color: Colors.red,
+              );
             }
           },
         ),
@@ -84,4 +88,3 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 }
-

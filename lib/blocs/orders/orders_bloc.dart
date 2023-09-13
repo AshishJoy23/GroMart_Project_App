@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/repositories/order/order_repository.dart';
+import 'package:intl/intl.dart';
 
 part 'orders_event.dart';
 part 'orders_state.dart';
@@ -31,41 +32,36 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
 
   void _onOrdersUpdated(OrdersUpdated event, Emitter<OrdersState> emit) async {
     log('<<<<<<<order  update event>>>>>>>');
-    log('//\\\\\\\\\\\\\\/////////////');
-   //emit(OrdersLoading());
+    emit(OrdersLoading());
     try {
       await Future<void>.delayed(const Duration(seconds: 1));
-      log('<<<<<<<<<<inside else update event>>>>>>>>>>');
-        emit(
-          OrdersLoaded(
-            orders: event.orders,
-          ),
-        );
-      // Create a copy of the current state with the new order added
-      // if (state is OrdersLoaded) {
-      //   log('<<<<<<<<<<inside if update event>>>>>>>>>>');
-      //   final currentState = state as OrdersLoaded;
-      //   log(currentState.orders.length.toString());
-      //   log(currentState.order.toString());
-      //   final updatedState = currentState.copyWith(
-      //     orders: event.orders, // Update the order parameter
-      //   );
-      //   log(updatedState.orders.length.toString());
-      //   log(updatedState.order.toString());
-      //   log('<<<<<beore emittimg>>>>>');
-      //   emit(updatedState);
-      // } else {
-      //   log('<<<<<<<<<<inside else update event>>>>>>>>>>');
-      //   emit(
-      //     OrdersLoaded(
-      //       orders: event.orders,
-      //     ),
-      //   );
-      // }
+      emit(
+        OrdersLoaded(
+          orders: event.orders,
+        ),
+      );
     } catch (e) {
       log('Something went wrong: $e');
     }
   }
 
-  void _onOrderCancelled(OrderCancelled event, Emitter<OrdersState> emit) {}
+  void _onOrderCancelled(
+      OrderCancelled event, Emitter<OrdersState> emit) async {
+    log('<<<<<<<order  cancel event>>>>>>>');
+    try {
+      int indexToUpdate = event.order.orderDetailsMap
+          .indexWhere((order) => order['productId'] == event.productId);
+      if (indexToUpdate != -1) {
+        event.order.orderDetailsMap[indexToUpdate]['isCancelled'] = true;
+        event.order.orderDetailsMap[indexToUpdate]['cancelledAt'] =
+            DateFormat('MMM d, yyyy').format(DateTime.now());
+      await _orderRepository.updateOrder(event.email, event.order);
+      } else {
+        // Handle the case where the target orderId was not found in the list
+        log('Order with orderId ${event.productId} not found.');
+      }
+    } catch (e) {
+      log('Something went wrong: $e');
+    }
+  }
 }

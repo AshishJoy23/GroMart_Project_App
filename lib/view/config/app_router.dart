@@ -48,8 +48,8 @@ class AppRouter {
             category: settings.arguments as CategoryModel);
       case OrderInfoScreen.routeName:
         return OrderInfoScreen.route(
-            order: settings.arguments as OrderModel,
-            orderProductDetails: settings.arguments as Map<String, dynamic>);
+            orderId: settings.arguments as String,
+            productId: settings.arguments as int);
       default:
         return _errorRoute();
     }

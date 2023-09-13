@@ -1,8 +1,4 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gromart_project/blocs/blocs.dart';
-import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 
 class OrderConfirmation extends StatelessWidget {
@@ -33,52 +29,60 @@ class OrderConfirmation extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        bottomNavigationBar: BottomAppBar(
-          child: MainButtonWidget(
-            buttonText: 'BACK TO SHOPPING',
-            onPressed: () {
-              Navigator.pushNamed(context, '/');
-            },
-          ),
-        ),
         extendBodyBehindAppBar: true,
-        body: SingleChildScrollView(
+        body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const OrderConfirmedBanner(),
-              BlocBuilder<OrderConfirmBloc, OrderConfirmState>(
-                builder: (context, state) {
-                  if (state is OrderConfirmLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                      ),
-                    );
-                  } else if (state is OrderConfirmLoaded) {
-                    final order = state.order; 
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            OrderAddressWidget(
-                              address: order.address!,
-                            ),
-                            const SizedBox(height: 10),
-                            OrderDetailsWidget(
-                              order: order,
-                            ),
-                          ],
-                        ),
-                      );
-                  } else {
-                    return const Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    );
-                  }
+              Image.asset(
+                'assets/images/order_confirm.png',
+                width: size.width * 0.9,
+                height: size.height * 0.4,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              Text(
+                'Successfully!',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                'Your order has been placed.',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              MainButtonWidget(
+                buttonText: 'View Orders',
+                onPressed: () {
+                  Navigator.pushNamed(context, '/orders');
                 },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: size.height * 0.07,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xff388E3C), // Border color
+                            width: 2.0, // Border width
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Border radius
+                        ),
+                        child: TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/'),
+                          child: Text(
+                            'Back To Home',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

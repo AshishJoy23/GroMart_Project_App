@@ -157,12 +157,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       );
       Utils.showSnackBar(
         'Password Reset Email Sent',
+        Colors.greenAccent
       );
       navigatorKey.currentState!.pushNamed('/getStarted');
     } on FirebaseAuthException catch (e) {
       log(e.message!);
       Utils.showSnackBar(
         e.message!,
+        Colors.red
       );
       Navigator.of(context).pop();
     }

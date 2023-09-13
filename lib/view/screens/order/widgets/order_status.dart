@@ -1,264 +1,150 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/order_model.dart';
+import 'package:gromart_project/view/screens/screens.dart';
 
 class OrderStatusWidget extends StatelessWidget {
-  final OrderModel order;
-  final Map<String, dynamic> orderProductDetails;
+  final String orderId;
+  final int productId;
   const OrderStatusWidget({
     super.key,
-    required this.order,
-    required this.orderProductDetails,
+    required this.orderId,
+    required this.productId,
   });
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Order Status:',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        SizedBox(
-          height: size.height * 0.02,
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: size.width * 0.3,
-              child: Text(
-                order.placedAt,
-                style: Theme.of(context).textTheme.bodyLarge,
+    return BlocBuilder<OrdersBloc, OrdersState>(
+      builder: (context, state) {
+        if (state is OrdersLoading) {
+          return Center(
+            child: Transform.scale(
+              scale: 0.7,
+              child: const CircularProgressIndicator(
+                strokeWidth: 3,
+                backgroundColor: Colors.white,
+                color: Colors.black,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: CircleAvatar(
-                radius: 14,
-                backgroundColor: Color(0xff388E3C),
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: size.width * 0.1,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          );
+        } else if (state is OrdersLoaded) {
+          final OrderModel order =
+              state.orders.firstWhere((order) => order.id == orderId);
+          final Map<String, dynamic> orderProductDetails = order.orderDetailsMap
+              .firstWhere((product) => product['productId'] == productId);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
                   Text(
-                    'Order Placed',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    'Order Status:',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  (!(orderProductDetails['isConfirmed']) &&
-                          !(orderProductDetails['isProcessed']) &&
-                          !(orderProductDetails['isShipped']) &&
-                          !(orderProductDetails['isDelivered']) &&
-                          !(orderProductDetails['isCancelled']))
-                      ? Text(
-                          'Your order is placed and will be confirm soon.',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )
-                      : const SizedBox(),
                 ],
               ),
-            ),
-          ],
-        ),
-        CustomVerticalDivider(
-          statusFlag: orderProductDetails['isConfirmed'],
-          isCancel: orderProductDetails['isCancelled'],
-        ),
-        (orderProductDetails['isCancelled'])
-            ? Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.3,
-                    child: Text(
-                      orderProductDetails['cancelledAt'],
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: CircleAvatar(
-                      radius: 14,
-                      backgroundColor: Colors.red,
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.1,
-                  ),
-                  Expanded(
-                    child: Column(
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              CustomEachOrderStatus(
+                statusDate: order.placedAt,
+                status: 'Order Placed',
+                statusFlag: order.isPlaced,
+                statusDescription:
+                    'Your order is placed and will be confirm soon.',
+                isConfirmed: !(orderProductDetails['isConfirmed']),
+                isProcessed: !(orderProductDetails['isProcessed']),
+                isShipped: !(orderProductDetails['isShipped']),
+                isDelivered: !(orderProductDetails['isDelivered']),
+                iscancel: !(orderProductDetails['isCancelled']),
+              ),
+              CustomVerticalDivider(
+                statusFlag: orderProductDetails['isConfirmed'],
+              ),
+              (orderProductDetails['isCancelled'])
+                  ? CustomEachOrderStatus(
+                      statusDate: orderProductDetails['cancelledAt'],
+                      status: 'Order Cancelled',
+                      statusFlag: orderProductDetails['isCancelled'],
+                      statusDescription: 'Your order is cancelled.',
+                      isConfirmed: true,
+                      isProcessed: true,
+                      isShipped: true,
+                      isDelivered: true,
+                      isRed: true,
+                    )
+                  : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Order Cancelled',
-                          style: Theme.of(context).textTheme.titleMedium,
+                        CustomEachOrderStatus(
+                          statusDate: orderProductDetails['confirmedAt'],
+                          status: 'Order Confirmed',
+                          statusFlag: orderProductDetails['isConfirmed'],
+                          statusDescription:
+                              'Your order is confirmed and will be processed soon.',
+                          isConfirmed: orderProductDetails['isConfirmed'],
+                          isProcessed: !orderProductDetails['isProcessed'],
+                          isShipped: !orderProductDetails['isShipped'],
+                          isDelivered: !orderProductDetails['isDelivered'],
                         ),
-                        Text(
-                          'Your order is cancelled.',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                        CustomVerticalDivider(
+                          statusFlag: orderProductDetails['isProcessed'],
+                        ),
+                        CustomEachOrderStatus(
+                          statusDate: orderProductDetails['processedAt'],
+                          status: 'Order Processed',
+                          statusFlag: orderProductDetails['isProcessed'],
+                          statusDescription:
+                              'Your order is processed and will be shipped soon.',
+                          isConfirmed: orderProductDetails['isConfirmed'],
+                          isProcessed: orderProductDetails['isProcessed'],
+                          isShipped: !orderProductDetails['isShipped'],
+                          isDelivered: !orderProductDetails['isDelivered'],
+                        ),
+                        CustomVerticalDivider(
+                          statusFlag: orderProductDetails['isShipped'],
+                        ),
+                        CustomEachOrderStatus(
+                          statusDate: orderProductDetails['shippedAt'],
+                          status: 'Order Shipped',
+                          statusFlag: orderProductDetails['isShipped'],
+                          statusDescription:
+                              'Your order is shipped and will be delivered soon.',
+                          isConfirmed: orderProductDetails['isConfirmed'],
+                          isProcessed: orderProductDetails['isProcessed'],
+                          isShipped: orderProductDetails['isShipped'],
+                          isDelivered: !orderProductDetails['isDelivered'],
+                        ),
+                        CustomVerticalDivider(
+                          statusFlag: orderProductDetails['isDelivered'],
+                        ),
+                        CustomEachOrderStatus(
+                          statusDate: orderProductDetails['deliveredAt'],
+                          status: 'Order Delivered',
+                          statusFlag: orderProductDetails['isDelivered'],
+                          statusDescription:
+                              'Your order is shipped and will be delivered soon.',
+                          isConfirmed: orderProductDetails['isConfirmed'],
+                          isProcessed: orderProductDetails['isProcessed'],
+                          isShipped: orderProductDetails['isShipped'],
+                          isDelivered: orderProductDetails['isDelivered'],
                         ),
                       ],
                     ),
-                  ),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomEachOrderStatus(
-                    statusDate: orderProductDetails['confirmedAt'],
-                    status: 'Order Confirmed',
-                    statusFlag: orderProductDetails['isConfirmed'],
-                    statusDescription:
-                        'Your order is confirmed and will be processed soon.',
-                    isConfirmed: orderProductDetails['isConfirmed'],
-                    isProcessed: !orderProductDetails['isProcessed'],
-                    isShipped: !orderProductDetails['isShipped'],
-                    isDelivered: !orderProductDetails['isDelivered'],
-                  ),
-                  CustomVerticalDivider(
-                    statusFlag: orderProductDetails['isProcessed'],
-                  ),
-                  CustomEachOrderStatus(
-                    statusDate: orderProductDetails['processedAt'],
-                    status: 'Order Processed',
-                    statusFlag: orderProductDetails['isProcessed'],
-                    statusDescription:
-                        'Your order is processed and will be shipped soon.',
-                    isConfirmed: orderProductDetails['isConfirmed'],
-                    isProcessed: orderProductDetails['isProcessed'],
-                    isShipped: !orderProductDetails['isShipped'],
-                    isDelivered: !orderProductDetails['isDelivered'],
-                  ),
-                  CustomVerticalDivider(
-                    statusFlag: orderProductDetails['isShipped'],
-                  ),
-                  CustomEachOrderStatus(
-                    statusDate: orderProductDetails['shippedAt'],
-                    status: 'Order Shipped',
-                    statusFlag: orderProductDetails['isShipped'],
-                    statusDescription:
-                        'Your order is shipped and will be delivered soon.',
-                    isConfirmed: orderProductDetails['isConfirmed'],
-                    isProcessed: orderProductDetails['isProcessed'],
-                    isShipped: orderProductDetails['isShipped'],
-                    isDelivered: !orderProductDetails['isDelivered'],
-                  ),
-                  CustomVerticalDivider(
-                    statusFlag: orderProductDetails['isDelivered'],
-                  ),
-                  CustomEachOrderStatus(
-                    statusDate: orderProductDetails['deliveredAt'],
-                    status: 'Order Delivered',
-                    statusFlag: orderProductDetails['isDelivered'],
-                    statusDescription:
-                        'Your order is shipped and will be delivered soon.',
-                    isConfirmed: orderProductDetails['isConfirmed'],
-                    isProcessed: orderProductDetails['isProcessed'],
-                    isShipped: orderProductDetails['isShipped'],
-                    isDelivered: orderProductDetails['isDelivered'],
-                  ),
-                ],
+              const Divider(
+                color: Colors.black,
               ),
-        const Divider(
-          color: Colors.black,
-        ),
-      ],
-    );
-  }
-}
-
-class CustomEachOrderStatus extends StatelessWidget {
-  const CustomEachOrderStatus({
-    super.key,
-    required this.statusDate,
-    required this.status,
-    required this.statusFlag,
-    required this.statusDescription,
-    required this.isConfirmed,
-    required this.isProcessed,
-    required this.isShipped,
-    required this.isDelivered,
-  });
-
-  final String statusDate;
-  final String status;
-  final bool statusFlag;
-  final String statusDescription;
-  final bool isConfirmed;
-  final bool isProcessed;
-  final bool isShipped;
-  final bool isDelivered;
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Row(
-      children: [
-        SizedBox(
-          width: size.width * 0.3,
-          child: Text(
-            statusDate,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ),
-        (statusFlag)
-            ? const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: CircleAvatar(
-                  radius: 14,
-                  backgroundColor: Color(0xff388E3C),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            : const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: CircleAvatar(
-                  radius: 14,
-                  backgroundColor: Colors.black26,
-                ),
-              ),
-        SizedBox(
-          width: size.width * 0.1,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                status,
-                style: (statusFlag)
-                    ? Theme.of(context).textTheme.titleMedium
-                    : Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: Colors.black26),
-              ),
-              ((isConfirmed) && (isProcessed) && (isShipped) && (isDelivered))
-                  ? Text(
-                      statusDescription,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )
-                  : const SizedBox(),
             ],
-          ),
-        ),
-      ],
+          );
+        } else {
+          return const Icon(
+            Icons.error,
+            color: Colors.red,
+          );
+        }
+      },
     );
   }
 }
@@ -267,11 +153,9 @@ class CustomVerticalDivider extends StatelessWidget {
   const CustomVerticalDivider({
     super.key,
     required this.statusFlag,
-    this.isCancel = false,
   });
 
   final bool statusFlag;
-  final bool isCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -283,11 +167,7 @@ class CustomVerticalDivider extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           VerticalDivider(
-            color: (isCancel)
-                ? Colors.red
-                : (statusFlag)
-                    ? const Color(0xff388E3C)
-                    : Colors.black26,
+            color: (statusFlag) ? const Color(0xff388E3C) : Colors.black26,
             thickness: 1,
           ),
         ],

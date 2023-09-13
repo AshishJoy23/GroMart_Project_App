@@ -20,6 +20,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -54,11 +55,23 @@ class CartScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Lottie.asset('assets/animation/empty_cart.json'),
+                          Image.asset(
+                            'assets/images/cart_empty.png',
+                            width: size.width,
+                            height: size.height * 0.4,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
                           Text(
-                            'Your cart is empty!',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          )
+                            'Your Cart is Empty!',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Text(
+                            'Add items to cart and explore your shopping.',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ],
                       ),
                     )

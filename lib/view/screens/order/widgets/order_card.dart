@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -39,11 +41,12 @@ class OrderProductCardWidget extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   child: GestureDetector(
                     onTap: () {
+                      log(orderProductDetails['productId'].toString());
                       Navigator.of(context).push(
                         OrderInfoScreen.route(
-                          order: order, // Pass your OrderModel object
-                          orderProductDetails:
-                              orderProductDetails, // Pass your Map object
+                          orderId: order.id,
+                          productId:
+                              orderProductDetails['productId'],
                         ),
                       );
                     },

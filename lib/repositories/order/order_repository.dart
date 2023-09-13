@@ -41,9 +41,22 @@ class OrderRepository extends BaseOrderRepository {
             order.toMap(),
             SetOptions(merge: true),
           );
-      log('Order updated successfully.');
+      log('Order placed successfully.');
     } catch (error) {
       log('Error while placing order: $error');
+    }
+  }
+  
+  @override
+  Future<void> updateOrder(String email, OrderModel order) async{
+    try {
+      await _firebaseFirestore.collection('users').doc(email).collection('orders').doc(order.id).set(
+            order.toMap(),
+            SetOptions(merge: true),
+          );
+          log('Order updated successfully.');
+    } catch (e) {
+      log('Error while updating order: $e');
     }
   }
 }

@@ -38,12 +38,12 @@ Future signIn(context,formKey,emailController,passwordController) async {
     } on FirebaseAuthException catch (e) {
       log(e.message.toString());
       if (e.code == 'user-not-found') {
-        Utils.showSnackBar('No user found for that email.');
+        Utils.showSnackBar('No user found for that email.',Colors.redAccent);
         emailController.clear();
         passwordController.clear();
         log('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        Utils.showSnackBar('Wrong password');
+        Utils.showSnackBar('Wrong password',Colors.redAccent);
         passwordController.clear();
         log('Wrong password provided for that user.');
       }
@@ -80,11 +80,11 @@ Future signIn(context,formKey,emailController,passwordController) async {
     } on FirebaseAuthException catch (e) {
       log(e.message.toString());
       if (e.code == 'email-already-in-use') {
-        Utils.showSnackBar('The account already exists for that email.');
+        Utils.showSnackBar('The account already exists for that email.',Colors.redAccent);
         emailController.clear();
         log('The account already exists for that email.');
       } else {
-        Utils.showSnackBar(e.message);
+        Utils.showSnackBar(e.message,Colors.redAccent);
         emailController.clear();
         passwordController.clear();
         confirmController.clear();
