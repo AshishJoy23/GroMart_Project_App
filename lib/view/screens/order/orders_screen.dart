@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/view/screens/screens.dart';
+import 'package:intl/intl.dart';
 import '../../widgets/widgets.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -50,12 +51,16 @@ class OrdersScreen extends StatelessWidget {
             }
             if (state is OrdersLoaded) {
               log('<<<<<<<<<<orders screen>>>>>>>>>>');
-              List<Map<String, dynamic>> totalOrders = [];
+              List<OrderModel> totalOrders = state.orders;
+              totalOrders.sort((a, b) {
+                final DateFormat format = DateFormat('MMM d, yyyy');
+                final DateTime dateA = format.parse(a.placedAt);
+                final DateTime dateB = format.parse(b.placedAt);
+                return dateB.compareTo(dateA);
+              });
               log(state.orders.toString());
-              for (OrderModel order in state.orders) {
-                totalOrders.addAll(order.orderDetailsMap);
-              }
               log(totalOrders.length.toString());
+              log(totalOrders.toString());
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -64,9 +69,9 @@ class OrdersScreen extends StatelessWidget {
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: state.orders.length,
+                        itemCount: totalOrders.length,
                         itemBuilder: (context, index) {
-                          OrderModel order = state.orders[index];
+                          OrderModel order = totalOrders[index];
                           return OrderProductCardWidget(
                             order: order,
                           );

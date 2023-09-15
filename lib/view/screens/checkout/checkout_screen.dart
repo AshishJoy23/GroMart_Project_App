@@ -40,8 +40,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     // Do something when payment succeeds
-    // BlocProvider.of<CheckoutBloc>(context)
-    //     .add(CheckoutConfirmed(email: currentUser!));
+    BlocProvider.of<CheckoutBloc>(context)
+        .add(CheckoutConfirmed(email: currentUser!));
     StatusAlert.show(
       context,
       duration: const Duration(seconds: 2),
@@ -205,10 +205,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         }
                       };
                       _razorpay.open(options);
-                      BlocProvider.of<CheckoutBloc>(context)
-                          .add(CheckoutConfirmed(
-                        email: currentUser!,
-                      ));
+                      
+                      // BlocProvider.of<CheckoutBloc>(context)
+                      //     .add(CheckoutConfirmed(
+                      //   email: currentUser!,
+                      //));
                     },
                   ),
                 );

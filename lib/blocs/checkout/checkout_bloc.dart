@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
@@ -18,7 +17,8 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CartBloc _cartBloc;
   final AddressBloc _addressBloc;
   final PaymentBloc _paymentBloc;
-  final OrderConfirmBloc _orderConfirmBloc;
+  final OrderRepository _orderRepository;
+  final CartRepository _cartRepository;
   StreamSubscription? _cartSubscription;
   StreamSubscription? _addressSubscription;
   StreamSubscription? _paymentSubscription;
@@ -28,11 +28,11 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     required CartBloc cartBloc,
     required AddressBloc addressBloc,
     required PaymentBloc paymentBloc,
-    required OrderConfirmBloc orderConfirmBloc,
   })  : _cartBloc = cartBloc,
         _addressBloc = addressBloc,
         _paymentBloc = paymentBloc,
-        _orderConfirmBloc = orderConfirmBloc,
+        _orderRepository = orderRepository,
+        _cartRepository = cartRepository,
         super(CheckoutLoading()) {
     on<CheckoutUpdated>(_onCheckoutUpdated);
     on<CheckoutConfirmed>(_onCheckoutConfirmed);
@@ -79,11 +79,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   void _onCheckoutConfirmed(
       CheckoutConfirmed event, Emitter<CheckoutState> emit) async {
     log('<<<<<<<<<<<checkout confirm event>>>>>>>>>>>');
-    final order = FirebaseFirestore.instance
-        .collection('users')
-        .doc(event.email)
-        .collection('orders')
-        .doc();
+    final order = FirebaseFirestore.instance.collection('users').doc(event.email).collection('orders').doc();
 
     log('<<<<<<<<<<<<<checkout bloc>>>>>>>>>>>>>');
     try {
@@ -121,6 +117,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
               : 'Cash on Delivery';
       final OrderModel newOrder = OrderModel(
         id: order.id,
+        email: event.email,
         orderDetailsMap: orderDetailsMap,
         address: state.address,
         paymentMethod: modeOfPayment,
@@ -132,7 +129,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         deliveryFee: state.cart.deliveryFee,
         grandTotal: state.cart.grandTotal,
       );
-      final CartModel newCart = CartModel(
+      final CartModel updatedCart = CartModel(
         id: state.cart.id,
         productsMap: const {},
         userEmail: event.email,
@@ -140,11 +137,15 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         deliveryFee: 0,
         grandTotal: 0,
       );
-      _orderConfirmBloc.add(OrderConfirmed(email: event.email, order: newOrder, cart: newCart));
+      await _orderRepository.placeOrder(
+          event.email, order.id, newOrder);
+      await _cartRepository.updateCartProducts(
+          event.email, state.cart.id, updatedCart);
       }
+      log('order updated succcessfully');
+      log('cart updated succcessfully');
     } catch (e) {
       emit(CheckoutError());
-      const Text('Something went wrong');
       log('Error: $e');
     }
   }

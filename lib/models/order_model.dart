@@ -7,6 +7,7 @@ import 'models.dart';
 
 class OrderModel extends Equatable {
   final String id;
+  final String email;
   final List<Map<String, dynamic>> orderDetailsMap;
   final AddressModel? address;
   final String paymentMethod;
@@ -19,6 +20,7 @@ class OrderModel extends Equatable {
   final double grandTotal;
   const OrderModel({
     this.id = '0',
+    required this.email,
     required this.orderDetailsMap,
     required this.address,
     required this.paymentMethod,
@@ -34,6 +36,7 @@ class OrderModel extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        email,
         orderDetailsMap,
         address,
         paymentMethod,
@@ -46,44 +49,11 @@ class OrderModel extends Equatable {
         grandTotal,
       ];
 
-  OrderModel copyWith({
-    String? id,
-  List<Map<String, dynamic>>? orderDetailsMap,
-  AddressModel? address,
-  String? paymentMethod,
-  String? placedAt,
-  bool? isPlaced,
-  bool? isConfirmed,
-  bool? isCancelled,
-  double? subTotal,
-  double? deliveryFee,
-  double? grandTotal,
-  }) {
-    return OrderModel(
-      id: id ?? this.id,
-      orderDetailsMap: orderDetailsMap ?? this.orderDetailsMap,
-      address: address ?? this.address,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
-      placedAt: placedAt ?? this.placedAt,
-      isPlaced: isPlaced ?? this.isPlaced,
-      isConfirmed: isConfirmed ?? this.isConfirmed,
-      isCancelled: isCancelled ?? this.isCancelled,
-      subTotal: subTotal ?? this.subTotal,
-      deliveryFee: deliveryFee ?? this.deliveryFee,
-      grandTotal: grandTotal ?? this.grandTotal,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     String addressToJson = address!.toJson();
-  //   Map<String, dynamic> orderDetailsMapToJson = orderDetailsMap.map((key, value) {
-  //   // Convert each key-value pair to the desired types.
-  //   ProductModel product = key; // Assuming 'key' is the ProductModel instance
-  //   int quantity = value;
-  //   return MapEntry(product.toJson(), quantity);
-  // });
     return {
       'id': id,
+      'email': email,
       'orderDetailsMap': orderDetailsMap,
       'address': addressToJson,
       'paymentMethod': paymentMethod,
@@ -101,14 +71,10 @@ class OrderModel extends Equatable {
     AddressModel addressFromJson = AddressModel.fromJson(json.decode(snap['address']));
     List<Map<String, dynamic>> orderDetailsMapFromJson = List<Map<String, dynamic>>.from(snap['orderDetailsMap']);
   
-    // Map<ProductModel, int> orderDetailsMap = orderDetailsMapJson.map((key, value) {
-    //   // Convert each key-value pair to the desired types.
-    //   ProductModel product = ProductModel.fromJson(json.decode(key));
-    //   int quantity = value;
-    //   return MapEntry(product, quantity);
-    // });
+   
     return OrderModel(
       id: snap['id'],
+      email: snap['email'],
       orderDetailsMap: orderDetailsMapFromJson,
       address: addressFromJson,
       paymentMethod: snap['paymentMethod'],
