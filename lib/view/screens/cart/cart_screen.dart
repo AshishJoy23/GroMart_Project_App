@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
-import 'package:gromart_project/main.dart';
-import 'package:lottie/lottie.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
