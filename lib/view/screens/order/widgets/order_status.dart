@@ -125,7 +125,7 @@ class OrderStatusWidget extends StatelessWidget {
                           status: 'Order Delivered',
                           statusFlag: orderProductDetails['isDelivered'],
                           statusDescription:
-                              'Your order is shipped and will be delivered soon.',
+                              'Your order is delivered and your order is completed now.',
                           isConfirmed: orderProductDetails['isConfirmed'],
                           isProcessed: orderProductDetails['isProcessed'],
                           isShipped: orderProductDetails['isShipped'],

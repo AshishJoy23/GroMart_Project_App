@@ -1,14 +1,22 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/config.dart';
 
 class ProductBottomAppBar extends StatelessWidget {
+  final ProductModel product;
   const ProductBottomAppBar({
+    required  this.product,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final String? userEmail = FirebaseAuth.instance.currentUser!.email;
     return BottomAppBar(
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.08,
@@ -27,7 +35,10 @@ class ProductBottomAppBar extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      log('choose from camera');
+                       BlocProvider.of<CartBloc>(context).add(
+                                      CartProductAdded(userEmail!, product));
+                                  Utils.showSnackBar(
+                                      'Product Added to Cart', Colors.black87);
                     },
                     child: Text(
                       'Add To Cart',

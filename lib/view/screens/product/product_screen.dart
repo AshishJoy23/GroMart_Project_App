@@ -79,7 +79,7 @@ class ProductScreen extends StatelessWidget {
             DetailsExpansionTileWidget(textData: product.description, titleData: 'Delivery Information'),
           ],
         ),
-        bottomNavigationBar: const ProductBottomAppBar(),
+        bottomNavigationBar: ProductBottomAppBar(product: product,),
       ),
     );
   }

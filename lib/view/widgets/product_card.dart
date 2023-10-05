@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/view/config/config.dart';
 
 import '../../models/models.dart';
 
@@ -11,11 +12,13 @@ class ProductCardWidget extends StatelessWidget {
   final ProductModel product;
   final double widthFactor;
   final IconData iconData;
+  final bool isFavorite;
   const ProductCardWidget({
     super.key,
     required this.product,
     this.widthFactor = 2.8,
     this.iconData = Icons.favorite_border,
+    this.isFavorite = false,
   });
 
   @override
@@ -50,19 +53,76 @@ class ProductCardWidget extends StatelessWidget {
               ),
               child: Align(
                 alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: iconData == Icons.favorite_border
-                      ? () {
-                          log('fav added');
-                        }
-                      : () {
-                          log('fav deleted');
-                        },
-                  icon: Icon(
-                    iconData,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                child: BlocBuilder<WishlistBloc, WishlistState>(
+                  builder: (context, state) {
+                    if (state is WishlistLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          backgroundColor: Colors.white,
+                          color: Colors.black,
+                        ),
+                      );
+                    } else if (state is WishlistLoaded) {
+                      return IconButton(
+                        onPressed: (isFavorite)
+                            ? () {
+                                Utils.showAlertDialogBox(
+                                  context,
+                                  'Are You Sure?',
+                                  'You want to remove from wishlist.',
+                                  () {
+                                    BlocProvider.of<WishlistBloc>(context).add(
+                                        RemoveFromWishlist(
+                                            email: userEmail!,
+                                            productId: product.id));
+                                    Navigator.pop(context);
+                                    Utils.showSnackBar(
+                                        'Product Removed from Wishlist',
+                                        Colors.black87);
+                                  },
+                                );
+                              }
+                            : (state.wishlist.productList.contains(product.id))
+                                ? () {
+                                    BlocProvider.of<WishlistBloc>(context).add(
+                                        RemoveFromWishlist(
+                                            email: userEmail!,
+                                            productId: product.id));
+                                    Utils.showSnackBar(
+                                        'Product Removed from Wishlist',
+                                        Colors.black87);
+                                  }
+                                : () {
+                                    BlocProvider.of<WishlistBloc>(context).add(
+                                        AddToWishlist(
+                                            email: userEmail!,
+                                            productId: product.id));
+                                    Utils.showSnackBar(
+                                        'Product Added to Wishlist',
+                                        Colors.black87);
+                                  },
+                        icon: (isFavorite)
+                            ? Icon(
+                                iconData,
+                                color: Colors.white,
+                                size: 24,
+                              )
+                            : Icon(
+                                iconData,
+                                color: (state.wishlist.productList
+                                        .contains(product.id))
+                                    ? Colors.redAccent
+                                    : Colors.white,
+                              ),
+                      );
+                    } else {
+                      return const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      );
+                    }
+                  },
                 ),
               ),
             ),
@@ -124,8 +184,10 @@ class ProductCardWidget extends StatelessWidget {
                           return Expanded(
                             child: IconButton(
                                 onPressed: () {
-                                  BlocProvider.of<CartBloc>(context)
-                                      .add(CartProductAdded(userEmail!,product));
+                                  BlocProvider.of<CartBloc>(context).add(
+                                      CartProductAdded(userEmail!, product));
+                                  Utils.showSnackBar(
+                                      'Product Added to Cart', Colors.black87);
                                 },
                                 icon: const Icon(
                                   Icons.add_circle,

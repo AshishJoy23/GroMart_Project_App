@@ -47,26 +47,26 @@ class OrderInfoScreen extends StatelessWidget {
           title: 'Order Info',
           actionList: [],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: BlocBuilder<OrdersBloc, OrdersState>(
-              builder: (context, state) {
-                if (state is OrdersLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      backgroundColor: Colors.white,
-                      color: Colors.black,
-                    ),
-                  );
-                } else if (state is OrdersLoaded) {
-                  final OrderModel order =
-                      state.orders.firstWhere((order) => order.id == orderId);
-                  final Map<String, dynamic> orderProductDetails =
-                      order.orderDetailsMap.firstWhere(
-                          (product) => product['productId'] == productId);
-                  return Column(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: BlocBuilder<OrdersBloc, OrdersState>(
+            builder: (context, state) {
+              if (state is OrdersLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    backgroundColor: Colors.white,
+                    color: Colors.black,
+                  ),
+                );
+              } else if (state is OrdersLoaded) {
+                final OrderModel order =
+                    state.orders.firstWhere((order) => order.id == orderId);
+                final Map<String, dynamic> orderProductDetails =
+                    order.orderDetailsMap.firstWhere(
+                        (product) => product['productId'] == productId);
+                return SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
@@ -106,42 +106,46 @@ class OrderInfoScreen extends StatelessWidget {
                       OrderPaymentSummary(order: order),
                       (orderProductDetails['isShipped'])
                       ? const SizedBox()
-                      : MainButtonWidget(
-                          buttonText: (orderProductDetails['isCancelled'])
-                              ? 'Back To Orders'
-                              : 'Cancel Order',
-                          onPressed: (orderProductDetails['isCancelled'])
-                              ? () => Navigator.pop(context)
-                              : () {
-                                  Utils.showAlertDialogBox(
-                                    context,
-                                    'Are You Sure?',
-                                    'You want to cancel this order.',
-                                    () {
-                                      BlocProvider.of<OrdersBloc>(context).add(
-                                        OrderCancelled(
-                                            email: currentUser!,
-                                            productId: orderProductDetails[
-                                                'productId'],
-                                            order: order),
+                      : Row(
+                        children: [
+                          MainButtonWidget(
+                              buttonText: (orderProductDetails['isCancelled'])
+                                  ? 'Back To Orders'
+                                  : 'Cancel Order',
+                              onPressed: (orderProductDetails['isCancelled'])
+                                  ? () => Navigator.pop(context)
+                                  : () {
+                                      Utils.showAlertDialogBox(
+                                        context,
+                                        'Are You Sure?',
+                                        'You want to cancel this order.',
+                                        () {
+                                          BlocProvider.of<OrdersBloc>(context).add(
+                                            OrderCancelled(
+                                                email: currentUser!,
+                                                productId: orderProductDetails[
+                                                    'productId'],
+                                                order: order),
+                                          );
+                                          Navigator.pop(context);
+                                          Utils.showSnackBar(
+                                              'Your order is Cancelled',
+                                              Colors.redAccent);
+                                        },
                                       );
-                                      Navigator.pop(context);
-                                      Utils.showSnackBar(
-                                          'Your order is Cancelled',
-                                          Colors.redAccent);
-                                    },
-                                  );
-                                }),
+                                    }),
+                        ],
+                      ),
                     ],
-                  );
-                } else {
-                  return const Icon(
-                    Icons.error,
-                    color: Colors.red,
-                  );
-                }
-              },
-            ),
+                  ),
+                );
+              } else {
+                return const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                );
+              }
+            },
           ),
         ),
       ),

@@ -51,36 +51,24 @@ class OrderConfirmation extends StatelessWidget {
                 'Your order has been placed.',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              MainButtonWidget(
-                buttonText: 'View Orders',
-                onPressed: () {
-                  Navigator.pushNamed(context, '/orders');
-                },
+              Row(
+                children: [
+                  MainButtonWidget(
+                    buttonText: 'View Orders',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/orders');
+                    },
+                  ),
+                ],
               ),
               Row(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        height: size.height * 0.07,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xff388E3C), // Border color
-                            width: 2.0, // Border width
-                          ),
-                          borderRadius:
-                              BorderRadius.circular(8.0), // Border radius
-                        ),
-                        child: TextButton(
-                          onPressed: () => Navigator.pushNamed(context, '/'),
-                          child: Text(
-                            'Back To Home',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ),
-                    ),
+                  MainButtonWidget(
+                    buttonText: 'Back To Home',
+                    isSubButton: true,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/');
+                    },
                   ),
                 ],
               ),
