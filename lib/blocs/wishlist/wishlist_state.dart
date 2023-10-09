@@ -12,7 +12,7 @@ class WishlistLoading extends WishlistState {}
 class WishlistLoaded extends WishlistState {
   final WishlistModel wishlist;
 
-  const WishlistLoaded( {required this.wishlist});
+  const WishlistLoaded( {this.wishlist = const WishlistModel()});
 
   @override
   List<Object> get props => [wishlist];

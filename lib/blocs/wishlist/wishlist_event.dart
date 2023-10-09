@@ -11,33 +11,26 @@ class WishListGetLoaded extends WishlistEvent {
   final String email;
 
   const WishListGetLoaded({required this.email});
-   @override
+  @override
   List<Object> get props => [email];
 }
 
-class WishlistUpdated extends WishlistEvent {
-  final WishlistModel wishlist;
-
-  const WishlistUpdated(this.wishlist);
-
-  @override
-  List<Object> get props => [wishlist];
-}
-class RemoveFromWishlist extends WishlistEvent {
-  final String email;
-  final int productId;
-
-  const RemoveFromWishlist({required this.email,required this.productId});
-
-  @override
-  List<Object> get props => [email,productId];
-}
 class AddToWishlist extends WishlistEvent {
   final String email;
   final int productId;
 
-  const AddToWishlist({required this.email,required this.productId});
+  const AddToWishlist({required this.email, required this.productId});
 
   @override
-  List<Object> get props => [email,productId];
+  List<Object> get props => [email, productId];
+}
+
+class RemoveFromWishlist extends WishlistEvent {
+  final String email;
+  final int productId;
+
+  const RemoveFromWishlist({required this.email, required this.productId});
+
+  @override
+  List<Object> get props => [email, productId];
 }

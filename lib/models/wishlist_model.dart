@@ -7,8 +7,8 @@ class WishlistModel extends Equatable {
   final String id;
   final List<int> productList;
   const WishlistModel({
-    required this.id,
-    required this.productList,
+    this.id = '',
+    this.productList = const <int>[],
   });
 
   @override

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/repositories/wishlist/wishlist_repository.dart';
 
@@ -12,60 +10,30 @@ part 'wishlist_state.dart';
 
 class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
   final WishlistRepository _wishlistRepository;
-  StreamSubscription? _wishlistSubscription;
   WishlistBloc({required WishlistRepository wishlistRepository})
       : _wishlistRepository = wishlistRepository,
         super(WishlistLoading()) {
     on<WishListGetLoaded>(_onWishListGetLoaded);
-    on<WishlistUpdated>(_onWishlistUpdated);
     on<AddToWishlist>(_onAddToWishlist);
     on<RemoveFromWishlist>(_onRemoveFromWishlist);
   }
 
   void _onWishListGetLoaded(
-      WishListGetLoaded event, Emitter<WishlistState> emit) {
+      WishListGetLoaded event, Emitter<WishlistState> emit) async {
     log('<<<<<<<<<wishlist bloc code>>>>>>>>>');
-    _wishlistSubscription?.cancel();
-    _wishlistSubscription =
-        _wishlistRepository.getProducts(event.email).listen((wishlist) {
-      if (wishlist.isEmpty) {
-        log('<<<<<<<<inside if wishlist>>>>>>>>');
-        log(event.email);
-        final wishlist = FirebaseFirestore.instance
-            .collection('users')
-            .doc(event.email)
-            .collection('wishlist')
-            .doc();
-        WishlistModel newWishlist = WishlistModel(
-          id: wishlist.id,
-          productList: const [],
-        );
-        log(newWishlist.toString());
-        _wishlistRepository.updateWishlistProducts(
-            event.email, wishlist.id, newWishlist);
-        add(WishlistUpdated(newWishlist));
-      } else {
-        log('<<<<<<<<<<<inside else wishlist>>>>>>>>>>>');
-        log(event.email);
-        log(wishlist.toString());
-        add(
-          WishlistUpdated(wishlist.first),
-        );
-      }
-    });
-  }
 
-  void _onWishlistUpdated(
-      WishlistUpdated event, Emitter<WishlistState> emit) async {
     //emit(WishlistLoading());
     try {
-      //await Future<void>.delayed(const Duration(seconds: 1));
+      WishlistModel wishlist =
+          await _wishlistRepository.getProducts(event.email);
+      log(wishlist.toString());
+      await Future<void>.delayed(const Duration(seconds: 1));
       emit(
         WishlistLoaded(
-          wishlist: event.wishlist,
+          wishlist: wishlist,
         ),
       );
-      log('wishlist updated successfully');
+      log('wishlist loaded successfully');
     } catch (e) {
       log('Something went wrong: $e');
     }
@@ -76,11 +44,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     try {
       final state = this.state;
       if (state is WishlistLoaded) {
-        final List<int> updatedList = state.wishlist.productList;
-        updatedList.add(event.productId);
         WishlistModel updatedWishlist = WishlistModel(
           id: state.wishlist.id,
-          productList: updatedList,
+          productList: List.from(state.wishlist.productList)
+            ..add(event.productId),
         );
         emit(
           WishlistLoaded(
@@ -101,11 +68,10 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     try {
       final state = this.state;
       if (state is WishlistLoaded) {
-        final List<int> updatedList = state.wishlist.productList;
-        updatedList.remove(event.productId);
         WishlistModel updatedWishlist = WishlistModel(
           id: state.wishlist.id,
-          productList: updatedList,
+          productList: List.from(state.wishlist.productList)
+            ..remove(event.productId),
         );
         emit(
           WishlistLoaded(
