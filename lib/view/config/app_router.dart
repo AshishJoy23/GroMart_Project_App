@@ -33,6 +33,8 @@ class AppRouter {
         return NotificationScreen.route();
       case ProfileScreen.routeName:
         return ProfileScreen.route();
+      case SearchScreen.routeName:
+        return SearchScreen.route();
       case CategoryScreen.routeName:
         return CategoryScreen.route();
       case ResetPasswordPage.routeName:

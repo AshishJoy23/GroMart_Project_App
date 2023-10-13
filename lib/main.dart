@@ -71,6 +71,11 @@ class MyApp extends StatelessWidget {
             paymentBloc: BlocProvider.of<PaymentBloc>(context),
           )..add(const CheckoutUpdated()),
         ),
+        BlocProvider(
+          create: (context) => SearchBloc(
+            productBloc: BlocProvider.of<ProductBloc>(context),
+          )..add(const SearchCleared()),
+        ),
       ],
       child: MaterialApp(
         scaffoldMessengerKey: Utils.messengerKey,

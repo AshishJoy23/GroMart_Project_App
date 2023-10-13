@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
             if (state is ProductLoaded) {
               return ListView(
                 children: [
-                  SearchBarWidget(),
+                  const SearchBarWidget(),
                   CarouselSlider(
                     options: CarouselOptions(
                       aspectRatio: 1.58,

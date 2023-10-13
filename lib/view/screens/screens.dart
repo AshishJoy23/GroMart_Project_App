@@ -33,6 +33,7 @@ export 'address/widgets/address_card.dart';
 export 'address/widgets/address_details.dart';
 export 'address/widgets/radio_menu_button.dart';
 export 'address/edit_address.dart';
+export 'search/search_screen.dart';
 export 'order/order_confirm.dart';
 export 'order/orders_screen.dart';
 export 'order/order_info.dart';
