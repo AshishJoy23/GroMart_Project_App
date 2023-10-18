@@ -19,7 +19,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   void _onProductSearched(
       ProductSearched event, Emitter<SearchState> emit) async {
-    log('<<<<<<<<<search bloc code>>>>>>>>>');
+    log('<<<<<<<<<searching event code>>>>>>>>>');
 
     //emit(SearchLoading());
     try {
@@ -56,11 +56,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   void _onSearchCleared(SearchCleared event, Emitter<SearchState> emit) {
+    log('<<<<<<<<search clr event>>>>>>>>');
+
     emit(
-      const SearchLoaded(
-        suggestionList: [],
-        isSearching: false,
-      ),
-    );
+        const SearchLoaded(
+          suggestionList: [],
+          isSearching: false,
+        ),
+      );
   }
 }

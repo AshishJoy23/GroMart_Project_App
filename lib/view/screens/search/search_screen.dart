@@ -63,9 +63,10 @@ class SearchScreen extends StatelessWidget {
                     ),
                     suffixIcon: InkWell(
                       onTap: () {
+                        searchedQuery.clear();
                         BlocProvider.of<SearchBloc>(context)
                             .add(const SearchCleared());
-                        searchedQuery.clear();
+                        FocusManager.instance.primaryFocus?.unfocus();
                       },
                       child: const Icon(
                         Icons.clear,
@@ -99,72 +100,80 @@ class SearchScreen extends StatelessWidget {
                         ),
                       );
                     } else if (state is SearchLoaded) {
+                      log('<<<<<<<<<------------>>>>>>>>>');
+                      log('<<<<<image condition>>>>>');
+                      log(state.isSearching.toString());
                       return (state.suggestionList.isEmpty)
-                      ? (state.isSearching)
-                      ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.1,
-                            ),
-                            Image.asset(
-                              'assets/images/no_data.png',
-                              width: size.width,
-                              height: size.height * 0.4,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Text(
-                              'Search Not Found!',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ],
-                        ),
-                      )
-                      : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.1,
-                            ),
-                            Image.asset(
-                              'assets/images/search_item.png',
-                              width: size.width,
-                              height: size.height * 0.4,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(
-                              height: size.height * 0.02,
-                            ),
-                            Text(
-                              'Search What You Love!',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ],
-                        ),
-                      )
-                      : GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        itemCount: state.suggestionList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.15,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 10,
-                        ),
-                        itemBuilder: (context, index) {
-                          return ProductCardWidget(
-                              product: state.suggestionList[index]);
-                        },
-                      );
+                          ? ((state.isSearching &&
+                                  searchedQuery.text.isNotEmpty)
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.1,
+                                      ),
+                                      Image.asset(
+                                        'assets/images/no_data.png',
+                                        width: size.width,
+                                        height: size.height * 0.4,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.02,
+                                      ),
+                                      Text(
+                                        'Search Not Found!',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.1,
+                                      ),
+                                      Image.asset(
+                                        'assets/images/search_item.png',
+                                        width: size.width,
+                                        height: size.height * 0.4,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.02,
+                                      ),
+                                      Text(
+                                        'Search What You Love!',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                          : GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              itemCount: state.suggestionList.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1.15,
+                                mainAxisSpacing: 20,
+                                crossAxisSpacing: 10,
+                              ),
+                              itemBuilder: (context, index) {
+                                return ProductCardWidget(
+                                    product: state.suggestionList[index]);
+                              },
+                            );
                     } else {
                       return const Icon(
                         Icons.error,

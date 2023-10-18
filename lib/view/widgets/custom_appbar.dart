@@ -22,11 +22,11 @@ class CustomAppBarWidget extends StatelessWidget with PreferredSizeWidget {
       leading: (isLeading)
           ? IconButton(
               onPressed: () {
-                Navigator.of(context).pop();
                 if (isSearch) {
                   BlocProvider.of<SearchBloc>(context)
                       .add(const SearchCleared());
                 }
+                Navigator.of(context).pop();
               },
               icon: const Icon(
                 Icons.arrow_back_ios,
