@@ -33,14 +33,14 @@ class AppRouter {
         return NotificationScreen.route();
       case ProfileScreen.routeName:
         return ProfileScreen.route();
+      case AccountScreen.routeName:
+        return AccountScreen.route();
       case SearchScreen.routeName:
         return SearchScreen.route();
       case CategoryScreen.routeName:
         return CategoryScreen.route();
       case ResetPasswordPage.routeName:
         return ResetPasswordPage.route();
-      case GetStartedPage.routeName:
-        return GetStartedPage.route();
       case OrderConfirmation.routeName:
         return OrderConfirmation.route();
       case ProductScreen.routeName:

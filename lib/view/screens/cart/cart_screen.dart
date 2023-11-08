@@ -171,22 +171,26 @@ class CartScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is CartLoaded) {
               return (state.cart.productsMap.isEmpty)
-                  ? BottomAppBar(
-                      child: MainButtonWidget(
+                  ? Row(
+                    children: [
+                      MainButtonWidget(
                         buttonText: 'BACK TO SHOPPING',
                         onPressed: () {
                           Navigator.pushNamed(context, '/');
                         },
                       ),
-                    )
-                  : BottomAppBar(
-                      child: MainButtonWidget(
+                    ],
+                  )
+                  : Row(
+                    children: [
+                      MainButtonWidget(
                         buttonText: 'GO TO CHECKOUT',
                         onPressed: () {
                           Navigator.pushNamed(context, '/checkout');
                         },
                       ),
-                    );
+                    ],
+                  );
             } else {
               return const Center(
                 child: Icon(

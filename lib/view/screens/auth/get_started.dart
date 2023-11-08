@@ -5,16 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 
 class GetStartedPage extends StatelessWidget {
-  const GetStartedPage({super.key});
-
-  static const String routeName = '/getStarted';
-
-  static Route route() {
-    return MaterialPageRoute(
-      settings: const RouteSettings(name: routeName),
-      builder: (_) => const GetStartedPage(),
-    );
-  }
+  final String userName;
+  final String userEmail;
+  const GetStartedPage({super.key,this.userName='',this.userEmail=''});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +43,7 @@ class GetStartedPage extends StatelessWidget {
                   ),
                 );
               } else if (snapshot.hasData) {
-                return const VerifyEmailPage();
+                return VerifyEmailPage(userName: userName,userEmail: userEmail);
               } else {
                 return const AuthPage();
               }

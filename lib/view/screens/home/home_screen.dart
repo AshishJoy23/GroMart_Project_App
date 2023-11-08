@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +27,13 @@ class HomeScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         BlocProvider.of<CartBloc>(context).add(LoadCart(email: currentUser!));
-        BlocProvider.of<WishlistBloc>(context).add(WishListGetLoaded(email: currentUser));
-        BlocProvider.of<AddressBloc>(context).add(AddressLoaded(email: currentUser));
+        BlocProvider.of<WishlistBloc>(context)
+            .add(WishListGetLoaded(email: currentUser));
+        BlocProvider.of<AddressBloc>(context)
+            .add(AddressLoaded(email: currentUser));
         BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
-        BlocProvider.of<OrdersBloc>(context).add(OrdersGetLoaded(email: currentUser));
+        BlocProvider.of<OrdersBloc>(context)
+            .add(OrdersGetLoaded(email: currentUser));
       },
     );
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

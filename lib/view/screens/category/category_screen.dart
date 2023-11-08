@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
-import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/view/screens/category/widgets/category_card.dart';
 import '../../widgets/widgets.dart';
 

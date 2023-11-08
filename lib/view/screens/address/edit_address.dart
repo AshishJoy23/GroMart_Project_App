@@ -83,7 +83,6 @@ class EditAddressScreen extends StatelessWidget {
                   stateController: stateController,
                   pinController: pinController,
                   addressType: addressType!,
-                  editPage: true,
                 ),
               ),
             ),

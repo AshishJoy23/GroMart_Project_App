@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
@@ -61,7 +62,7 @@ class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         child: Icon(
-                          Icons.shopping_bag_outlined,
+                          CupertinoIcons.shopping_cart,
                           color: Colors.black,
                           size: 26,
                         ),

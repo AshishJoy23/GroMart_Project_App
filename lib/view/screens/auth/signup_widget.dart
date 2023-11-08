@@ -17,6 +17,7 @@ class SignUpWidget extends StatefulWidget {
 
 class _SignUpWidgetState extends State<SignUpWidget> {
   final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
@@ -38,6 +39,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              AuthTextFormFieldWidget(
+                controller: nameController,
+                hintText: 'Enter Full Name..',
+                labelText: 'Full Name',
+                iconData: Icons.person,
+                validator: (name) =>
+                    name != '' ? null : 'Name is required!!',
+              ),
               AuthTextFormFieldWidget(
                 controller: emailController,
                 hintText: 'Enter Email..',
@@ -76,6 +85,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   signUp(
                     context,
                     formKey,
+                    nameController,
                     emailController,
                     passwordController,
                     confirmController,

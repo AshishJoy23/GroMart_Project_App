@@ -121,7 +121,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               //log(state.address!.name);
               log(state.paymentMethod.toString());
               log('<<<<<<<<<<//////////>>>>>>>>>>');
-              return ListView(
+              return Column(
                 children: [
                   (state.address == null)
                       ? const SectionTitleWidget(
@@ -147,80 +147,73 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     height: height * 0.01,
                   ),
                   const CheckoutPaymentWidget(),
+                  const Spacer(),
+                  (state.paymentMethod == PaymentMethod.cash_on_delivery)
+                      ? Row(
+                          children: [
+                            MainButtonWidget(
+                              buttonText: 'Pay With COD',
+                              onPressed: () async {
+                                BlocProvider.of<CheckoutBloc>(context)
+                                    .add(CheckoutConfirmed(
+                                  email: currentUser!,
+                                ));
+                                StatusAlert.show(
+                                  context,
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: Colors.white,
+                                  title: 'Order Placed',
+                                  subtitle:
+                                      'Your order has been successfully placed!',
+                                  configuration: const IconConfiguration(
+                                    icon: Icons.done,
+                                    color: Colors.green,
+                                  ),
+                                  maxWidth: 260,
+                                );
+                                await Future.delayed(const Duration(seconds: 2),
+                                    () {
+                                  Navigator.pushNamed(
+                                      context, '/order-confirmation');
+                                });
+                              },
+                            ),
+                          ],
+                        )
+                      : (state.paymentMethod == PaymentMethod.razor_pay)
+                          ? Row(children: [
+                              MainButtonWidget(
+                                buttonText: 'Pay With Razor Pay',
+                                onPressed: () {
+                                  var options = {
+                                    'key': "rzp_test_VvxnqdV4Axfbfz",
+                                    //amount must be multiple of 100
+                                    'amount': state.cart.grandTotal * 100,
+                                    'name': 'GroMart',
+                                    'description': 'Sample Payment',
+                                    'timeout': 300, // in seconds
+                                    'prefill': {
+                                      'contact': '9746411339',
+                                      'email': 'gromart@razorpay.com'
+                                    }
+                                  };
+                                  _razorpay.open(options);
+
+                                  // BlocProvider.of<CheckoutBloc>(context)
+                                  //     .add(CheckoutConfirmed(
+                                  //   email: currentUser!,
+                                  //));
+                                },
+                              ),
+                            ])
+                          : Row(children: [
+                              MainButtonWidget(
+                                buttonText: 'CHOOSE PAYMENT',
+                                onPressed: () {},
+                              ),
+                            ])
                 ],
               );
-            } else {
-              return const Icon(
-                Icons.error,
-                color: Colors.red,
-              );
-            }
-          },
-        ),
-        bottomNavigationBar: BlocBuilder<CheckoutBloc, CheckoutState>(
-          builder: (context, state) {
-            if (state is CheckoutLoaded) {
-              if (state.paymentMethod == PaymentMethod.cash_on_delivery) {
-                return BottomAppBar(
-                  child: MainButtonWidget(
-                    buttonText: 'PAY WITH COD',
-                    onPressed: () async {
-                      BlocProvider.of<CheckoutBloc>(context)
-                          .add(CheckoutConfirmed(
-                        email: currentUser!,
-                      ));
-                      StatusAlert.show(
-                        context,
-                        duration: const Duration(seconds: 2),
-                        backgroundColor: Colors.white,
-                        title: 'Order Placed',
-                        subtitle: 'Your order has been successfully placed!',
-                        configuration: const IconConfiguration(
-                          icon: Icons.done,
-                          color: Colors.green,
-                        ),
-                        maxWidth: 260,
-                      );
-                      await Future.delayed(const Duration(seconds: 2), () {
-                        Navigator.pushNamed(context, '/order-confirmation');
-                      });
-                    },
-                  ),
-                );
-              } else if (state.paymentMethod == PaymentMethod.razor_pay) {
-                return BottomAppBar(
-                  child: MainButtonWidget(
-                    buttonText: 'PAY WITH RAZOR PAY',
-                    onPressed: () {
-                      var options = {
-                        'key': "rzp_test_VvxnqdV4Axfbfz",
-                        //amount must be multiple of 100
-                        'amount': state.cart.grandTotal * 100,
-                        'name': 'GroMart',
-                        'description': 'Sample Payment',
-                        'timeout': 300, // in seconds
-                        'prefill': {
-                          'contact': '9746411339',
-                          'email': 'gromart@razorpay.com'
-                        }
-                      };
-                      _razorpay.open(options);
-                      
-                      // BlocProvider.of<CheckoutBloc>(context)
-                      //     .add(CheckoutConfirmed(
-                      //   email: currentUser!,
-                      //));
-                    },
-                  ),
-                );
-              } else {
-                return BottomAppBar(
-                  child: MainButtonWidget(
-                    buttonText: 'CHOOSE PAYMENT',
-                    onPressed: () {},
-                  ),
-                );
-              }
             } else {
               return const Icon(
                 Icons.error,

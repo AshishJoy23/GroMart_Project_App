@@ -13,7 +13,6 @@ class AddressDetailsWidget extends StatelessWidget {
   final TextEditingController cityController;
   final TextEditingController stateController;
   final TextEditingController pinController;
-  final bool editPage;
   String addressType;
   AddressDetailsWidget({
     super.key,
@@ -25,7 +24,6 @@ class AddressDetailsWidget extends StatelessWidget {
     required this.stateController,
     required this.pinController,
     required this.addressType,
-    this.editPage=false,
   });
 
   @override
@@ -35,13 +33,15 @@ class AddressDetailsWidget extends StatelessWidget {
       children: [
         CustomTextFormField(
           controller: nameController,
-          labelText: (editPage) ? nameController.text : 'Full Name',
+          labelText: 'Full Name',
           iconData: Icons.person,
           validator: (name) => name != '' ? null : 'Name is required!!',
         ),
         CustomTextFormField(
           controller: phoneController,
-          labelText: (editPage) ? phoneController.text : 'Phone Number',
+          labelText: 'Phone Number',
+          isMaxLength: true,
+          maxLength: 10,
           iconData: Icons.phone_android,
           keyboardType: TextInputType.number,
           validator: (phone) => (phone != null &&
@@ -52,47 +52,42 @@ class AddressDetailsWidget extends StatelessWidget {
         ),
         CustomTextFormField(
           controller: houseController,
-          labelText: (editPage) ? houseController.text : 'House / Building Name',
+          labelText: 'House / Building Name',
           iconData: Icons.home,
           validator: (house) => house != '' ? null : 'House Name is required!!',
         ),
         CustomTextFormField(
           controller: streetController,
-          labelText: (editPage) ? streetController.text : 'Street Name',
+          labelText: 'Street Name',
           iconData: Icons.location_pin,
           validator: (street) =>
               street != '' ? null : 'Street Name is required!!',
         ),
         CustomTextFormField(
           controller: cityController,
-          labelText: (editPage) ? cityController.text : 'City Name',
+          labelText: 'City Name',
           iconData: Icons.location_city,
           validator: (city) => city != '' ? null : 'City Name is required!!',
         ),
-        Row(
-          children: [
-            Expanded(
-              child: CustomTextFormField(
-                controller: stateController,
-                labelText: (editPage) ? stateController.text : 'State Name',
-                iconData: Icons.flag,
-                validator: (state) =>
-                    state != '' ? null : 'State name is required!!',
-              ),
-            ),
-            CustomTextFormField(
-              controller: pinController,
-              labelText: (editPage) ? pinController.text : 'Pin Code',
-              iconData: Icons.pin,
-              keyboardType: TextInputType.number,
-              widthFactor: 0.37,
-              validator: (pin) => (pin != null &&
-                      pin.length != 6 &&
-                      !RegExp(r'^[0-9]{10}$').hasMatch(pin))
-                  ? 'Pin must be 6 digits'
-                  : null,
-            ),
-          ],
+        CustomTextFormField(
+          controller: stateController,
+          labelText: 'State',
+          iconData: Icons.flag,
+          validator: (state) =>
+              state != '' ? null : 'State name is required!!',
+        ),
+        CustomTextFormField(
+          controller: pinController,
+          labelText: 'Pin Code',
+          iconData: Icons.pin,
+          isMaxLength: true,
+          maxLength: 6,
+          keyboardType: TextInputType.number,
+          validator: (pin) => (pin != null &&
+                  pin.length != 6 &&
+                  !RegExp(r'^[0-9]{10}$').hasMatch(pin))
+              ? 'Pin must be 6 digits'
+              : null,
         ),
         BlocBuilder<AddressBloc, AddressState>(
           builder: (context, state) {
@@ -133,5 +128,3 @@ class AddressDetailsWidget extends StatelessWidget {
     );
   }
 }
-
-

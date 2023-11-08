@@ -10,3 +10,4 @@ export 'custom_drawer.dart';
 export 'search_bar.dart';
 export 'checkout_navbutton.dart';
 export 'checkout_navcard.dart';
+export 'profile_photo.dart';

@@ -1,13 +1,22 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/repositories/profile/profile_repository.dart';
 import 'package:gromart_project/view/config/utils.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({super.key});
+  final String userName;
+  final String userEmail;
+  const VerifyEmailPage({
+    super.key,
+    required this.userName,
+    required this.userEmail,
+  });
 
   @override
   State<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -105,7 +114,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         Expanded(
                           child: TextButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black26,
+                                backgroundColor: Colors.black26,
                                 side: const BorderSide(
                                   color: Color(0xff388E3C),
                                   width: 1.5,
@@ -147,7 +156,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       );
       setState(() => canResendEmail = true);
     } catch (e) {
-      Utils.showSnackBar(e.toString(),Colors.redAccent);
+      Utils.showSnackBar(e.toString(), Colors.redAccent);
     }
   }
 
@@ -158,6 +167,21 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
     if (isEmailVerified) {
+      final profile = FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userEmail)
+          .collection('profile')
+          .doc();
+      ProfileModel userProfile = ProfileModel(
+        id: profile.id,
+        userName: widget.userName,
+        userEmail: widget.userEmail,
+        userPhone: '',
+        userGender: '',
+        userDob: '',
+        userImageUrl: '',
+      );
+      await ProfileRepository().updateProfileData(widget.userEmail, profile.id, userProfile);
       //cancel the timer to avoid checking the verification after each 3 seconds
       timer?.cancel();
     }

@@ -42,7 +42,7 @@ class MainBottomNavBar extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/profile');
+                Navigator.pushNamed(context, '/account');
               },
               icon: const Icon(Icons.person,size: 26,),
             ),

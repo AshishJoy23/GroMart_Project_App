@@ -35,6 +35,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           labelText: labelText,
+          contentPadding: const EdgeInsets.all(8),
           floatingLabelStyle: const TextStyle(
             color: Color(0xff388E3C),
           ),

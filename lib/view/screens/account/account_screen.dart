@@ -1,0 +1,142 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gromart_project/view/config/config.dart';
+import 'package:gromart_project/view/screens/screens.dart';
+import '../../widgets/widgets.dart';
+
+class AccountScreen extends StatelessWidget {
+  AccountScreen({super.key});
+
+  static const String routeName = '/account';
+
+  static Route route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: routeName),
+      builder: (_) => AccountScreen(),
+    );
+  }
+
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xff4CAF50),
+            Color(0xffC8E6C9),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const MainAppBarWidget(
+          title: 'Account',
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: ListView(
+            children: [
+              const ProfilePhotoWidget(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'User Name',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Material(
+                elevation: 12,
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: Container(
+                  width: size.width * 0.8,
+                  height: size.height * 0.575,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      CustomListTile(
+                          tileText: 'Edit Profile',
+                          tileIcon: Icons.person_outline,
+                          tileOnTap: () {
+                            Navigator.pushNamed(context, '/profile');
+                          }),
+                      CustomListTile(
+                          tileText: 'Orders',
+                          tileIcon: CupertinoIcons.cube_box,
+                          tileOnTap: () {
+                            Navigator.pushNamed(context, '/orders');
+                          }),
+                      CustomListTile(
+                          tileText: 'Wishlist',
+                          tileIcon: Icons.favorite_outline,
+                          tileOnTap: () {
+                            Navigator.pushNamed(context, '/wishlist');
+                          }),
+                      CustomListTile(
+                          tileText: 'Addresses',
+                          tileIcon: Icons.pin_drop_outlined,
+                          tileOnTap: () {
+                            Navigator.pushNamed(context, '/address');
+                          }),
+                      CustomListTile(
+                          tileText: 'Settings',
+                          tileIcon: Icons.settings_outlined,
+                          tileOnTap: () {}),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          MainButtonWidget(
+                            heightFactor: 0.05,
+                            buttonText: 'Exit App',
+                            onPressed: () {
+                              Utils.showAlertDialogBox(
+                                context,
+                                'Are You Sure?',
+                                'You want to exit from the app.',
+                                () {
+                                  SystemNavigator.pop();
+                                },
+                              );
+                            },
+                            isSubButton: true,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          MainButtonWidget(
+                            heightFactor: 0.05,
+                            buttonText: 'Logout',
+                            onPressed: () async {
+                              //await FirebaseAuth.instance.signOut();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: const MainBottomNavBar(),
+      ),
+    );
+  }
+}

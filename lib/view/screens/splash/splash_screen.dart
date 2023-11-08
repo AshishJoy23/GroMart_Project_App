@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/screens/auth/get_started.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -16,7 +17,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed('/getStarted');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GetStartedPage()));
     });
     return Scaffold(
       backgroundColor: const Color(0xff4CAF50),

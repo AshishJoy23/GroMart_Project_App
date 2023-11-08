@@ -17,7 +17,7 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     on<AddToWishlist>(_onAddToWishlist);
     on<RemoveFromWishlist>(_onRemoveFromWishlist);
   }
-
+  
   void _onWishListGetLoaded(
       WishListGetLoaded event, Emitter<WishlistState> emit) async {
     log('<<<<<<<<<wishlist bloc code>>>>>>>>>');
