@@ -2,6 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/config.dart';
+import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -17,166 +22,113 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
+  final genderController = TextEditingController();
   final dateController = TextEditingController();
-  List<String> genderList = [
-    'Male',
-    'Female',
-    'Other',
-  ];
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CustomAppBarWidget(title: 'Profile', actionList: []),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          children: [
-            const ProfilePhotoWidget(
-              isEdit: true,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomTextFormField(
-              controller: nameController,
-              labelText: 'Full Name',
-              iconData: Icons.person,
-              validator: (name) => name != '' ? null : 'Name is required!!',
-            ),
-            CustomTextFormField(
-              controller: phoneController,
-              labelText: 'Phone Number',
-              isMaxLength: true,
-              maxLength: 10,
-              iconData: Icons.phone_android,
-              keyboardType: TextInputType.number,
-              validator: (phone) => (phone != null &&
-                      phone.length != 10 &&
-                      !RegExp(r'^[0-9]{10}$').hasMatch(phone))
-                  ? 'Phone number should be 10 digits'
-                  : null,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 7,
-              ),
-              child: DropdownButtonFormField(
-                iconSize: 28,
-                icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                iconEnabledColor: Colors.black,
-                dropdownColor: const Color(0xffC8E6C9),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(5),
-                  fillColor: Color(0xffC8E6C9),
-                  hintText: 'Choose Gender',
-                  labelText: 'Choose Gender',
-                  filled: true,
-                  floatingLabelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoaded) {
+              nameController.text = state.profile.userName;
+              phoneController.text = state.profile.userPhone;
+              genderController.text = state.selectedGender;
+              dateController.text = state.profile.userDob;
+              log('<<<<<<<<<----------->>>>>>>>>');
+
+              log('<<<<<<<<<<<<message>>>>>>>>>>>>');
+              return Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    const ProfilePhotoWidget(
+                      isEdit: true,
                     ),
-                  ),
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.category_outlined),
-                  prefixIconColor: Colors.black54,
-                ),
-                items: genderList.map((gender) {
-                  return DropdownMenuItem(
-                      value: gender,
-                      child: Text(
-                        gender,
-                      ));
-                }).toList(),
-                onChanged: (value) {}, 
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 7,
-              ),
-              child: TextFormField(
-                controller: dateController,
-                onTap: () {
-                  dateController.text =
-                      DateFormat('MMM d, yyyy').format(DateTime.now());
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: size.height * 0.4,
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Done',
-                                style:
-                                    Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ),
-                            Expanded(
-                              child: CupertinoDatePicker(
-                                initialDateTime: DateTime.now(),
-                                mode: CupertinoDatePickerMode.date,
-                                minimumDate: DateTime(1900),
-                                maximumDate: DateTime.now(),
-                                onDateTimeChanged: (date) {
-                                  log(date.toString());
-                                  dateController.text =
-                                      DateFormat('MMM d, yyyy').format(date);
-                                  log(dateController.text);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                onTapOutside: (event) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                cursorColor: Colors.black,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(5),
-                  fillColor: Color(0xffC8E6C9),
-                  labelText: 'Choose DOB',
-                  filled: true,
-                  floatingLabelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.calendar_month),
-                  prefixIconColor: Colors.black54,
+                    CustomTextFormField(
+                      controller: nameController,
+                      labelText: 'Full Name',
+                      iconData: Icons.person,
+                      validator: (name) =>
+                          name != '' ? null : 'Name is required!!',
+                    ),
+                    CustomTextFormField(
+                      controller: phoneController,
+                      labelText: 'Phone Number',
+                      isMaxLength: true,
+                      maxLength: 10,
+                      iconData: Icons.phone_android,
+                      keyboardType: TextInputType.number,
+                      validator: (phone) => (phone != null &&
+                              phone.length != 10 &&
+                              !RegExp(r'^[0-9]{10}$').hasMatch(phone))
+                          ? 'Phone number should be 10 digits'
+                          : null,
+                    ),
+                    CustomProfileDropDown(genderController: genderController),
+                    ProfileDatePicker(dateController: dateController),
+                    const Spacer(),
+                  ],
                 ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (dob) =>
-                    dob != '' ? null : 'Date of Birth is required!!',
-              ),
-            ),
-          ],
+              );
+            } else {
+              return const Icon(
+                Icons.error,
+                color: Colors.red,
+              );
+            }
+          },
         ),
+      ),
+      bottomNavigationBar: Row(
+        children: [
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileLoaded) {
+                return MainButtonWidget(
+                    buttonText: 'Save Profile',
+                    onPressed: () {
+                      final isValid = formKey.currentState!.validate();
+                      if (isValid) {
+                        final updatedProfile = ProfileModel(
+                          id: state.profile.id,
+                          userName: nameController.text.trim(),
+                          userEmail: state.profile.userEmail,
+                          userPhone: phoneController.text.trim(),
+                          userGender: genderController.text.trim(),
+                          userDob: dateController.text.trim(),
+                          userImageUrl: state.profile.userImageUrl,
+                        );
+                        BlocProvider.of<ProfileBloc>(context)
+                            .add(ProfileUpdated(newProfile: updatedProfile));
+                        Utils.showSnackBar('Profile updated successfully.',
+                            Colors.lightGreenAccent);
+                        Navigator.pop(context);
+                      } else {
+                        log('not valid');
+                        Utils.showSnackBar(
+                            'All the fields are required.', Colors.redAccent);
+                      }
+                    });
+              } else {
+                return const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

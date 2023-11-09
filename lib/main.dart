@@ -2,15 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
-import 'package:gromart_project/repositories/address/address_repository.dart';
-import 'package:gromart_project/repositories/cart/cart_repository.dart';
-import 'package:gromart_project/repositories/category/category_repository.dart';
-import 'package:gromart_project/repositories/order/order_repository.dart';
-import 'package:gromart_project/repositories/product/product_repository.dart';
-import 'package:gromart_project/repositories/wishlist/wishlist_repository.dart';
-import 'package:gromart_project/view/config/app_router.dart';
-import 'package:gromart_project/view/config/theme.dart';
-import 'package:gromart_project/view/config/utils.dart';
+import 'package:gromart_project/repositories/repositories.dart';
+import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 
 Future<void> main() async {
@@ -52,6 +45,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => AddressBloc(
             addressRepository: AddressRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => ProfileBloc(
+            profileRepository: ProfileRepository(),
           ),
         ),
         BlocProvider(

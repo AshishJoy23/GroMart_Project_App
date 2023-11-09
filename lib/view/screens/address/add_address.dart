@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/main.dart';
 import 'package:gromart_project/models/address_model.dart';
+import 'package:gromart_project/view/config/config.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -76,7 +77,7 @@ class AddAddressScreen extends StatelessWidget {
         ),
         bottomNavigationBar: BottomAppBar(
           child: MainButtonWidget(
-            buttonText: 'SAVE ADDRESS',
+            buttonText: 'Save Address',
             onPressed: () {
               final isValid = formKey.currentState!.validate();
               if (isValid) {
@@ -98,21 +99,7 @@ class AddAddressScreen extends StatelessWidget {
               } else {
                 log('not valid');
                 log(addressType.toString());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(5),
-                    backgroundColor: const Color(0xff4CAF50),
-                    content: Text(
-                      'All the fields are required.',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    duration: const Duration(seconds: 1),
-                  ),
-                );
+                Utils.showSnackBar('All the fields are required.', Colors.redAccent);
               }
             },
           ),

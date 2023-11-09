@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gromart_project/view/config/config.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 
 class ProfilePhotoWidget extends StatelessWidget {
   final bool isEdit;
@@ -12,65 +12,86 @@ class ProfilePhotoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Center(
-      child: (isEdit)
-          ? Stack(
-              children: [
-                Container(
-                  width: size.width * 0.3,
-                  height: size.width * 0.3,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(90),
-                      border: Border.all(
-                          width: 1.5, color: const Color(0xff388E3C))),
-                  child: Image.asset('assets/images/profile.png'),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () {},
-                    child: const CircleAvatar(
-                      backgroundColor: Color(0xff388E3C),
-                      radius: 18,
-                      child: Icon(
-                        Icons.add_a_photo,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : Container(
-              width: size.width * 0.3,
-              height: size.width * 0.3,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(90),
-                  border:
-                      Border.all(width: 1.5, color: const Color(0xff388E3C))),
-              child: Image.asset('assets/images/profile.png'),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileLoading) {
+          return Center(
+            child: Transform.scale(
+              scale: 0.7,
+              child: const CircularProgressIndicator(
+                strokeWidth: 3,
+                backgroundColor: Colors.white,
+                color: Colors.black,
+              ),
             ),
+          );
+        } else if (state is ProfileLoaded) {
+          return Center(
+            child: (isEdit)
+                ? Stack(
+                    children: [
+                      Container(
+                        width: size.width * 0.3,
+                        height: size.width * 0.3,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(90),
+                            border: Border.all(
+                                width: 1.5, color: const Color(0xff388E3C))),
+                        child: (state.profilePhotoUrl == '')
+                            ? Image.asset('assets/images/profile.png')
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(90),
+                                child: Image.network(
+                                  state.profilePhotoUrl,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: InkWell(
+                          onTap: () {
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(const ProfilePictureUploaded());
+                          },
+                          child: const CircleAvatar(
+                            backgroundColor: Color(0xff388E3C),
+                            radius: 18,
+                            child: Icon(
+                              Icons.add_a_photo,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(
+                    width: size.width * 0.3,
+                    height: size.width * 0.3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(90),
+                        border: Border.all(
+                            width: 1.5, color: const Color(0xff388E3C))),
+                    child: (state.profilePhotoUrl == '')
+                        ? Image.asset('assets/images/profile.png')
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(90),
+                            child: Image.network(
+                              state.profilePhotoUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+          );
+        } else {
+          return const Icon(
+            Icons.error,
+            color: Colors.red,
+          );
+        }
+      },
     );
   }
-
-  // Future pickImageFromGallery(BuildContext context) async {
-  //   ImagePicker picker = ImagePicker();
-  //   final XFile? image = await picker.pickImage(
-  //     source: ImageSource.gallery,
-  //   );
-  //   if (image == null) {
-  //     Utils.showSnackBar('No image was selected..', Colors.black87);
-  //   }
-  //   if (image != null) {
-  //     await storage.uploadCategoryImage(image);
-  //     var imageUrl = await storage.getCategoryImageURL(image.name);
-  //     categoryController.categoryImageUrl.value = imageUrl;
-  //     await categoryController.newProduct.update(
-  //       'imageUrl',
-  //       (_) => categoryController.categoryImageUrl,
-  //       ifAbsent: () => categoryController.categoryImageUrl,
-  //     );
-  //   }
-  // }
 }

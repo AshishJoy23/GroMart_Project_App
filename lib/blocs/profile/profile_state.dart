@@ -1,26 +1,30 @@
-// part of 'profile_bloc.dart';
+part of 'profile_bloc.dart';
 
-// abstract class ProfileState extends Equatable {
-//   const ProfileState();
+abstract class ProfileState extends Equatable {
+  const ProfileState();
 
-//   @override
-//   List<Object> get props => [];
-// }
+  @override
+  List<Object> get props => [];
+}
 
-// class ProfileLoading extends ProfileState {}
+class ProfileLoading extends ProfileState {}
 
-// class ProfileLoaded extends ProfileState {
-//   final ProfileModel profile;
+class ProfileLoaded extends ProfileState {
+  String profilePhotoUrl;
+  String selectedGender;
+  ProfileModel profile;
 
-//   const ProfileLoaded({
-//     this.profile = const ProfileModel(
-//       userEmail: '',
-//       userName: '',
-//     ),
-//   });
+  ProfileLoaded({
+    this.profile = const ProfileModel(
+      userEmail: '',
+      userName: '',
+    ),
+    this.profilePhotoUrl = '',
+    this.selectedGender = 'Select One',
+  });
 
-//   @override
-//   List<Object> get props => [profile];
-// }
+  @override
+  List<Object> get props => [profile];
+}
 
-// class ProfileError extends ProfileState {}
+class ProfileError extends ProfileState {}

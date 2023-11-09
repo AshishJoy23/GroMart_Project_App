@@ -123,26 +123,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               log('<<<<<<<<<<//////////>>>>>>>>>>');
               return Column(
                 children: [
-                  (state.address == null)
-                      ? const SectionTitleWidget(
-                          title: 'Delivery Address',
-                        )
-                      : SectionTitleWidget(
-                          title: 'Delivery Address',
-                          button: true,
-                          buttonText: 'Change',
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/address');
-                          },
-                        ),
+                  SectionTitleWidget(
+                    title: 'Delivery Address',
+                    button: true,
+                    buttonText: 'Change',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/address');
+                    },
+                  ),
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  (state.address == null)
-                      ? const NewAddressCard()
-                      : CheckoutAddressCard(
-                          address: state.address!,
-                        ),
+                  CheckoutAddressCard(
+                    address: state.address!,
+                  ),
                   SizedBox(
                     height: height * 0.01,
                   ),
@@ -208,7 +202,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ])
                           : Row(children: [
                               MainButtonWidget(
-                                buttonText: 'CHOOSE PAYMENT',
+                                buttonText: 'Choose Payment',
                                 onPressed: () {},
                               ),
                             ])

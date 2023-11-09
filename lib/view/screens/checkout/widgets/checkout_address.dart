@@ -103,8 +103,12 @@ class CheckoutAddressCard extends StatelessWidget {
                         height: height * 0.028,
                       ),
                       InkWell(
-                        onTap: () {
-                          log('<<<<<ready to edit>>>>>');
+                        onTap: () async {
+                          await Navigator.pushNamed(
+                            context,
+                            '/edit_address',
+                            arguments: address,
+                          );
                         },
                         child: Container(
                           height: height * 0.028,

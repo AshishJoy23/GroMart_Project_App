@@ -12,10 +12,12 @@ import 'package:gromart_project/view/widgets/widgets.dart';
 class VerifyEmailPage extends StatefulWidget {
   final String userName;
   final String userEmail;
+  final String userPassword;
   const VerifyEmailPage({
     super.key,
     required this.userName,
     required this.userEmail,
+    required this.userPassword,
   });
 
   @override
@@ -45,7 +47,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     return isEmailVerified
-        ? const HomeScreen()
+        ? const GetStartedPage()
         : Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -167,6 +169,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
     if (isEmailVerified) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: widget.userEmail,
+      password: widget.userPassword,
+    );
       final profile = FirebaseFirestore.instance
           .collection('users')
           .doc(widget.userEmail)

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/screens/auth/get_started.dart';
+import 'package:gromart_project/view/screens/auth/verify_email.dart';
 
 import '../../main.dart';
 
@@ -58,8 +59,8 @@ Future signUp(
     formKey,
     TextEditingController nameController,
     TextEditingController emailController,
-    passwordController,
-    confirmController) async {
+    TextEditingController passwordController,
+    TextEditingController confirmController) async {
   final isValid = formKey.currentState!.validate();
   if (!isValid) {
     return;
@@ -78,15 +79,15 @@ Future signUp(
         );
       },
     );
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
+    navigatorKey.currentState!.push(
+      MaterialPageRoute(
+        builder: (context) => VerifyEmailPage(
+          userName: nameController.text.trim(),
+          userEmail: emailController.text.trim(),
+          userPassword: passwordController.text.trim(),
+        ),
+      ),
     );
-    navigatorKey.currentState!.push(MaterialPageRoute(
-        builder: (context) => GetStartedPage(
-              userName: nameController.text,
-              userEmail: emailController.text,
-            )));
   } on FirebaseAuthException catch (e) {
     log(e.message.toString());
     if (e.code == 'email-already-in-use') {
@@ -96,6 +97,7 @@ Future signUp(
       log('The account already exists for that email.');
     } else {
       Utils.showSnackBar(e.message, Colors.redAccent);
+      nameController.clear();
       emailController.clear();
       passwordController.clear();
       confirmController.clear();

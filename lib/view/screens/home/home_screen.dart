@@ -29,6 +29,8 @@ class HomeScreen extends StatelessWidget {
         BlocProvider.of<CartBloc>(context).add(LoadCart(email: currentUser!));
         BlocProvider.of<WishlistBloc>(context)
             .add(WishListGetLoaded(email: currentUser));
+        BlocProvider.of<ProfileBloc>(context)
+            .add(ProfileGetLoaded(email: currentUser));
         BlocProvider.of<AddressBloc>(context)
             .add(AddressLoaded(email: currentUser));
         BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());

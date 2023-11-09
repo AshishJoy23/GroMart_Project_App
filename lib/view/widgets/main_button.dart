@@ -37,7 +37,7 @@ class MainButtonWidget extends StatelessWidget {
                     child: Text(
                       buttonText,
                       textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                 ),
@@ -58,7 +58,7 @@ class MainButtonWidget extends StatelessWidget {
                   onPressed: onPressed,
                   child: Text(
                     buttonText,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: Colors.white,
                         ),
                   ),

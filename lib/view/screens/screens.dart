@@ -13,6 +13,8 @@ export 'auth/signup_widget.dart';
 export 'auth/get_started.dart';
 export '../widgets/carousel_card.dart';
 export 'cart/widgets/cart_product_card.dart';
+export 'cart/widgets/cart_empty.dart';
+export 'cart/widgets/cart_bottom_nav.dart';
 export 'home/widgets/product_carousel.dart';
 export 'cart/widgets/cart_amount.dart';
 export 'product/widgets/product_name_price.dart';
@@ -47,5 +49,6 @@ export 'order/widgets/order_card.dart';
 export 'checkout/checkout_screen.dart';
 export 'checkout/widgets/checkout_address.dart';
 export 'checkout/widgets/checkout_payment.dart';
-export 'checkout/widgets/new_address_card.dart';
+export 'profile/widgets/profile_dropdown.dart';
+export 'profile/widgets/profile_dob_picker.dart';
 

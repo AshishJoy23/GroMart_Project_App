@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import '../../widgets/widgets.dart';
@@ -22,6 +26,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? currentUser = FirebaseAuth.instance.currentUser!.email;
     var size = MediaQuery.of(context).size;
     return Container(
       decoration: const BoxDecoration(
@@ -44,15 +49,29 @@ class AccountScreen extends StatelessWidget {
           child: ListView(
             children: [
               const ProfilePhotoWidget(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'User Name',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )
-                ],
-              ),
+              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                if (state is ProfileLoaded) {
+                  log('<<<<<<<<<<<account screenn>>>>>>>>>>>');
+                  log(state.profile.userName);
+                  log(state.profile.userImageUrl);
+                  log('============================;');
+                  log(state.profile.userImageUrl);
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        state.profile.userName,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      )
+                    ],
+                  );
+                } else {
+                  return const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  );
+                }
+              }),
               const SizedBox(
                 height: 10,
               ),
@@ -73,6 +92,8 @@ class AccountScreen extends StatelessWidget {
                           tileText: 'Edit Profile',
                           tileIcon: Icons.person_outline,
                           tileOnTap: () {
+                            BlocProvider.of<ProfileBloc>(context)
+                                .add(ProfileGetLoaded(email: currentUser!));
                             Navigator.pushNamed(context, '/profile');
                           }),
                       CustomListTile(

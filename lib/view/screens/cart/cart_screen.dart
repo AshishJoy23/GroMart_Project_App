@@ -18,7 +18,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -38,121 +38,67 @@ class CartScreen extends StatelessWidget {
         ),
         body: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
-            // if (state is CartLoading) {
-            //   return const Center(
-            //     child: CircularProgressIndicator(
-            //       strokeWidth: 3,
-            //       backgroundColor: Colors.white,
-            //       color: Colors.black,
-            //     ),
-            //   );
-            // }
             if (state is CartLoaded) {
               return (state.cart.productsMap.isEmpty)
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/cart_empty.png',
-                            width: size.width,
-                            height: size.height * 0.4,
-                            fit: BoxFit.cover,
-                          ),
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
-                          Text(
-                            'Your Cart is Empty!',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          Text(
-                            'Add items to cart and explore your shopping.',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    )
+                  ? const CartEmptyWidget()
                   : Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10.0,
                         vertical: 10.0,
                       ),
-                      child: ListView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        state.cart
-                                            .freeDelivery(state.cart.subTotal),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/',
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Add More Items',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium!
-                                                  .copyWith(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  ),
-                                            ),
-                                            const Icon(
-                                              Icons.arrow_forward_ios,
-                                              size: 20,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 400,
-                                    child: ListView.builder(
-                                      itemCount:
-                                          state.cart.productsMap.keys.length,
-                                      itemBuilder: (context, index) {
-                                        return CartProductCard(
-                                          quantity: state
-                                              .cart.productsMap.values
-                                              .elementAt(index),
-                                          product: state.cart.productsMap.keys
-                                              .elementAt(index),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const Divider(
-                                    thickness: 2,
-                                  ),
-                                ],
+                              Text(
+                                state.cart.freeDelivery(state.cart.subTotal),
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                        fontWeight: FontWeight.w600),
                               ),
-                              CartAmountWidget(
-                                subTotal: state.cart.subTotal,
-                                deliveryFee: state.cart.deliveryFee,
-                                totalAmount: state.cart.grandTotal,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context,'/',);
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Add More Items',
+                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                            decoration: TextDecoration.underline,),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 20,
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
+                          ),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: ListView.builder(
+                              itemCount:
+                                  state.cart.productsMap.keys.length,
+                              itemBuilder: (context, index) {
+                                return CartProductCard(
+                                  quantity: state.cart.productsMap.values.elementAt(index),
+                                  product: state.cart.productsMap.keys.elementAt(index),
+                                );
+                              },
+                            ),
+                          ),
+                          //const Spacer(),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          CartAmountWidget(
+                            subTotal: state.cart.subTotal,
+                            deliveryFee: state.cart.deliveryFee,
+                            totalAmount: state.cart.grandTotal,
                           ),
                         ],
                       ),
@@ -167,41 +113,9 @@ class CartScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
-          builder: (context, state) {
-            if (state is CartLoaded) {
-              return (state.cart.productsMap.isEmpty)
-                  ? Row(
-                    children: [
-                      MainButtonWidget(
-                        buttonText: 'BACK TO SHOPPING',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/');
-                        },
-                      ),
-                    ],
-                  )
-                  : Row(
-                    children: [
-                      MainButtonWidget(
-                        buttonText: 'GO TO CHECKOUT',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/checkout');
-                        },
-                      ),
-                    ],
-                  );
-            } else {
-              return const Center(
-                child: Icon(
-                  Icons.error,
-                  color: Colors.red,
-                ),
-              );
-            }
-          },
-        ),
+        bottomNavigationBar: const CartBottomNavigation(),
       ),
     );
   }
 }
+
