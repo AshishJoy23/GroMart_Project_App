@@ -41,8 +41,10 @@ class AppRouter {
         return CategoryScreen.route();
       case ResetPasswordPage.routeName:
         return ResetPasswordPage.route();
-      case GetStartedPage.routeName:
+      case GetStartedPage.routeName: 
         return GetStartedPage.route();
+      case SettingsScreen.routeName: 
+        return SettingsScreen.route();
       case OrderConfirmation.routeName:
         return OrderConfirmation.route();
       case ProductScreen.routeName:

@@ -14,16 +14,17 @@ class ProductCarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 4.5,
+      height: size.height * 0.36,
       child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: size.height * 0.015, vertical: size.height * 0.012),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemCount: products.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.only(right: 6.0),
+              padding: EdgeInsets.only(right: size.height * 0.01),
               child: BlocBuilder<WishlistBloc, WishlistState>(
                 builder: (context, state) {
                   if (state is WishlistLoading) {

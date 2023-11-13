@@ -8,7 +8,6 @@ import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
-import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});

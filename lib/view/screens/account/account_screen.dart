@@ -117,7 +117,9 @@ class AccountScreen extends StatelessWidget {
                       CustomListTile(
                           tileText: 'Settings',
                           tileIcon: Icons.settings_outlined,
-                          tileOnTap: () {}),
+                          tileOnTap: () {
+                            Navigator.pushNamed(context, '/settings');
+                          }),
                       const Spacer(),
                       Row(
                         children: [
