@@ -87,25 +87,25 @@ class HomeScreen extends StatelessWidget {
                         .toList(),
                   ),
                   const SectionTitleWidget(
-                    title: 'RECOMMENDED',
+                    title: 'Recommended',
                   ),
                   ProductCarouselWidget(
                     products: state.products,
                   ),
                   const SectionTitleWidget(
-                    title: 'MOST POPULAR',
+                    title: 'Most Popular',
                   ),
                   ProductCarouselWidget(
                     products: state.products,
                   ),
                   const SectionTitleWidget(
-                    title: 'TOP RATED',
+                    title: 'Top Rated',
                   ),
                   ProductCarouselWidget(
                     products: state.products,
                   ),
                   const SectionTitleWidget(
-                    title: 'TODAY\'S SPECIAL',
+                    title: 'Today\'s Special',
                   ),
                   ProductCarouselWidget(
                     products: state.products,

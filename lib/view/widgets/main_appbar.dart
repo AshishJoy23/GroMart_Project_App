@@ -73,14 +73,10 @@ class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
                       right: 0,
                       child: CircleAvatar(
                         backgroundColor: Colors.redAccent,
-                        radius: 8,
+                        radius: 9.0,
                         child: Text(
                           state.cart.productsMap.keys.length.toString(),
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

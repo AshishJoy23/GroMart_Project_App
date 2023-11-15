@@ -65,7 +65,6 @@ class EachCategoryScreen extends StatelessWidget {
                   return Center(
                     child: ProductCardWidget(
                       product: eachCategoryProducts[index],
-                      widthFactor: 2.5,
                     ),
                   );
                 },

@@ -26,7 +26,7 @@ class SectionTitleWidget extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           (button)
