@@ -17,7 +17,6 @@ class DetailsExpansionTileWidget extends StatelessWidget {
       initiallyExpanded: true,
       title: SectionTitleWidget(
         title: titleData,
-        size: 0.0,
       ),
       children: [
         ListTile(

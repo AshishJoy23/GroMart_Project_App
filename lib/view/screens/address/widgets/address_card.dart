@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/config.dart';
 
 class AddressCardWidget extends StatelessWidget {
   const AddressCardWidget({
@@ -27,21 +28,21 @@ class AddressCardWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(height * 0.01),
       child: Material(
-        elevation: 10,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        elevation: 5.0,
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Container(
           height: height * 0.17,
           width: width / 1,
           decoration: const BoxDecoration(
-            color: Color(0xffC8E6C9),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: kCardColor,
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Padding(
             padding: EdgeInsets.all(
               width * 0.02,
             ),
             child: RadioListTile(
-              activeColor: const Color(0xff388E3C),
+              activeColor: Colors.black,
               value: index,
               groupValue: selectedIndex,
               onChanged: (value) {
@@ -57,7 +58,7 @@ class AddressCardWidget extends StatelessWidget {
                           width: width * 0.14,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: const Color(0xff388E3C),
+                            color: Colors.black,
                           ),
                           child: Text(
                             address.type,
@@ -113,58 +114,58 @@ class AddressCardWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                   Column(
-                          children: [
-                            PopupMenuButton<String>(
-                              color: Colors.white70,
-                              iconSize: 28,
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: Colors.black,
-                                size: 28,
-                              ),
-                              padding: const EdgeInsets.all(1.0),
-                              itemBuilder: (BuildContext context) =>
-                                  <PopupMenuEntry<String>>[
-                                PopupMenuItem<String>(
-                                  value: "Edit",
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      await Navigator.pushNamed(
-                                        context,
-                                        '/edit_address',
-                                        arguments: address,
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Edit',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: "Delete",
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      BlocProvider.of<AddressBloc>(context)
-                                          .add(AddressDeleted(email: currentUser!, addressId: address.id));
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Delete',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                  Column(
+                    children: [
+                      PopupMenuButton<String>(
+                        color: kPopUpColor,
+                        iconSize: 28,
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.black,
+                          size: 28,
                         ),
+                        padding: const EdgeInsets.all(1.0),
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<String>>[
+                          PopupMenuItem<String>(
+                            value: "Edit",
+                            child: TextButton(
+                              onPressed: () async {
+                                BlocProvider.of<AddressBloc>(context).add(
+                                    AddressTypeButtonClicked(address.type));
+                                await Navigator.pushNamed(
+                                  context,
+                                  '/edit_address',
+                                  arguments: address,
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Edit',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: "Delete",
+                            child: TextButton(
+                              onPressed: () async {
+                                BlocProvider.of<AddressBloc>(context).add(
+                                    AddressDeleted(
+                                        email: currentUser!,
+                                        addressId: address.id));
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Delete',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

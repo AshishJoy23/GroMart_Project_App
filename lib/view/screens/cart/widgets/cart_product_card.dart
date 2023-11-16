@@ -1,10 +1,14 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/view/config/colors.dart';
+import 'package:gromart_project/view/config/config.dart';
+import 'package:gromart_project/view/screens/screens.dart';
 
 import '../../../../models/models.dart';
 
@@ -25,155 +29,120 @@ class CartProductCard extends StatelessWidget {
     var width = size.width;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Slidable(
-        endActionPane: ActionPane(
-          motion: const StretchMotion(),
-          extentRatio: 0.18,
-          children: [
-            SlidableAction(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              onPressed: (context) {
-                BlocProvider.of<CartBloc>(context)
-                    .add(CartProductDeleted(userEmail!,product));
-              },
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              icon: Icons.delete_rounded,
-            ),
-          ],
-        ),
-        child: Material(
-          elevation: 12,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          child: Container(
-            height: height * 0.11,
-            width: width / 1,
-            decoration: const BoxDecoration(
-              color: Color(0xffC8E6C9),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      product.imageUrls[0],
-                      width: 80,
-                      height: 70,
-                      fit: BoxFit.cover,
-                    ),
+      child: Material(
+        elevation: 5.0,
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+        child: Container(
+          height: height * 0.145,
+          width: width / 1,
+          decoration: const BoxDecoration(
+            color: kCardColor,
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(
+                    product.imageUrls[0],
+                    width: size.width * 0.22,
+                    height: size.height,
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.name,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        Text(
-                          '₹ ${product.price}',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Row(
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IconButton(
-                        onPressed: (quantity > 1)
-                            ? () {
-                                BlocProvider.of<CartBloc>(context)
-                                    .add(CartProductRemoved(userEmail!,product));
-                              }
-                            : () => ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    margin: const EdgeInsets.all(5),
-                                    backgroundColor: const Color(0xff4CAF50),
-                                    content: Text(
-                                      'Minimum quantity of 1 is allowed.',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w600),
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                ),
-                        icon: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: Colors.white60,
-                          child: Icon(
-                            Icons.arrow_drop_down_outlined,
-                            color: (quantity > 1)
-                            ? Colors.black
-                            : Colors.black.withOpacity(0.6),
-                            size: 28,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              product.name,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '$quantity',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      IconButton(
-                        onPressed: (quantity < 10)
-                            ? () {
-                                BlocProvider.of<CartBloc>(context)
-                                    .add(CartProductAdded(userEmail!,product));
-                              }
-                            : () => ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    margin: const EdgeInsets.all(5),
-                                    backgroundColor: const Color(0xff4CAF50),
-                                    content: Text(
-                                      'Maximum quantity of 10 is allowed.',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w600),
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                ),
-                        icon: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: Colors.white60,
-                          child: Icon(
-                            Icons.arrow_drop_up_outlined,
-                            color: (quantity < 10)
-                            ? Colors.black
-                            : Colors.black.withOpacity(0.6),
-                            size: 28,
+                          InkWell(
+                            onTap: () {
+                              Utils.showAlertDialogBox(
+                                context,
+                                'Do you want to delete?',
+                                'The product will be deleted from the cart',
+                                () {
+                                  BlocProvider.of<CartBloc>(context).add(
+                                      CartProductDeleted(userEmail!, product));
+                                  Navigator.pop(context);
+                                  Utils.showSnackBar(
+                                      'Product removed from the Cart',
+                                      Colors.black87);
+                                },
+                              );
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: kSecondaryColor,
+                              radius: 16.0,
+                              child: Icon(
+                                CupertinoIcons.delete_solid,
+                                color: Colors.black54,
+                                size: 20,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '₹ ${product.price}',
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      height: 0.0,
+                                    ),
+                          ),
+                          Text(
+                            ' / units',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Colors.grey,
+                                  height: 0.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Divider(
+                        color: Colors.black,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '₹ ${product.price * quantity}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: kPrimaryColor,
+                                  ),
+                            ),
+                          ),
+                          CartQuantityUpdateButton(
+                              quantity: quantity, product: product),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

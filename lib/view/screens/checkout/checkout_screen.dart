@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -86,136 +87,124 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var height = size.height;
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff4CAF50),
-            Color(0xffC8E6C9),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+    return Scaffold(
+      backgroundColor: kSecondaryColor,
+      appBar: const CustomAppBarWidget(
+        title: 'Checkout',
+        actionList: [],
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const CustomAppBarWidget(
-          title: 'Checkout',
-          actionList: [],
-        ),
-        body: BlocBuilder<CheckoutBloc, CheckoutState>(
-          builder: (context, state) {
-            if (state is CheckoutLoading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  backgroundColor: Colors.white,
-                  color: Colors.black,
+      body: BlocBuilder<CheckoutBloc, CheckoutState>(
+        builder: (context, state) {
+          if (state is CheckoutLoading) {
+            return const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                backgroundColor: Colors.white,
+                color: Colors.black,
+              ),
+            );
+          }
+          if (state is CheckoutLoaded) {
+            log('<<<<<<<<<<<checxkout screen>>>>>>>>>>>');
+            log(state.cart.grandTotal.toString());
+            log(state.address.toString());
+            //log(state.address!.name);
+            log(state.paymentMethod.toString());
+            log('<<<<<<<<<<//////////>>>>>>>>>>');
+            return Column(
+              children: [
+                SectionTitleWidget(
+                  title: 'Delivery Address',
+                  button: true,
+                  buttonText: 'Change',
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/address');
+                  },
                 ),
-              );
-            }
-            if (state is CheckoutLoaded) {
-              log('<<<<<<<<<<<checxkout screen>>>>>>>>>>>');
-              log(state.cart.grandTotal.toString());
-              log(state.address.toString());
-              //log(state.address!.name);
-              log(state.paymentMethod.toString());
-              log('<<<<<<<<<<//////////>>>>>>>>>>');
-              return Column(
-                children: [
-                  SectionTitleWidget(
-                    title: 'Delivery Address',
-                    button: true,
-                    buttonText: 'Change',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/address');
-                    },
-                  ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  CheckoutAddressCard(
-                    address: state.address!,
-                  ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  const CheckoutPaymentWidget(),
-                  const Spacer(),
-                  (state.paymentMethod == PaymentMethod.cash_on_delivery)
-                      ? Row(
-                          children: [
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                CheckoutAddressCard(
+                  address: state.address!,
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                const CheckoutPaymentWidget(),
+                const Spacer(),
+                (state.paymentMethod == PaymentMethod.cash_on_delivery)
+                    ? Row(
+                        children: [
+                          MainButtonWidget(
+                            buttonText: 'Pay With COD',
+                            onPressed: () async {
+                              BlocProvider.of<CheckoutBloc>(context)
+                                  .add(CheckoutConfirmed(
+                                email: currentUser!,
+                              ));
+                              StatusAlert.show(
+                                context,
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: Colors.white,
+                                title: 'Order Placed',
+                                subtitle:
+                                    'Your order has been successfully placed!',
+                                configuration: const IconConfiguration(
+                                  icon: Icons.done,
+                                  color: Colors.green,
+                                ),
+                                maxWidth: 260,
+                              );
+                              await Future.delayed(const Duration(seconds: 2),
+                                  () {
+                                Navigator.pushNamed(
+                                    context, '/order-confirmation');
+                              });
+                            },
+                          ),
+                        ],
+                      )
+                    : (state.paymentMethod == PaymentMethod.razor_pay)
+                        ? Row(children: [
                             MainButtonWidget(
-                              buttonText: 'Pay With COD',
-                              onPressed: () async {
-                                BlocProvider.of<CheckoutBloc>(context)
-                                    .add(CheckoutConfirmed(
-                                  email: currentUser!,
-                                ));
-                                StatusAlert.show(
-                                  context,
-                                  duration: const Duration(seconds: 2),
-                                  backgroundColor: Colors.white,
-                                  title: 'Order Placed',
-                                  subtitle:
-                                      'Your order has been successfully placed!',
-                                  configuration: const IconConfiguration(
-                                    icon: Icons.done,
-                                    color: Colors.green,
-                                  ),
-                                  maxWidth: 260,
-                                );
-                                await Future.delayed(const Duration(seconds: 2),
-                                    () {
-                                  Navigator.pushNamed(
-                                      context, '/order-confirmation');
-                                });
+                              buttonText: 'Pay With Razor Pay',
+                              onPressed: () {
+                                var options = {
+                                  'key': "rzp_test_VvxnqdV4Axfbfz",
+                                  //amount must be multiple of 100
+                                  'amount': state.cart.grandTotal * 100,
+                                  'name': 'GroMart',
+                                  'description': 'Sample Payment',
+                                  'timeout': 300, // in seconds
+                                  'prefill': {
+                                    'contact': '9746411339',
+                                    'email': 'gromart@razorpay.com'
+                                  }
+                                };
+                                _razorpay.open(options);
+
+                                // BlocProvider.of<CheckoutBloc>(context)
+                                //     .add(CheckoutConfirmed(
+                                //   email: currentUser!,
+                                //));
                               },
                             ),
-                          ],
-                        )
-                      : (state.paymentMethod == PaymentMethod.razor_pay)
-                          ? Row(children: [
-                              MainButtonWidget(
-                                buttonText: 'Pay With Razor Pay',
-                                onPressed: () {
-                                  var options = {
-                                    'key': "rzp_test_VvxnqdV4Axfbfz",
-                                    //amount must be multiple of 100
-                                    'amount': state.cart.grandTotal * 100,
-                                    'name': 'GroMart',
-                                    'description': 'Sample Payment',
-                                    'timeout': 300, // in seconds
-                                    'prefill': {
-                                      'contact': '9746411339',
-                                      'email': 'gromart@razorpay.com'
-                                    }
-                                  };
-                                  _razorpay.open(options);
-
-                                  // BlocProvider.of<CheckoutBloc>(context)
-                                  //     .add(CheckoutConfirmed(
-                                  //   email: currentUser!,
-                                  //));
-                                },
-                              ),
-                            ])
-                          : Row(children: [
-                              MainButtonWidget(
-                                buttonText: 'Choose Payment',
-                                onPressed: () {},
-                              ),
-                            ])
-                ],
-              );
-            } else {
-              return const Icon(
-                Icons.error,
-                color: Colors.red,
-              );
-            }
-          },
-        ),
+                          ])
+                        : Row(children: [
+                            MainButtonWidget(
+                              buttonText: 'Choose Payment',
+                              onPressed: () {},
+                            ),
+                          ])
+              ],
+            );
+          } else {
+            return const Icon(
+              Icons.error,
+              color: Colors.red,
+            );
+          }
+        },
       ),
     );
   }

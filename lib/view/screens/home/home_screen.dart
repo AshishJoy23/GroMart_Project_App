@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -33,25 +34,15 @@ class HomeScreen extends StatelessWidget {
             .add(ProfileGetLoaded(email: currentUser));
         BlocProvider.of<AddressBloc>(context)
             .add(AddressLoaded(email: currentUser));
-        BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
+        //BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
         BlocProvider.of<OrdersBloc>(context)
             .add(OrdersGetLoaded(email: currentUser));
       },
     );
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff4CAF50),
-            Color(0xffC8E6C9),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: kSecondaryColor,
         key: scaffoldKey,
         appBar: MainAppBarWidget(
           title: 'Explore!!!',
@@ -118,7 +109,6 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         bottomNavigationBar: const MainBottomNavBar(),
-      ),
-    );
+      );
   }
 }

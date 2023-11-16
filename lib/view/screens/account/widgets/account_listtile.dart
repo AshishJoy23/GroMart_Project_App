@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CustomListTile extends StatelessWidget {
   final String tileText;
@@ -23,7 +24,7 @@ class CustomListTile extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            iconColor: const Color(0xff388E3C),
+            iconColor: kPrimaryColor,
             leading: Icon(
               tileIcon,
               size: 30,
@@ -32,8 +33,7 @@ class CustomListTile extends StatelessWidget {
               tileText,
               style: Theme.of(context)
                   .textTheme
-                  .titleMedium!
-                  .copyWith(color: Colors.black54),
+                  .titleMedium,
             ),
             trailing: const Icon(
               Icons.arrow_forward_ios_sharp,

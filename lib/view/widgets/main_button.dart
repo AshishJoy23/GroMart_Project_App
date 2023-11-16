@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class MainButtonWidget extends StatelessWidget {
   final String buttonText;
@@ -28,7 +29,7 @@ class MainButtonWidget extends StatelessWidget {
                   height: size.height * heightFactor,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: const Color(0xff388E3C), // Border color
+                      color: kPrimaryColor, // Border color
                       width: 2.0, // Border width
                     ),
                     borderRadius: BorderRadius.circular(8.0), // Border radius
@@ -52,7 +53,7 @@ class MainButtonWidget extends StatelessWidget {
                 child: ElevatedButton(
                   style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll<Color>(
-                      Color(0xff388E3C),
+                      kPrimaryColor,
                     ),
                   ),
                   onPressed: onPressed,

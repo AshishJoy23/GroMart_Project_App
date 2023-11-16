@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import 'package:intl/intl.dart';
 
 class ProfileDatePicker extends StatelessWidget {
@@ -31,7 +32,7 @@ class ProfileDatePicker extends StatelessWidget {
             builder: (context) {
               return Container(
                 height: size.height * 0.4,
-                color: Colors.white,
+                color: kCardColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -73,7 +74,7 @@ class ProfileDatePicker extends StatelessWidget {
         cursorColor: Colors.black,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(5),
-          fillColor: Color(0xffC8E6C9),
+          fillColor: kCardColor,
           labelText: 'Choose DOB',
           filled: true,
           floatingLabelStyle: TextStyle(

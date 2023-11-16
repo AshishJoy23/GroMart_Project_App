@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import 'package:gromart_project/view/screens/auth/get_started.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class SplashScreen extends StatelessWidget {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GetStartedPage()));
     });
     return Scaffold(
-      backgroundColor: const Color(0xff4CAF50),
+      backgroundColor: kPrimaryColor,
       body: Center(
         child: Image.asset(
           'assets/images/gromart_splash.png',

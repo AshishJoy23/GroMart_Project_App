@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CheckoutPaymentWidget extends StatefulWidget {
   const CheckoutPaymentWidget({super.key});
@@ -29,7 +30,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
           return Column(
             children: [
               RadioListTile(
-                activeColor: const Color(0xff388E3C),
+                activeColor: Colors.black,
                 value: PaymentMethod.razor_pay,
                 groupValue: state.paymentMethod,
                 onChanged: (value) {
@@ -43,7 +44,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: const MaterialStatePropertyAll<Color>(
-                        Colors.black,
+                        kCardColor,
                       ),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -61,9 +62,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                     },
                     child: Text(
                       'Pay with Razor Pay',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Colors.white,
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ),
@@ -72,7 +71,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                 height: height * 0.01,
               ),
               RadioListTile(
-                activeColor: const Color(0xff388E3C),
+                activeColor: Colors.black,
                 value: PaymentMethod.cash_on_delivery,
                 groupValue: state.paymentMethod,
                 onChanged: (value) {
@@ -86,7 +85,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: const MaterialStatePropertyAll<Color>(
-                        Colors.black,
+                        kCardColor,
                       ),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -104,9 +103,7 @@ class _CheckoutPaymentWidgetState extends State<CheckoutPaymentWidget> {
                     },
                     child: Text(
                       'Cash on Delivery',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Colors.white,
-                          ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ),

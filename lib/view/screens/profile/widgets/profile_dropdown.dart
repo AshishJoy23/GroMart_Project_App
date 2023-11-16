@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CustomProfileDropDown extends StatelessWidget {
   CustomProfileDropDown({
@@ -31,10 +32,10 @@ class CustomProfileDropDown extends StatelessWidget {
         iconSize: 28,
         icon: const Icon(Icons.arrow_drop_down_circle_outlined),
         iconEnabledColor: Colors.black,
-        dropdownColor: const Color(0xffC8E6C9),
+        dropdownColor: kPopUpColor,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(5),
-          fillColor: Color(0xffC8E6C9),
+          fillColor: kCardColor,
           hintText: 'Choose Gender',
           labelText: 'Choose Gender',
           filled: true,

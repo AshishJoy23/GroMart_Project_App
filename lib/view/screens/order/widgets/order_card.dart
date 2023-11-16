@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 
 class OrderProductCardWidget extends StatelessWidget {
@@ -35,10 +36,10 @@ class OrderProductCardWidget extends StatelessWidget {
               Map<String, dynamic> orderProductDetails =
                   order.orderDetailsMap[index];
               return Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.symmetric(horizontal: size.width*0.02,vertical: size.height*0.01),
                 child: Material(
-                  elevation: 12,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  elevation: 5.0,
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                   child: GestureDetector(
                     onTap: () {
                       log(orderProductDetails['productId'].toString());
@@ -54,18 +55,18 @@ class OrderProductCardWidget extends StatelessWidget {
                       height: size.height * 0.16,
                       width: size.width / 1,
                       decoration: const BoxDecoration(
-                        color: Color(0xffC8E6C9),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: kCardColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5.0),
                               child: Image.network(
                                 product.imageUrls[0],
-                                width: size.height * 0.14,
+                                width: size.width * 0.23,
                                 height: size.height * 0.15,
                                 fit: BoxFit.cover,
                               ),

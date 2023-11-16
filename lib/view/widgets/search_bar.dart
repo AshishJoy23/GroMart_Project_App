@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({
@@ -20,7 +21,7 @@ class SearchBarWidget extends StatelessWidget {
           height: size.height * 0.055,
           width: size.width,
           decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 232, 226, 226),
+              color: kCardColor,
               borderRadius: BorderRadius.circular(5)),
           child: Row(
             children: [
@@ -29,7 +30,7 @@ class SearchBarWidget extends StatelessWidget {
                 child: Icon(
                   CupertinoIcons.search,
                   size: 30,
-                  color: Color(0xff388E3C),
+                  color: kPrimaryColor,
                 ),
               ),
               Text(

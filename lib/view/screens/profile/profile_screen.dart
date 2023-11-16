@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kSecondaryColor,
       appBar: const CustomAppBarWidget(title: 'Profile', actionList: []),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

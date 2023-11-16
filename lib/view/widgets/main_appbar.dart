@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/cart_model.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final String title;
@@ -60,7 +61,7 @@ class MainAppBarWidget extends StatelessWidget with PreferredSizeWidget {
                   children: [
                     const Center(
                       child: CircleAvatar(
-                        backgroundColor: Colors.white,
+                        backgroundColor: kCardColor,
                         child: Icon(
                           CupertinoIcons.shopping_cart,
                           color: Colors.black,

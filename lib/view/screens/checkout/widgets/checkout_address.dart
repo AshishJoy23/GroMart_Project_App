@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
   final AddressModel address;
@@ -18,14 +19,14 @@ class CheckoutAddressCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(height * 0.01),
       child: Material(
-        elevation: 10,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        elevation: 5.0,
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Container(
           height: height * 0.17,
           width: width / 1,
           decoration: const BoxDecoration(
-            color: Color(0xffC8E6C9),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: kCardColor,
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Padding(
             padding: EdgeInsets.all(
@@ -41,7 +42,7 @@ class CheckoutAddressCard extends StatelessWidget {
                           width: width * 0.14,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: const Color(0xff388E3C),
+                            color: Colors.black,
                           ),
                           child: Text(
                             address.type,

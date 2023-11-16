@@ -5,13 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 
 class AddressRadioButtonWidget extends StatelessWidget {
-  const AddressRadioButtonWidget({
+  AddressRadioButtonWidget({
     super.key,
     required this.addressType,
     required this.buttonValue,
   });
 
-  final String addressType;
+  String addressType;
   final String buttonValue;
 
   @override
@@ -21,7 +21,7 @@ class AddressRadioButtonWidget extends StatelessWidget {
         radioTheme: RadioThemeData(
           fillColor: MaterialStateColor.resolveWith((states) {
             if (states.contains(MaterialState.selected)) {
-              return const Color(0xff388E3C);
+              return Colors.black;
             }
             return Colors.black54;
           }),
@@ -33,6 +33,7 @@ class AddressRadioButtonWidget extends StatelessWidget {
         onChanged: (value) {
           BlocProvider.of<AddressBloc>(context)
               .add(AddressTypeButtonClicked(value!));
+          addressType = value;
           log('<<<<<<<<<<<<after event call>>>>>>>>>>>>');
           log(value);
           log(addressType);

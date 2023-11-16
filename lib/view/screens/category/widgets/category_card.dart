@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gromart_project/models/category_model.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CategoryCardWidget extends StatelessWidget {
   final CategoryModel category;
@@ -48,7 +49,7 @@ class CategoryCardWidget extends StatelessWidget {
               width: widthScrn,
               height: heightScrn * 0.35,
               decoration: BoxDecoration(
-                color: const Color(0xff388E3C).withAlpha(230),
+                color: kPrimaryColor.withAlpha(230),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

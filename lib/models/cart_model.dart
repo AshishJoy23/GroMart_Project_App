@@ -104,11 +104,11 @@ class CartModel extends Equatable {
   String get deliveryFeeString => deliveryFees(subTotals).toStringAsFixed(2);
 
   String freeDelivery(subTotals) {
-    if (subTotals >= 30.0) {
+    if (subTotals >= 100.0) {
       return 'You have FREE delivery';
     } else {
-      double neededAmount = 30.0 - subTotals;
-      return 'Add \$$neededAmount for FREE Delivery';
+      double neededAmount = 100.0 - subTotals;
+      return 'Add ₹ $neededAmount for FREE Delivery';
     }
   }
 

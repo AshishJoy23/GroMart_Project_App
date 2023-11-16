@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -45,7 +46,7 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(5),
-            fillColor: const Color(0xffC8E6C9),
+            fillColor: kCardColor,
             labelText: labelText,
             filled: true,
             floatingLabelStyle: const TextStyle(

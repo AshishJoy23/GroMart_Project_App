@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 
 class Utils {
@@ -30,7 +31,7 @@ class Utils {
     message: message,
     confirmButtonText: "Confirm",
     cancelButtonText: "Cancel",
-    color: const Color(0xff388E3C),
+    color: kPrimaryColor,
     onTapCancel: () {
       Navigator.pop(ctx);
     },

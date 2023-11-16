@@ -13,8 +13,10 @@ class AddressDetailsWidget extends StatelessWidget {
   final TextEditingController cityController;
   final TextEditingController stateController;
   final TextEditingController pinController;
-  String addressType;
-  AddressDetailsWidget({
+  final TextEditingController typeController;
+  //String addressType;
+  final bool isEdit;
+  const AddressDetailsWidget({
     super.key,
     required this.nameController,
     required this.phoneController,
@@ -23,7 +25,8 @@ class AddressDetailsWidget extends StatelessWidget {
     required this.cityController,
     required this.stateController,
     required this.pinController,
-    required this.addressType,
+    required this.typeController,
+    this.isEdit = true,
   });
 
   @override
@@ -93,24 +96,28 @@ class AddressDetailsWidget extends StatelessWidget {
           builder: (context, state) {
             if (state is AddressLoadedSuccess) {
               log('<<<<<<<<<<<details pa>>>>>>>>>>>');
-              log(addressType);
-              addressType = state.addressType;
+              log(typeController.text);
+              log('beforeeeeeeeeeeeeee');
+              log(state.addressType);
+              log('????????????????????????');
+              typeController.text = state.addressType;
+              log(typeController.text);
               log('<<<<<<<after>>>>>>>');
-              log(addressType);
+              log(typeController.text);
               return Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: [
                     AddressRadioButtonWidget(
-                      addressType: addressType,
+                      addressType: typeController.text,
                       buttonValue: 'Home',
                     ),
                     AddressRadioButtonWidget(
-                      addressType: addressType,
+                      addressType: typeController.text,
                       buttonValue: 'Work',
                     ),
                     AddressRadioButtonWidget(
-                      addressType: addressType,
+                      addressType: typeController.text,
                       buttonValue: 'Other',
                     ),
                   ],

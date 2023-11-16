@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
 import 'package:gromart_project/models/models.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class OrderProductDetails extends StatelessWidget {
   const OrderProductDetails({
@@ -44,7 +45,7 @@ class OrderProductDetails extends StatelessWidget {
                 height: size.height * 0.15,
                 width: size.width / 1,
                 decoration: const BoxDecoration(
-                  color: Color(0xffC8E6C9),
+                  color: kCardColor,
                   borderRadius:
                       BorderRadius.all(Radius.circular(20)),
                 ),

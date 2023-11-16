@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 import '../../../../models/models.dart';
 
@@ -19,7 +20,7 @@ class ProductNameAndPrice extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: const Color(0xffC8E6C9).withAlpha(160),
+          color: kCardColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(

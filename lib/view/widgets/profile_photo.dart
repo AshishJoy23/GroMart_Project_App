@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gromart_project/blocs/blocs.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class ProfilePhotoWidget extends StatelessWidget {
   final bool isEdit;
@@ -34,9 +35,10 @@ class ProfilePhotoWidget extends StatelessWidget {
                         width: size.width * 0.3,
                         height: size.width * 0.3,
                         decoration: BoxDecoration(
+                          color: kCardColor,
                             borderRadius: BorderRadius.circular(90),
                             border: Border.all(
-                                width: 1.5, color: const Color(0xff388E3C))),
+                                width: 1.5, color: kPrimaryColor)),
                         child: (state.profilePhotoUrl == '')
                             ? Image.asset('assets/images/profile.png')
                             : ClipRRect(
@@ -44,6 +46,24 @@ class ProfilePhotoWidget extends StatelessWidget {
                                 child: Image.network(
                                   state.profilePhotoUrl,
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return Center(
+                                        child: Transform.scale(
+                                          scale: 0.5,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            strokeWidth: 3,
+                                            backgroundColor: Colors.white,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
                       ),
@@ -56,11 +76,11 @@ class ProfilePhotoWidget extends StatelessWidget {
                                 .add(const ProfilePictureUploaded());
                           },
                           child: const CircleAvatar(
-                            backgroundColor: Color(0xff388E3C),
+                            backgroundColor: kCardColor,
                             radius: 18,
                             child: Icon(
                               Icons.add_a_photo,
-                              color: Colors.white,
+                              color: Colors.black54,
                             ),
                           ),
                         ),
@@ -71,9 +91,10 @@ class ProfilePhotoWidget extends StatelessWidget {
                     width: size.width * 0.3,
                     height: size.width * 0.3,
                     decoration: BoxDecoration(
+                      color: kCardColor,
                         borderRadius: BorderRadius.circular(90),
                         border: Border.all(
-                            width: 1.5, color: const Color(0xff388E3C))),
+                            width: 1.5, color: kPrimaryColor)),
                     child: (state.profilePhotoUrl == '')
                         ? Image.asset('assets/images/profile.png')
                         : ClipRRect(
@@ -81,6 +102,23 @@ class ProfilePhotoWidget extends StatelessWidget {
                             child: Image.network(
                               state.profilePhotoUrl,
                               fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                } else {
+                                  return Center(
+                                    child: Transform.scale(
+                                      scale: 0.5,
+                                      child: const CircularProgressIndicator(
+                                        strokeWidth: 3,
+                                        backgroundColor: Colors.white,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ),
                   ),

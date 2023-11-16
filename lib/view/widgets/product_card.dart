@@ -31,14 +31,14 @@ class ProductCardWidget extends StatelessWidget {
         );
       },
       child: Material(
-        elevation: 10,
+        elevation: 8.0,
         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         child: Container(
           padding: EdgeInsets.all(size.width * 0.02),
           width: size.width * 0.45,
           height: size.height * 0.32,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: kCardColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: Column(
@@ -52,7 +52,7 @@ class ProductCardWidget extends StatelessWidget {
                       if (state is WishlistLoading) {
                         return CircleAvatar(
                           //backgroundColor: Colors.grey,
-                          backgroundColor: Color(0xffF7FFF8),
+                          backgroundColor: kSecondaryColor,
                           radius: 16.0,
                           child: Center(
                             child: Transform.scale(
@@ -107,7 +107,7 @@ class ProductCardWidget extends StatelessWidget {
                                     },
                           child: CircleAvatar(
                             //backgroundColor: Colors.grey,
-                            backgroundColor: Color(0xffF7FFF8),
+                            backgroundColor: kSecondaryColor,
                             radius: 16.0,
                             child: (isFavorite)
                                 ? Icon(
@@ -143,7 +143,7 @@ class ProductCardWidget extends StatelessWidget {
                     child: Image.network(
                       product.imageUrls[0],
                       width: size.width * 0.3,
-                      height: size.height * 0.17,
+                      height: size.height * 0.15,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -181,7 +181,7 @@ class ProductCardWidget extends StatelessWidget {
                                     .textTheme
                                     .bodyMedium!
                                     .copyWith(
-                                      color: Colors.green,
+                                      color: kPrimaryColor,
                                       fontWeight: FontWeight.bold,
                                       height: 0.0,
                                     ),
@@ -207,7 +207,7 @@ class ProductCardWidget extends StatelessWidget {
                               builder: (context, state) {
                                 if (state is CartLoading) {
                                   return CircleAvatar(
-                                    backgroundColor: Color(0xffF7FFF8),
+                                    backgroundColor: kSecondaryColor,
                                     radius: 16.0,
                                     child: Center(
                                       child: Transform.scale(
@@ -232,7 +232,7 @@ class ProductCardWidget extends StatelessWidget {
                                           Colors.black87);
                                     },
                                     child: const CircleAvatar(
-                                      backgroundColor: Color(0xffF7FFF8),
+                                      backgroundColor: kSecondaryColor,
                                       radius: 16.0,
                                       child: Icon(
                                         Icons.shopping_cart,

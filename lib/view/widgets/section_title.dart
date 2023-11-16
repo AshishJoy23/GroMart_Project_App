@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/config.dart';
 
 class SectionTitleWidget extends StatelessWidget {
   final String title;
   final VoidCallback? onPressed;
   final bool button;
   final String buttonText;
-  final double size;
   const SectionTitleWidget({
     super.key,
     required this.title,
     this.onPressed,
     this.button = false,
     this.buttonText = 'Clear All',
-    this.size = 10.0,
   });
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: size,
+        horizontal: size.width*0.02,
       ),
       child: Row(
         children: [
@@ -30,23 +30,30 @@ class SectionTitleWidget extends StatelessWidget {
             ),
           ),
           (button)
-              ? ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xff388E3C).withAlpha(100)),
-                    overlayColor: MaterialStateProperty.all<Color>(
-                        Colors.white60.withOpacity(0.1)),
-                  ),
-                  onPressed: onPressed,
-                  child: Row(
-                    children: [
-                      Text(
-                        buttonText,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                )
+              ? InkWell(
+                onTap: onPressed,
+                child: Container(
+                            height: size.height * 0.038,
+                            width: size.width * 0.21,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  buttonText,
+                                  //textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w600),
+                                ),
+                                const Icon(Icons.keyboard_arrow_right),
+                              ],
+                            ),
+                          ),
+              )
               : const SizedBox(
                   width: 10,
                 ),

@@ -16,7 +16,7 @@ class ProductCarouselWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return SizedBox(
-      height: size.height * 0.36,
+      height: size.height * 0.34,
       child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: size.height * 0.015, vertical: size.height * 0.012),
           scrollDirection: Axis.horizontal,
@@ -24,7 +24,7 @@ class ProductCarouselWidget extends StatelessWidget {
           itemCount: products.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: EdgeInsets.only(right: size.height * 0.01),
+              padding: EdgeInsets.only(right: size.height * 0.015),
               child: BlocBuilder<WishlistBloc, WishlistState>(
                 builder: (context, state) {
                   if (state is WishlistLoading) {

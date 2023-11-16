@@ -15,6 +15,7 @@ export '../widgets/carousel_card.dart';
 export 'cart/widgets/cart_product_card.dart';
 export 'cart/widgets/cart_empty.dart';
 export 'cart/widgets/cart_bottom_nav.dart';
+export 'cart/widgets/quantity_update_button.dart';
 export 'home/widgets/product_carousel.dart';
 export 'cart/widgets/cart_amount.dart';
 export 'product/widgets/product_name_price.dart';

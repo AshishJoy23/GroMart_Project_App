@@ -30,53 +30,44 @@ class AddAddressScreen extends StatelessWidget {
   final cityController = TextEditingController();
   final stateController = TextEditingController();
   final pinController = TextEditingController();
+  final typeController = TextEditingController();
   final String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   @override
   Widget build(BuildContext context) {
-    String addressType = BlocProvider.of<AddressBloc>(context).addressType;
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff4CAF50),
-            Color(0xffC8E6C9),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+    typeController.text = BlocProvider.of<AddressBloc>(context).addressType;
+    return Scaffold(
+      backgroundColor: kSecondaryColor,
+      appBar: const CustomAppBarWidget(
+        title: 'Add Address',
+        actionList: [],
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const CustomAppBarWidget(
-          title: 'Add Address',
-          actionList: [],
-        ),
-        body: ListView(
-          children: [
-            Form(
-              key: formKey,
-              child: BlocListener<AddressBloc, AddressState>(
-                listener: (context, state) {
-                  if (state is AddressLoadedSuccess) {
-                    addressType = state.addressType;
-                  }
-                },
-                child: AddressDetailsWidget(
-                    nameController: nameController,
-                    phoneController: phoneController,
-                    houseController: houseController,
-                    streetController: streetController,
-                    cityController: cityController,
-                    stateController: stateController,
-                    pinController: pinController,
-                    addressType: addressType),
-              ),
+      body: ListView(
+        children: [
+          Form(
+            key: formKey,
+            child: BlocListener<AddressBloc, AddressState>(
+              listener: (context, state) {
+                if (state is AddressLoadedSuccess) {
+                  typeController.text = state.addressType;
+                }
+              },
+              child: AddressDetailsWidget(
+                  nameController: nameController,
+                  phoneController: phoneController,
+                  houseController: houseController,
+                  streetController: streetController,
+                  cityController: cityController,
+                  stateController: stateController,
+                  pinController: pinController,
+                  typeController: typeController),
             ),
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: MainButtonWidget(
+          ),
+        ],
+      ),
+      bottomNavigationBar: Row(
+        children: [
+          MainButtonWidget(
             buttonText: 'Save Address',
             onPressed: () {
               final isValid = formKey.currentState!.validate();
@@ -90,22 +81,25 @@ class AddAddressScreen extends StatelessWidget {
                   city: cityController.text.trim(),
                   state: stateController.text.trim(),
                   pincode: pinController.text.trim(),
-                  type: addressType,
+                  type: typeController.text.trim(),
                 );
-                BlocProvider.of<AddressBloc>(context)
-                    .add(AddressAdded(email: currentUser!, address: newAddress));
-                BlocProvider.of<CheckoutBloc>(context).add(const CheckoutUpdated());
+                BlocProvider.of<AddressBloc>(context).add(
+                    AddressAdded(email: currentUser!, address: newAddress));
+                BlocProvider.of<CheckoutBloc>(context)
+                    .add(const CheckoutUpdated());
+                Utils.showSnackBar(
+                    'New Address Added.', const Color(0xff4CAF50));
                 Navigator.pop(context);
               } else {
                 log('not valid');
-                log(addressType.toString());
-                Utils.showSnackBar('All the fields are required.', Colors.redAccent);
+                log(typeController.text.toString());
+                Utils.showSnackBar(
+                    'All the fields are required.', Colors.redAccent);
               }
             },
           ),
-        ),
+        ],
       ),
     );
   }
 }
-

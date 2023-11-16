@@ -23,11 +23,12 @@ Future signIn(context, formKey, emailController, passwordController) async {
     barrierDismissible: false,
     builder: (context) {
       return const Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: Color(0xff388E3C),
-        ),
-      );
+          child: CircularProgressIndicator(
+            strokeWidth: 3,
+            backgroundColor: Colors.white,
+            color: Colors.black,
+          ),
+        );
     },
   );
   try {
@@ -73,8 +74,9 @@ Future signUp(
       builder: (context) {
         return const Center(
           child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Color(0xff388E3C),
+            strokeWidth: 3,
+            backgroundColor: Colors.white,
+            color: Colors.black,
           ),
         );
       },

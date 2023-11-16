@@ -31,7 +31,7 @@ class ProductBottomAppBar extends StatelessWidget {
                   child: ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color(0xff388E3C),
+                        kPrimaryColor,
                       ),
                     ),
                     onPressed: () {
@@ -62,7 +62,7 @@ class ProductBottomAppBar extends StatelessWidget {
                   child: ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll<Color>(
-                        Color(0xff388E3C),
+                        kPrimaryColor,
                       ),
                     ),
                     onPressed: () {

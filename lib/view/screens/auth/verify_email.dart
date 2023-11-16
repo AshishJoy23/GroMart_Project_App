@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gromart_project/models/models.dart';
 import 'package:gromart_project/repositories/profile/profile_repository.dart';
+import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/config/utils.dart';
 import 'package:gromart_project/view/screens/screens.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
@@ -48,94 +49,83 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Widget build(BuildContext context) {
     return isEmailVerified
         ? const GetStartedPage()
-        : Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff4CAF50),
-                  Color(0xffC8E6C9),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+        : Scaffold(
+            backgroundColor: kSecondaryColor,
+            appBar: const CustomAppBarWidget(
+              title: 'Verify Email',
+              actionList: [],
             ),
-            child: Scaffold(
-              appBar: const CustomAppBarWidget(
-                title: 'Verify Email',
-                actionList: [],
-              ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'A verification email has been sent\nto your email.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall,
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'A verification email has been sent\nto your email.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 10,
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                      vertical: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: canResendEmail
-                                    ? const Color(0xff388E3C)
-                                    : const Color(0xff388E3C).withOpacity(0.4),
-                                minimumSize: const Size.fromHeight(55)),
-                            onPressed: () {
-                              canResendEmail ? sendVerificationEmail() : null;
-                            },
-                            child: Text(
-                              'Resend Email',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: Colors.white,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                      vertical: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black26,
-                                side: const BorderSide(
-                                  color: Color(0xff388E3C),
-                                  width: 1.5,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: canResendEmail
+                                  ? kPrimaryColor
+                                  : kPrimaryColor.withOpacity(0.4),
+                              minimumSize: const Size.fromHeight(55)),
+                          onPressed: () {
+                            canResendEmail ? sendVerificationEmail() : null;
+                          },
+                          child: Text(
+                            'Resend Email',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Colors.white,
                                 ),
-                                minimumSize: const Size.fromHeight(55)),
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut();
-                            },
-                            child: Text(
-                              'Cancel',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black26,
+                              side: const BorderSide(
+                                color: kPrimaryColor,
+                                width: 1.5,
+                              ),
+                              minimumSize: const Size.fromHeight(55)),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           );
   }
@@ -170,9 +160,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
     if (isEmailVerified) {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: widget.userEmail,
-      password: widget.userPassword,
-    );
+        email: widget.userEmail,
+        password: widget.userPassword,
+      );
       final profile = FirebaseFirestore.instance
           .collection('users')
           .doc(widget.userEmail)
@@ -187,7 +177,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         userDob: '',
         userImageUrl: '',
       );
-      await ProfileRepository().updateProfileData(widget.userEmail, profile.id, userProfile);
+      await ProfileRepository()
+          .updateProfileData(widget.userEmail, profile.id, userProfile);
       //cancel the timer to avoid checking the verification after each 3 seconds
       timer?.cancel();
     }
