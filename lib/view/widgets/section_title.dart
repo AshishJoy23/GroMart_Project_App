@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gromart_project/view/config/config.dart';
 
 class SectionTitleWidget extends StatelessWidget {
   final String title;
@@ -19,7 +18,7 @@ class SectionTitleWidget extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: size.width*0.02,
+        horizontal: size.width * 0.03,
       ),
       child: Row(
         children: [
@@ -31,29 +30,21 @@ class SectionTitleWidget extends StatelessWidget {
           ),
           (button)
               ? InkWell(
-                onTap: onPressed,
-                child: Container(
-                            height: size.height * 0.038,
-                            width: size.width * 0.21,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  buttonText,
-                                  //textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600),
-                                ),
-                                const Icon(Icons.keyboard_arrow_right),
-                              ],
-                            ),
-                          ),
-              )
+                  onTap: onPressed,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      buttonText,
+                      //textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                )
               : const SizedBox(
                   width: 10,
                 ),

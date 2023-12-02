@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class AuthTextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -37,11 +38,11 @@ class AuthTextFormFieldWidget extends StatelessWidget {
           labelText: labelText,
           contentPadding: const EdgeInsets.all(8),
           floatingLabelStyle: const TextStyle(
-            color: Color(0xff388E3C),
+            color: kPrimaryColor,
           ),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color(0xff388E3C),
+              color: kPrimaryColor,
             ),
           ),
           border: const OutlineInputBorder(),

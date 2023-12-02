@@ -4,3 +4,5 @@ const kPrimaryColor = Color(0xFF6CC51D);
 const kSecondaryColor = Color(0xffF7FFF8);
 const kCardColor = Color(0xffdedede);
 const kPopUpColor = Color(0xffa7a7a7);
+const kIconColor = Colors.black54;
+const kButtonGradientColor = Color(0xFFB0FB65);

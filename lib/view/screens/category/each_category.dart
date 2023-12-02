@@ -26,6 +26,7 @@ class EachCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kSecondaryColor,
       appBar: CustomAppBarWidget(title: category.name, actionList: const []),
@@ -45,13 +46,16 @@ class EachCategoryScreen extends StatelessWidget {
                 .where((product) => product.category == category.name)
                 .toList();
             return GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               itemCount: eachCategoryProducts.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.03,
+                vertical: size.width * 0.01,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.15,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 10,
+                childAspectRatio: 0.7,
+                mainAxisSpacing: size.width * 0.05,
+                crossAxisSpacing: size.width * 0.03,
               ),
               itemBuilder: (context, index) {
                 return Center(

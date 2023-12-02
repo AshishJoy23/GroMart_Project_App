@@ -42,36 +42,22 @@ class WishlistScreen extends StatelessWidget {
           } else if (state is WishlistLoaded) {
             log('<<<<<<<wislist loaded>>>>>>>');
             return (state.wishlist.productList.isEmpty)
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/orders_empty.png',
-                          width: size.width,
-                          height: size.height * 0.4,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(
-                          height: size.height * 0.02,
-                        ),
-                        Text(
-                          'Your Wishlist is Empty!',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ],
-                    ),
+                ? const EmptyScreenWidget(
+                    emptyMsg:
+                        'Your wishlist is empty! \n Add something you love.',
+                    imageUrl: 'assets/images/orders_empty.png',
                   )
                 : GridView.builder(
-                    padding:
-                         EdgeInsets.symmetric(horizontal: size.width*0.03, vertical: size.width*0.01),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.03,
+                        vertical: size.width * 0.01),
                     itemCount: state.wishlist.productList.length,
-                    gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.7,
-                      mainAxisSpacing: size.width*0.05,
-                      crossAxisSpacing: size.width*0.03,
+                      mainAxisSpacing: size.width * 0.05,
+                      crossAxisSpacing: size.width * 0.03,
                     ),
                     itemBuilder: (context, index) {
                       ProductModel product =
@@ -95,7 +81,8 @@ class WishlistScreen extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: const MainBottomNavBar(),
+      //bottomNavigationBar: const MainBottomNavBar(),
     );
   }
 }
+

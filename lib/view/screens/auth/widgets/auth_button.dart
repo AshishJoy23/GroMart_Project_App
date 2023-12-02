@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class AuthButtonWidget extends StatelessWidget {
   final String buttonText;
@@ -22,7 +23,7 @@ class AuthButtonWidget extends StatelessWidget {
             ),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff388E3C),
+                backgroundColor: kPrimaryColor,
                 minimumSize: const Size.fromHeight(55),
               ),
               onPressed: onPressed,

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 class SwitchUserAccountWidget extends StatelessWidget {
   final String text;
@@ -31,7 +32,7 @@ class SwitchUserAccountWidget extends StatelessWidget {
                   recognizer: TapGestureRecognizer()..onTap = onClickedSignUp,
                   text: buttonText,
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: const Color(0xff388E3C),
+                        color: kPrimaryColor,
                         decoration: TextDecoration.underline,
                       ),
                 ),

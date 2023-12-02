@@ -13,9 +13,9 @@ class CarouselCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 2.0, right: 2.0, bottom: 12.0),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         child: Stack(
           children: <Widget>[
             product == null

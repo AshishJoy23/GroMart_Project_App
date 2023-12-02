@@ -19,11 +19,10 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kSecondaryColor,
-      appBar: const MainAppBarWidget(
-        title: 'Category',
-      ),
+      appBar: const CustomAppBarWidget(title: 'Category', actionList: []),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
           if (state is CategoryLoading) {
@@ -37,18 +36,20 @@ class CategoryScreen extends StatelessWidget {
           }
           if (state is CategoryLoaded) {
             return GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.03,
+                vertical: size.width * 0.01,
+              ),
               itemCount: state.categories.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.15,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 10,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.9,
+                mainAxisSpacing: size.width * 0.02,
+                crossAxisSpacing: size.width * 0.02,
               ),
               itemBuilder: (context, index) {
-                return Center(
-                    child:
-                        CategoryCardWidget(category: state.categories[index]));
+                return CategoryCardWidget(category: state.categories[index]);
               },
             );
           } else {
@@ -56,7 +57,6 @@ class CategoryScreen extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: const MainBottomNavBar(),
     );
   }
 }

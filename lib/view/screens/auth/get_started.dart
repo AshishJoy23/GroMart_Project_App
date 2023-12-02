@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class GetStartedPage extends StatelessWidget {
                 ),
               );
             } else if (snapshot.hasData) {
-              return const HomeScreen();
+              return const MainAppScreen();
             } else {
               return const AuthPage();
             }

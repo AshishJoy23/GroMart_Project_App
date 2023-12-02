@@ -32,14 +32,14 @@ class SearchScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
           child: Column(
             children: [
               TextField(
                 controller: searchedQuery,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: const Color.fromARGB(255, 232, 226, 226),
+                  fillColor: kCardColor,
                   contentPadding: const EdgeInsets.all(10),
                   disabledBorder: InputBorder.none,
                   focusedBorder: const OutlineInputBorder(
@@ -60,7 +60,7 @@ class SearchScreen extends StatelessWidget {
                     },
                     child: const Icon(
                       Icons.clear,
-                      color: Colors.grey,
+                      color: kIconColor,
                     ),
                   ),
                   hintText: 'Search Here...',
@@ -95,69 +95,26 @@ class SearchScreen extends StatelessWidget {
                     log(state.isSearching.toString());
                     return (state.suggestionList.isEmpty)
                         ? ((state.isSearching && searchedQuery.text.isNotEmpty)
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.1,
-                                    ),
-                                    Image.asset(
-                                      'assets/images/no_data.png',
-                                      width: size.width,
-                                      height: size.height * 0.4,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Text(
-                                      'Search Not Found!',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.1,
-                                    ),
-                                    Image.asset(
-                                      'assets/images/search_item.png',
-                                      width: size.width,
-                                      height: size.height * 0.4,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Text(
-                                      'Search What You Love!',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
-                                    ),
-                                  ],
-                                ),
-                              ))
+                            ? const EmptyScreenWidget(
+                                emptyMsg: 'Item Not Found!',
+                                imageUrl: 'assets/images/no_data.png')
+                            : const EmptyScreenWidget(
+                                emptyMsg: 'Search What You Love!',
+                                imageUrl: 'assets/images/search_item.png'))
                         : GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            itemCount: state.suggestionList.length,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.width * 0.03,
+                                vertical: size.width * 0.01),
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 1.15,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 10,
+                              childAspectRatio: 0.7,
+                              mainAxisSpacing: size.width * 0.05,
+                              crossAxisSpacing: size.width * 0.03,
                             ),
+                            itemCount: state.suggestionList.length,
                             itemBuilder: (context, index) {
                               return ProductCardWidget(
                                   product: state.suggestionList[index]);

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gromart_project/view/config/config.dart';
 import 'package:gromart_project/view/widgets/widgets.dart';
 
@@ -18,31 +19,25 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kSecondaryColor,
       appBar: const CustomAppBarWidget(title: 'Settings', actionList: []),
       body: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Row(
+          child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(size.width * 0.02),
-                width: size.width * 0.45,
-                height: size.height * 0.32,
-                decoration: BoxDecoration(
-                  color: Color(0xFF6CC51D),
-                  borderRadius: BorderRadius.circular(8.0),
+                color: Colors.amber,
+                child: Text(
+                  'GROMART',
+                  style: GoogleFonts.qwigley(
+                    textStyle: const TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                width: size.width * 0.45,
-                height: size.height * 0.32,
-                color: Color(0xFFAEDC81),
               ),
             ],
           )),

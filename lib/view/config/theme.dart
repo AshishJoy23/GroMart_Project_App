@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gromart_project/view/config/colors.dart';
 
 ThemeData theme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.transparent,
+    scaffoldBackgroundColor: kSecondaryColor,
+    appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
     textTheme: textTheme(),
   );
 }
