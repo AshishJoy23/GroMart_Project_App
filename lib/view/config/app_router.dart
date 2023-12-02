@@ -12,6 +12,8 @@ class AppRouter {
         return HomeScreen.route();
       case MainAppScreen.routeName:
         return MainAppScreen.route();
+      case OnboardingScreen.routeName:
+        return OnboardingScreen.route();
       case SplashScreen.routeName:
         return SplashScreen.route();
       case CartScreen.routeName:

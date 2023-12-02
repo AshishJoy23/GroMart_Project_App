@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gromart_project/main.dart';
 import 'package:gromart_project/view/config/colors.dart';
-import 'package:gromart_project/view/screens/auth/get_started.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -20,7 +19,9 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushNamed('/getStarted');
+      seenOnboard == true
+      ? Navigator.of(context).pushReplacementNamed('/getStarted')
+      : Navigator.of(context).pushReplacementNamed('/onBoarding');
     });
     return SafeArea(
       child: Scaffold(
@@ -41,14 +42,26 @@ class SplashScreen extends StatelessWidget {
                 ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    'GROMART',
-                    style: GoogleFonts.fuggles(
-                      textStyle: const TextStyle(
-                        color: kSecondaryColor,
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: GoogleFonts.fuggles(
+                        textStyle: const TextStyle(
+                          color: kSecondaryColor,
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      children: const [
+                        TextSpan(text: 'GRO'),
+                        TextSpan(
+                          text: 'M',
+                          style: TextStyle(
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        TextSpan(text: 'ART'),
+                      ],
                     ),
                   ),
                 ),

@@ -31,6 +31,8 @@ class SectionTitleWidget extends StatelessWidget {
           (button)
               ? InkWell(
                   onTap: onPressed,
+                  borderRadius: BorderRadius.circular(8),
+                  splashColor: Colors.black12,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),

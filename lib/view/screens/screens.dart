@@ -1,4 +1,7 @@
 export 'splash/splash_screen.dart';
+export 'onboarding/onboarding_screen.dart';
+export 'onboarding/widgets/onboard_pageview.dart';
+export 'onboarding/widgets/onboard_navbtn.dart';
 export 'home/home_screen.dart';
 export 'cart/cart_screen.dart';
 export 'wishlist/wishlist_screen.dart';
